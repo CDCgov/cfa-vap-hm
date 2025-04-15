@@ -87,5 +87,13 @@
          bind % split-window -h -c "#{pane_current_path}"
        '';
   };
+  programs.git = {
+      enable = true;
+      userName = "Giovanni Rella";
+      userEmail = "giomrella@gmail.com";
+      extraConfig = {
+          credential.helper = "store";
+      };
+  };
 
 }
