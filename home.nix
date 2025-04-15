@@ -18,6 +18,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
+    pkgs.git
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
@@ -49,6 +50,22 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+    "Documents/CDC/.gitconfig".text = ''
+    [user]
+        email = ap82@cdc.gov
+    '';
+    ".gitconfig".text = ''
+    [credential]
+        helper = store
+
+    [user]
+        name = Giovanni Rella
+        email = giomrella@gmail.com
+
+    [includeif "gitdir:~/Documents/CDC/**"]
+        path = "~/Documents/CDC/.gitconfig"
+
+    '';
   };
 
   # Home Manager can also manage your environment variables through
@@ -86,14 +103,6 @@
          bind '"' split-window -c "#{pane_current_path}"
          bind % split-window -h -c "#{pane_current_path}"
        '';
-  };
-  programs.git = {
-      enable = true;
-      userName = "Giovanni Rella";
-      userEmail = "giomrella@gmail.com";
-      extraConfig = {
-          credential.helper = "store";
-      };
   };
 
 }
