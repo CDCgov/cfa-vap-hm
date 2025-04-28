@@ -39,10 +39,10 @@
     ripgrep
     neovim
     nodejs_22
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
+    rustup
+    nixfmt-rfc-style
+    python313
+    authenticator
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -95,10 +95,14 @@
     fi
     '';
     ".bashrc".text = ''
+    # the below gives a shell level counter in the prompt string to see if you have 
+    # nested `nix-shell` or `nix develop` shells
+    PS1="''${PS1//\\u/"$SHLVL:\\u"}"
     if command -v tmux > /dev/null && [ -n "PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
       exec tmux
     fi
     alias ehome="nvim ~/.config/home-manager/home.nix"
+    alias ll="ls -lah --color=auto"
     '';
   };
 
@@ -124,6 +128,7 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
   programs.tmux = {
        enable = true;
        clock24 = true;
@@ -131,13 +136,21 @@
        extraConfig = ''
          set-option -ga terminal-overrides ",*256col*:Tc:RGB"
          set-window-option -g mode-keys vi
+         bind -T copy-mode-vi v send -X begin-selection
+         bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
+         bind P run-shell "tmux show-buffer | xclip -sel clipboard"
          set-option -sg escape-time 10
          set-option -g default-terminal "screen-256color"
          bind c new-window -c "#{pane_current_path}"
          bind '"' split-window -c "#{pane_current_path}"
          bind % split-window -h -c "#{pane_current_path}"
+         bind-key Up select-pane -U
+         bind-key Down select-pane -D
+         bind-key Left select-pane -L
+         bind-key Right select-pane -R
        '';
   };
+
   programs.kitty = {
     enable = true;
     font = {
