@@ -24,7 +24,7 @@
             homedir = "gio";
           };
         };
-        "ap82" = home-manager.lib.homeManagerConfiguration {
+        "ap82@ext.cdc.gov" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./home.nix ];
           extraSpecialArgs = {
