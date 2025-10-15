@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, user, homedir, ... }:
 
 {
   nixpkgs.config = {
@@ -6,8 +6,8 @@
   };
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "gio";
-  home.homeDirectory = "/home/gio";
+  home.username = user;
+  home.homeDirectory = "/home/${homedir}";
   dconf.settings = {
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
