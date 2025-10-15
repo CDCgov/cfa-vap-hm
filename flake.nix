@@ -15,23 +15,21 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      homeConfigurations = {
-        "gio" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./home.nix ];
-          extraSpecialArgs = {
-            user = "gio";
-            homedir = "gio";
-          };
-        };
-        "ap82@ext.cdc.gov" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./home.nix ];
-          extraSpecialArgs = {
-            user = "ap82@ext.cdc.gov";
-            homedir = "ap82";
-          };
-        };
-      };
+      homeConfigurations = (builtins.listToAttrs (
+        map
+          (user: {
+            name = user;
+            value = home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              modules = [ ./home.nix ];
+              extraSpecialArgs = {
+                inherit user;
+                # remove domain e.g. ap82@ext.cdc.gov -> ap82
+                homedir = builtins.elemAt (builtins.split "@" user) 0;
+              };
+            };
+          })
+          ["gio" "ap82@ext.cdc.gov"]
+      ));
     };
 }
