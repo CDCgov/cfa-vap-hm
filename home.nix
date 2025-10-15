@@ -126,6 +126,15 @@
     alias ehome="nvim ~/.config/home-manager/home.nix"
     alias ll="ls -lah --color=auto"
     '';
+
+    ".bash_aliases".text = ''
+    alias ehome="nvim ~/.config/home-manager/home.nix"
+    alias ll="ls -lah --color=auto"
+    alias avenv="source .venv/bin/activate"
+    alias runlike="docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike"
+    alias runlike_latest='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike "$(docker ps -l -q)"'
+    alias docker_logs_latest='docker logs "$(docker ps -aql)"'
+    '';
   };
 
   # Home Manager can also manage your environment variables through
