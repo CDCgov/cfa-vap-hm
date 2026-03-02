@@ -1,35 +1,29 @@
 {
-  description = "Home Manager configuration of Jon";
+    # Flakes are declarative config files that specify dev environments
+    description = "Jon's Experimental Home-Manager Flake";
 
-  inputs = {
-    # Specify the source of Home Manager and Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+    # "Inputs = ..."" 
+    # This is our basic dependency information - we're just including home-manager here
+    # and letting the home.nix file do the rest!
+    inputs = {
+        nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+        home-manager = {
+            url = "github:nix-community/home-manager";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
-  };
 
-  outputs = { nixpkgs, home-manager, ... }:
-    let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      homeConfigurations = (builtins.listToAttrs (
-        map
-          (user: {
-            name = user;
-            value = home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-              modules = [ ./home.nix ];
-              extraSpecialArgs = {
-                inherit user;
-                # remove domain e.g. ap82@ext.cdc.gov -> ap82
-                homedir = builtins.elemAt (builtins.split "@" user) 0;
-              };
+    # "Outputs = ..." - what are we producing with the previously defined inputs?
+    
+    # This is where we tell nix to create a home-manager configuration for our username,
+    # and we're going to define all further program/dotfile information in ./home.nix
+    outputs = {nixpkgs, home-manager, ...}: {
+        homeConfigurations = {
+            "qxk3" = home-manager.lib.homeManagerConfiguration {
+                # System is very important!
+                pkgs = import nixpkgs { system = "x86_64-linux"; };
+                modules = [ ./home.nix ]; # Defined later
             };
-          })
-          ["Jon" "qxk3@ext.cdc.gov"]
-      ));
+        };
     };
 }
