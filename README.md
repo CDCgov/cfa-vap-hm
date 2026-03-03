@@ -22,6 +22,7 @@ This is currently an extremely experimental and minimal example. Use at your own
 
 2. Install `nix` and enable the flakes feature:
     - `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon` will install `nix`.
+    - Use `--no-daemon` instead if you are running nix inside a container or if you want to keep it limited to your user.
     - To enable flakes, edit your `~/.config/nix/nix.conf` and add a line: 
         - `experimental-features = nix-command flakes`.
         - For convenience run: `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`.
@@ -39,3 +40,6 @@ This is currently an extremely experimental and minimal example. Use at your own
 1. Open a new branch in your `.config/home-manager` repository.
 2. Make changes and push your branch.
 3. Open a PR.
+
+### Rapid prototyping
+1. Build the docker image

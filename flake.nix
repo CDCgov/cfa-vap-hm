@@ -17,13 +17,18 @@
     
     # This is where we tell nix to create a home-manager configuration for our username,
     # and we're going to define all further program/dotfile information in ./home.nix
-    outputs = {nixpkgs, home-manager, ...}: {
-        homeConfigurations = {
-            "qxk3" = home-manager.lib.homeManagerConfiguration {
-                # System is very important!
-                pkgs = import nixpkgs { system = "x86_64-linux"; };
-                modules = [ ./home.nix ]; # Defined later
+    outputs = { nixpkgs, home-manager, ... }:
+        let
+            username = builtins.getEnv "USER";
+        in {
+            homeConfigurations = {
+                "${username}" = home-manager.lib.homeManagerConfiguration {
+                    pkgs = import nixpkgs { system = "x86_64-linux"; };
+                    modules = [ ./home.nix ];
+                    # Optionally pass username to home.nix as an argument:
+                    extraSpecialArgs = { user = username; };
+                };
             };
         };
-    };
+    }
 }
