@@ -22,7 +22,7 @@ This is currently an extremely experimental and minimal example. Use at your own
     - `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon`
     - For details, see: https://nixos.org/download/#nix-install-linux.
 
-3. Install `home-manager`: 
+3. Install `home-manager` and initialize: 
     - `nix run github:nix-community/home-manager -- init --switch`
     - This will initialize the `home-manager` config you cloned in step 1 and also activate it.
 
