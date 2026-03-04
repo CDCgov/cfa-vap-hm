@@ -17,25 +17,20 @@ This is currently an extremely experimental and minimal example. Use at your own
 
 ### Installation instructions
 1. Clone this repository as `~/.config/home-manager`.
-    - gh cli: `gh repo clone jkislin/nix-home-manager ~/.config/home-manager`
-    - git cli: `git clone https://github.com/jkislin/nix-home-manager.git ~/.config/home-manager`
-
 2. Install `nix` and enable the flakes feature:
-    - `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon` will install `nix`.
-    - Use `--no-daemon` instead if you are running nix inside a container or if you want to keep it limited to your user.
-    - To enable flakes, edit your `~/.config/nix/nix.conf` and add a line: 
-        - `experimental-features = nix-command flakes`.
-        - For convenience run: `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`.
-    - For details, see: https://nixos.org/download/#nix-install-linux.
-
+    1. Run `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon` to install `nix`.
+        - Use `--no-daemon` instead if you are running nix inside a container or if you want to keep it limited to your user.
+        - For details, see: https://nixos.org/download/#nix-install-linux.
+    2. Run `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf` to enable flakes and the `nix run` command.
+    
 3. Install `home-manager` and initialize based on the flake in this repository: 
-    - Modify `["vapuser"]` in flake.nix to your `["your_username"]`. 
-    - Run `nix run home-manager -- init --switch --flake ~/.config/home-manager`
-    - This will initialize the `home-manager` config you cloned in step 1 and also activate it.
+    1. Modify `["vapuser"]` toward the end of `flake.nix` to read as your username (e.g. mine is `["QXK3"]`). 
+    2. Run `nix run home-manager -- init --switch --flake ~/.config/home-manager`
+        - This will initialize the `home-manager` config you cloned in step 1 and also activate it.
 
 ### Customizing your own config
-1. Make changes to `~/.config/home-manager/home.nix`.
-2. Run `home-manager switch` to activate your new changes. That's it!
+1. Make changes to `~/.config/home-manager/home.nix`. For example, you might add to the packages list.
+2. Run `home-manager switch --flake ~/.config/home-manager` to activate your new changes. That's it!
 
 ### Submitting your own changes as PRs
 1. Open a new branch in your `.config/home-manager` repository.
@@ -43,7 +38,7 @@ This is currently an extremely experimental and minimal example. Use at your own
 3. Open a PR.
 
 ### Rapid prototyping
-- Run `make run` to jump into a development docker container with `home-manager` installed and initialized.  
-- Then, run `home-manager switch --flake .` to test the `flake.nix`/`home.nix` combination in this repository.
-- You can edit `home.nix` from outside the container and rerun `home-manager switch --flake .` inside the container to test edits.
-- After exiting the container, make sure you run `sudo chown $USER .` to relinquish your git repo ownership back to your local environment.
+1. Run `make run` to jump into a development docker container with `home-manager` installed and initialized.  
+2. Then, run `home-manager switch --flake ~/.config/home-manager` to test the `flake.nix`/`home.nix` combination in this repository.
+3. You can edit `home.nix` from outside the container and rerun `home-manager switch --flake ~/.config/home-manager` inside the container to test edits.
+4. After exiting the container, make sure you run `sudo chown $USER .` within the top level of the repo to relinquish git repo ownership back to your local environment.
