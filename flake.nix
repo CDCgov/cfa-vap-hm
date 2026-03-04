@@ -15,20 +15,17 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      homeConfigurations = (builtins.listToAttrs (
-        map
-          (user: {
-            name = user;
-            value = home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-              modules = [ ./home.nix ];
-              extraSpecialArgs = {
-                inherit user;
-                homedir = user;
-              };
-            };
-          })
-          ["vapuser"]
-      ));
+      homeConfigurations = let
+        user = builtins.getEnv "USER";
+        homedir = builtins.getEnv "HOME";
+      in {
+        ${user} = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home.nix ];
+          extraSpecialArgs = {
+            inherit user homedir;
+          };
+        };
+      };
     };
 }
