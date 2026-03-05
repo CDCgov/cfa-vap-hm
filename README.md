@@ -55,7 +55,7 @@ You can always repeat the ["Rapid Low-risk Prototyping"](#rapid-low-risk-prototy
 > See the official docs: 
 > - https://nix-community.github.io/home-manager/
 > - https://github.com/nix-community/home-manager
-> - 
+
 > With thanks to: 
 > - https://zenoix.com/posts/get-started-with-nix-and-home-manager/#what-is-home-manager
 > - https://www.chrisportela.com/posts/home-manager-flake/
