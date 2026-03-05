@@ -1,9 +1,9 @@
 # CFA VAP Home Manager
 
 > [!CAUTION]
-> This is a prototype. You use it at your own risk.
+> CFA VAP Home Manager is a repository under active development. You may experience bugs and updates may break things.
 
-Nix home manager allows us to reproducibly maintain the same environments for all users across all unix-like platforms (WSL, Linux, and Mac) and also allows users their own customizability and ability to suggest changes to our upstream version.
+[Nix home manager](https://github.com/nix-community/home-manager) is a tool that allows one to reproduce the same environments for all users across unix-like platforms (WSL, Linux, and Mac). It's declarative, which means you tell it what you want the end result to be, rather than what it should do (imperative).
 
 Goals:
 1. Replace autoconfig with a declarative fully reproducible system.
