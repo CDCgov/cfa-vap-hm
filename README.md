@@ -25,7 +25,7 @@ Then you can iteratively:
     - There are lots of examples of things you can do with `home.nix` on github and elsewhere.
 2. `make run` 
     - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
-    - If you think Makefiles are cringe, you can run `docker build -t vap-hm . && docker run -it --rm vap-hm bash` instead. It does the same thing.
+    - If you don't like Makefiles, you can run `docker build -t vap-hm . && docker run -it --rm vap-hm bash` instead. It does the same thing.
     - This allows you to have a fully fresh session each time without modifying your existing system just yet.
 3. Try any normal development commands (e.g., `uv run`, `Rscript`, etc.) and see what works, or what doesn't!
 
