@@ -17,7 +17,9 @@ As of current writing, this is currently an experimental and minimal example. Us
 ## Rapid low-risk prototyping
 > Make sure you have docker installed and enabled before running the following steps.  
 
-First, clone this repository and `cd` into it.
+Before committing to having your system managed with nix, you can test the config in this repository with docker to see what it will do.
+
+To do so, first clone this repository and set it as your working directory.
 
 Then you can iteratively:
 1. Modify `home.nix`. (Optional) 
