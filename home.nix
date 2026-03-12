@@ -7,10 +7,36 @@
     # manage.
     home.username = user;
     home.homeDirectory = homedir;
-    home.stateVersion = "25.05"; # Comment out for error with "latest" version
-    programs.home-manager.enable = true; # this allows us to rebuild/activate by just typing: home-manager switch
+    home.stateVersion = "25.11"; # Comment out for error with "latest" version
     
-    # The heavy lifting is here - what packages do we want? No apt needed!
+    # programs are preferrable to pkgs if they exist due to configurability; 
+    # however, there are far fewer software available here
+    # GUI apps, daemon-requiring apps, etc usually go here.
+    # (there is not a strict delineation)
+    programs = {
+
+      home-manager.enable = true;
+
+      zsh = {
+        enable = true;
+        oh-my-zsh = {
+          enable = true;
+          theme = "robbyrussell";
+        };
+      };
+
+      firefox.enable = true;
+      docker-cli.enable = true;
+      vscode.enable = true;
+      # cargo.enable = true; # released in unstable, not 25.11 or earlier
+      tmux.enable = true;
+      nushell.enable = true;
+      obsidian.enable = true;
+      uv.enable = true;
+
+    };
+  
+    # most packages are installed here
     home.packages = with pkgs; [
       # Basic utilities
       lolcat # rainbow cats
@@ -23,9 +49,18 @@
       jq # shell json parsing
       tree # filesystem visualization
       azure-cli # azure cli!
+      azure-storage-azcopy
+      xclip
+      podman
 
       # Programming
-      uv # python manager
+      cargo
+      cargo-binstall
+      python313
       R # R programming language
+      julia
+      nodejs # npm, node
+      pre-commit
+      ruff
     ];
 }
