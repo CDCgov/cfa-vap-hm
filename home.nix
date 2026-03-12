@@ -7,7 +7,7 @@
     # manage.
     home.username = user;
     home.homeDirectory = homedir;
-    home.stateVersion = "24.11"; # Comment out for error with "latest" version
+    home.stateVersion = "25.05"; # Comment out for error with "latest" version
     programs.home-manager.enable = true; # this allows us to rebuild/activate by just typing: home-manager switch
     
     # The heavy lifting is here - what packages do we want? No apt needed!
@@ -20,6 +20,9 @@
       htop # system resource manager
       git # git
       gh # github cli
+      jq # shell json parsing
+      tree # filesystem visualization
+      azure-cli # azure cli!
 
       # Programming
       uv # python manager
