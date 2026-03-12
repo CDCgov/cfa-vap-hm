@@ -40,7 +40,8 @@ Once you're satisfied with prototyping, you can try installing and initializing 
         - Use `--no-daemon` instead if you are running nix inside a container or if you want to keep it limited to your user.
         - For details, see: https://nixos.org/download/#nix-install-linux.
 3. Enable the `nix run` subcommand and "flakes" feature:
-    - `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`.
+    - First, run `mkdir -p ~/.config/nix/` to create the nix config directory.
+    - Then, run `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`.
 4. Install `home-manager` and initialize based on the flake in this repository: 
     1. Run `nix run home-manager -- init --switch --flake ~/.config/home-manager --impure`
 
