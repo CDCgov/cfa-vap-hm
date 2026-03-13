@@ -10,6 +10,9 @@ test:
 init:
 	nix run home-manager -- init --switch --flake . --impure
 
+install:
+	bash setup.sh
+
 # Use either in container or outside:
 
 switch:
