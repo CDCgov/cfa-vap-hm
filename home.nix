@@ -10,7 +10,7 @@
     
     # Programs and pkgs:
 
-    # programs are preferrable to "pkgs: if they exist due to configurability; 
+    # programs are preferrable to "pkgs" if they exist due to configurability; 
     # however, there are far fewer software available as "programs"
     # All programs are pkgs under the hood, with additional config available
     programs = {
