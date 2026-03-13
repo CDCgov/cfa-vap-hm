@@ -45,9 +45,6 @@ Once you're satisfied with prototyping, you can try installing and initializing 
 4. Install `home-manager` and initialize based on the flake in this repository: 
     - Run `nix run home-manager -- init --switch --flake ~/.config/home-manager --impure`
 
-For ergonomics on a new machine, you can run `make install`, which automates the above steps. 
-However, I strongly recommend you run these steps manually the first time around.
-
 ## Customization and Contribution
 
 ### Customizing your own config
