@@ -64,6 +64,11 @@ You can always repeat the ["Rapid Low-risk Prototyping"](#rapid-low-risk-prototy
 - Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system.  
 - See: https://nix-community.github.io/home-manager/#sec-usage-rollbacks
 
+### Submitting your own changes as PRs
+1. Open a new branch in your local `.config/home-manager` repository.
+2. Make changes, commit, and push your branch.
+3. Open a PR!
+
 ## Helpful links:
 > See the official docs: 
 > - https://nix-community.github.io/home-manager/
@@ -72,10 +77,4 @@ You can always repeat the ["Rapid Low-risk Prototyping"](#rapid-low-risk-prototy
 > With thanks to: 
 > - https://zenoix.com/posts/get-started-with-nix-and-home-manager/#what-is-home-manager
 > - https://www.chrisportela.com/posts/home-manager-flake/
-
-
-### Submitting your own changes as PRs
-1. Open a new branch in your local `.config/home-manager` repository.
-2. Make changes, commit, and push your branch.
-3. Open a PR!
 
