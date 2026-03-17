@@ -1,20 +1,23 @@
 # CFA VAP Home Manager
 
-> [!CAUTION]
-> CFA VAP Home Manager is a repository under active development.  
-> You may experience bugs and updates may break things.
-
 This repository contains a usable config for [Nix home-manager](https://github.com/nix-community/home-manager) - a tool that allows one to reproduce entire computing environments across unix-like platforms (WSL, Linux, and Mac) and is intended to grow into a solution we can use on the VAP. It's declarative, which means you tell it what you want the end result to be, rather than what it should do (imperative).
 
 For example, instead of writing a script that installs R, python, and the Github CLI, we provide a functional configuration file that declares that the system should, as an end result, include R, python, and the Github CLI. The nix package manager then takes it from there. We might say something like "nix home-manager provides a virtual-environment for your whole user-space, rather than just a single programming language."
 
-### Goals:
-1. Replace autoconfig with a new declarative and reproducible system we can easily maintain as a team.
-2. Extend this functionality to the Linux VAP and to other computing environments.
+> [!TIP] 
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
+> Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
-As of current writing, this is currently an experimental and minimal example. Use at your own risk for now!
+### Goals:
+To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the following principles in mind:  
+
+- Simplicity, in terms of maintenance and installation
+- Extensibility and customization  
+- [Declarative reproducibility](https://en.wikipedia.org/wiki/Declarative_programming)  
+- Platform agnosticisty
 
 ## Rapid low-risk prototyping
+
 > Make sure you have both `docker` and `make` installed and enabled before running the following steps.  
 
 Before committing to having your system managed with nix, you can test the config in this repository with docker to see what it will do.
@@ -32,6 +35,11 @@ Then you can iteratively:
 3. Try any normal development commands (e.g., `uv run`, `Rscript`, etc.) and see what works, or what doesn't!
 
 ## Installation instructions
+
+> [!CAUTION]
+> CFA VAP Home Manager is currently in early development.  
+> You may experience bugs and updates may break things.
+
 Once you're satisfied with prototyping, you can try installing and initializing `home-manager` for real. 
 
 1. Clone this repository (or move your existing instance from before) to `~/.config/home-manager` and `cd` into it.
