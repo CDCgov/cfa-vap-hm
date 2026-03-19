@@ -42,7 +42,7 @@ Then you can iteratively:
 
 Once you're satisfied with prototyping, you can try installing and initializing `home-manager` for real. 
 
-1. Clone this repository (or move your existing instance from before) to `~/.config/home-manager` and `cd` into it.
+1. Clone this repository (or move your existing instance from before) to `~/.config/home-manager`.
 2. Install `nix` on your machine:
     - `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon`.
         - Use `--no-daemon` instead if you are running nix inside a container or if you want to keep it limited to your user.
@@ -51,13 +51,14 @@ Once you're satisfied with prototyping, you can try installing and initializing 
     1. First, run `mkdir -p ~/.config/nix/` to create the nix config directory.
     2. Then, run `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`.
 4. Install `home-manager` and initialize based on the flake in this repository: 
-    - Run `nix run home-manager -- init --switch --flake ~/.config/home-manager --impure`
+    - Run `nix run home-manager -- init --switch --flake ~/.config/home-manager --impure`.
 
 ## Customization and Contribution
 
 ### Customizing your own config
-1. Make changes to `~/.config/home-manager/home.nix`. For example, you might add to the programs or packages list, or propose a different configuration of an existing program.
-2. Run `home-manager switch --flake ~/.config/home-manager --impure` to activate your new changes. That's it!
+1. Open up an IDE using `~/.config/home-manager` as the working directory.
+2. Make changes to `~/.config/home-manager/home.nix`. For example, you might add to the programs or packages list, or propose a different configuration of an existing program.
+3. Run `home-manager switch --impure` to activate your new changes. That's it!
     - For convenience, you can run `make switch` if you're in the top level of this repository.
 
 You can always repeat the ["Rapid Low-risk Prototyping"](#rapid-low-risk-prototyping) process before committing your own changes as an added layer of assurance.
