@@ -16,29 +16,12 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
 - [Declarative reproducibility](https://en.wikipedia.org/wiki/Declarative_programming)  
 - Platform agnosticisty
 
-## Rapid low-risk prototyping
-
-> Make sure you have both `docker` and `make` installed and enabled before running the following steps.  
-
-Before committing to having your system managed with nix, you can test the config in this repository with docker to see what it will do.
-
-To do so, first clone this repository and set it as your working directory.
-
-Then you can iteratively:
-1. Modify `home.nix`. (Optional) 
-    - You can try adding new packages, etc. 
-    - There are lots of examples of things you can do with `home.nix` on github and elsewhere.
-2. `make test` 
-    - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
-    - If you don't like Makefiles, you can run `docker build -t vap-hm . && docker run -it --rm vap-hm bash` instead. It does the same thing.
-    - This allows you to have a fully fresh session each time without modifying your existing system just yet.
-3. Try any normal development commands (e.g., `uv run`, `Rscript`, etc.) and see what works, or what doesn't!
-
-## Installation instructions
+## Installation
 
 > [!CAUTION]
 > CFA VAP Home Manager is currently in early development.  
-> You may experience bugs and updates may break things.
+> You may experience bugs and updates may break things.  
+> You may want to first try [prototyping with docker](#rapid-low-risk-prototyping).
 
 Once you're satisfied with prototyping, you can try installing and initializing `home-manager` for real. 
 
@@ -69,6 +52,25 @@ You can always repeat the ["Rapid Low-risk Prototyping"](#rapid-low-risk-prototy
 1. Open a new branch in your local `.config/home-manager` repository.
 2. Make changes, commit, and push your branch.
 3. Open a PR!
+
+## Rapid low-risk prototyping
+
+> Make sure you have both `docker` and `make` installed and enabled before running the following steps.  
+
+Before committing to having your system managed with nix, you can test the config in this repository with docker to see what it will do.
+
+To do so, first clone this repository and set it as your working directory.
+
+Then you can iteratively:
+1. Modify `home.nix`. (Optional) 
+    - You can try adding new packages, etc. 
+    - There are lots of examples of things you can do with `home.nix` on github and elsewhere.
+2. `make test` 
+    - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
+    - If you don't like Makefiles, you can run `docker build -t vap-hm . && docker run -it --rm vap-hm bash` instead. It does the same thing.
+    - This allows you to have a fully fresh session each time without modifying your existing system just yet.
+3. Try any normal development commands (e.g., `uv run`, `Rscript`, etc.) and see what works, or what doesn't!
+
 
 ## Helpful links:
 > See the official docs: 
