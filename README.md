@@ -8,7 +8,7 @@ For example, instead of writing a script that installs R, python, and the Github
 > To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
-### Goals:
+## Goals
 To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the following principles in mind:  
 
 - Simplicity, in terms of maintenance and installation
@@ -19,9 +19,8 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
 ## Installation
 
 > [!CAUTION]
-> CFA VAP Home Manager is currently in early development.  
-> You may experience bugs and updates may break things.  
-> You may want to first try [prototyping with docker](#rapid-low-risk-prototyping).
+> CFA VAP Home Manager is currently in early development - updates may break things.  
+> You might want to try [prototyping with docker](#prototyping-with-docker) before committing to installation.
 
 Once you're satisfied with prototyping, you can try installing and initializing `home-manager` for real. 
 
@@ -36,29 +35,13 @@ Once you're satisfied with prototyping, you can try installing and initializing 
 4. Install `home-manager` and initialize based on the flake in this repository: 
     - Run `nix run home-manager -- init --switch --flake ~/.config/home-manager --impure`.
 
-## Customization and Contribution
+## Development and Customization
 
-### Customizing your own config
-1. Open up an IDE using `~/.config/home-manager` as the working directory.
-2. Make changes to `~/.config/home-manager/home.nix`. For example, you might add to the programs or packages list, or propose a different configuration of an existing program.
-3. Run `home-manager switch --impure` to activate your new changes. That's it!
-    - For convenience, you can run `make switch` if you're in the top level of this repository.
-
-You can always repeat the ["Rapid Low-risk Prototyping"](#rapid-low-risk-prototyping) process before committing your own changes as an added layer of assurance.
-- Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system.  
-- See: https://nix-community.github.io/home-manager/#sec-usage-rollbacks
-
-### Submitting your own changes as PRs
-1. Open a new branch in your local `.config/home-manager` repository.
-2. Make changes, commit, and push your branch.
-3. Open a PR!
-
-## Rapid low-risk prototyping
+### Prototyping with docker
 
 > Make sure you have both `docker` and `make` installed and enabled before running the following steps.  
 
 Before committing to having your system managed with nix, you can test the config in this repository with docker to see what it will do.
-
 To do so, first clone this repository and set it as your working directory.
 
 Then you can iteratively:
@@ -71,6 +54,20 @@ Then you can iteratively:
     - This allows you to have a fully fresh session each time without modifying your existing system just yet.
 3. Try any normal development commands (e.g., `uv run`, `Rscript`, etc.) and see what works, or what doesn't!
 
+### Customizing your own config
+1. Open up an IDE using `~/.config/home-manager` as the working directory.
+2. Make changes to `~/.config/home-manager/home.nix`. For example, you might add to the programs or packages list, or propose a different configuration of an existing program.
+3. Run `home-manager switch --impure` to activate your new changes. That's it!
+    - For convenience, you can run `make switch` if you're in the top level of this repository.
+
+You can always repeat the low-risk [prototyping](#prototyping-with-docker) process before committing your own changes as an added layer of assurance.
+- Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system. 
+- See: https://nix-community.github.io/home-manager/#sec-usage-rollbacks
+
+### Submitting your own changes as PRs
+1. Open a new branch in your local `.config/home-manager` repository.
+2. Make changes, commit, and push your branch. Test in docker or on your system first.
+3. Open a PR!
 
 ## Helpful links:
 > See the official docs: 
