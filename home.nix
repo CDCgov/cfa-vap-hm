@@ -34,7 +34,7 @@
 
       firefox.enable = true;
       # docker-cli.enable = true;
-      vscode.enable = true;
+      # vscode.enable = true;
       tmux.enable = true;
       nushell.enable = true;
       obsidian.enable = true;
