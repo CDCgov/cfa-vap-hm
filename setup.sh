@@ -2,6 +2,10 @@
 set -euo pipefail
 
 # 1. Install nix if not already installed
+
+# Make sure that this installation or any previous will be detected to begin with!
+PATH="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH"
+
 echo "> Detecting if you already have nix installed..."
 if ! command -v nix &> /dev/null; then
     echo ">> Nix not detected... installing from https://nixos.org/nix/install..."
