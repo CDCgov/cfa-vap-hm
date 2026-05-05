@@ -79,6 +79,6 @@ You can always repeat the low-risk [prototyping](#prototyping-with-docker) proce
 > - https://www.chrisportela.com/posts/home-manager-flake/
 
 ## Legacy Imperative Scripts
-> See [the legacy README](./legacy/README.md) for more information.
+> See [the legacy scripts README](./scripts/README.md) for more information.
 
-Run `bash ./legacy/setup-fstab.sh` to mount network drives. Note this may be deprecated and is not part of home-manager, but is included in this repository for convenience. This script can only be run within a Linux or WSL environment on the CFA VAP - it will not work outside of it.
+Run `bash ./scripts/setup-fstab.sh` to mount network drives. Note this may be deprecated and is not part of home-manager, but is included in this repository for convenience. This script can only be run within a Linux or WSL environment on the CFA VAP - it will not work outside of it.

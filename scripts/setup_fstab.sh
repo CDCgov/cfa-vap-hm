@@ -76,7 +76,7 @@ read -p "$(echo -e "${BOLD_RED}(This will retain disk drives but refresh P, S, a
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   print_info "Running reset script..."
-  bash "./legacy/reset_fstab.sh"
+  bash "./scripts/reset_fstab.sh"
   echo ""
 fi
 
