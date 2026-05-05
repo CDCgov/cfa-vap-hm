@@ -79,6 +79,22 @@
         azure-storage-azcopy
       ];
 
+      # Mount network drives
+      # home.file."nix-scripts/Mount-Drives.sh" = {
+      #   executable = true;
+      #   text = ''
+      #   #!/usr/bin/bash
+      #   mkdir -p ${config.home.homeDirectory}/P
+      #   mkdir -p ${config.home.homeDirectory}/S
+      #   mkdir -p ${config.home.homeDirectory}/U
+      #   options=""
+      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 <network_drive_see_cdcent> ${config.home.homeDirectory}/P
+      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 <network_drive_see_cdcent> ${config.home.homeDirectory}/S
+      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 <network_drive_see_cdcent> ${config.home.homeDirectory}/U
+      #   '';
+      # };
+      
+
       # Set ~/.Rprofile for out-of-the-box ubuntu R package binaries. 
       # Thanks to Zack Susswein for the code!
       home.file.".Rprofile".text = ''

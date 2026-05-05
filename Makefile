@@ -18,3 +18,7 @@ switch:
 # Install script - requires running a few times and user input; used for internal automation testing only
 install:
 	bash setup.sh
+
+# --- NON DECLARATIVE CONVENIENCE SCRIPTS ---
+make drives:
+	bash ./legacy/setup_fstab.sh
