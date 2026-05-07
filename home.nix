@@ -55,6 +55,7 @@
         jq # shell json parsing
         tree # filesystem visualization
         xclip
+        just
         
         # GUI apps
         rstudio 
@@ -80,6 +81,8 @@
       ];
 
       # Mount network drives
+      # Under construction - not sure if this will work
+      # Will let us include drive mounting in home-manager, but not quite declarative
       # home.file."nix-scripts/Mount-Drives.sh" = {
       #   executable = true;
       #   text = ''
@@ -93,6 +96,8 @@
       #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 <network_drive_see_cdcent> ${config.home.homeDirectory}/U
       #   '';
       # };
+      # TODO: can nix run this script on home-manager switch?
+      # TODO: Does it require sudo always? Can we get permissions?)
       
 
       # Set ~/.Rprofile for out-of-the-box ubuntu R package binaries. 
