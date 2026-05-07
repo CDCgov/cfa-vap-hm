@@ -6,8 +6,8 @@ set -euo pipefail
 
 FSTAB="/etc/fstab"
 BACKUP="/etc/fstab.backup.$(date +%Y-%m-%d_%H-%M-%S)"
-MOUNT_POINTS=("/media/S_CFA" "/media/S_CFA_Predict" "/media/S_CDC" "/media/P" "/media/U")
-SYMLINK_POINTS=("~/S_CFA" "~/S_CFA_Predict" "~/S_CDC" "~/P" "~/U")
+MOUNT_POINTS=("/media/S" "/media/S_CFA" "/media/S_CFA_Predict" "/media/S_CDC" "/media/P" "/media/U")
+SYMLINK_POINTS=("~/S" "~/S_CFA" "~/S_CFA_Predict" "~/S_CDC" "~/P" "~/U")
 
 log_info() {
     echo "[INFO] $*"

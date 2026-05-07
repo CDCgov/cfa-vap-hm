@@ -20,6 +20,7 @@ USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 
 MOUNT_POINTS=(
+  "/media/S"
   "/media/S_CFA"
   "/media/S_CFA_Predict"
   "/media/S_CDC"
@@ -28,6 +29,7 @@ MOUNT_POINTS=(
 )
 
 NETWORK_DRIVE_PATHS=(
+  "<network_drive_see_cdcent>"
   "<network_drive_see_cdcent>"
   "<network_drive_see_cdcent>"
   "<network_drive_see_cdcent>"
@@ -87,7 +89,7 @@ print_info "Setting up mount directories and fstab entries..."
 echo ""
 
 # Loop through each drive
-for i in {0..4}; do
+for i in "${!MOUNT_POINTS[@]}"; do
   mount_point="${MOUNT_POINTS[$i]}"
   network_path="${NETWORK_DRIVE_PATHS[$i]}"
 
