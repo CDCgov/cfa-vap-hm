@@ -21,5 +21,5 @@ install:
 
 # --- NON DECLARATIVE CONVENIENCE SCRIPTS ---
 # This will only work on the VAP.
-make drives:
+drives:
 	bash ./scripts/setup_fstab.sh
