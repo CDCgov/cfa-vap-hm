@@ -7,6 +7,7 @@ set -euo pipefail
 FSTAB="/etc/fstab"
 BACKUP="/etc/fstab.backup.$(date +%Y-%m-%d_%H-%M-%S)"
 MOUNT_POINTS=("/media/S_CFA" "/media/S_CFA_Predict" "/media/S_CDC" "/media/P" "/media/U")
+SYMLINK_POINTS=("~/S_CFA" "~/S_CFA_Predict" "~/S_CDC" "~/P" "~/U")
 
 log_info() {
     echo "[INFO] $*"
@@ -41,6 +42,17 @@ for mount in "${MOUNT_POINTS[@]}"; do
     if [ -d "$mount" ]; then
         sudo umount "$mount" && log_info "Unmounted: $mount" || log_error "Failed to unmount: $mount"
         sudo rmdir "$mount" 2>/dev/null && log_info "Removed: $mount" || log_error "Failed to remove: $mount"
+    fi
+done
+
+# Remove any symlinks in ~
+log_info "Removing symlinks..."
+for symlink in "${SYMLINK_POINTS[@]}"; do
+    expanded_symlink=$(eval echo "$symlink")
+    if [ -L "$expanded_symlink" ]; then
+        rm "$expanded_symlink" && \
+        log_info "Removed symlink: $expanded_symlink" \
+        || log_error "Failed to remove symlink: $expanded_symlink"
     fi
 done
 

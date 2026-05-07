@@ -71,8 +71,8 @@ echo ""
 echo ""
 
 # Prompt user about resetting fstab
-echo -e "${BOLD_RED}Would you like to start fresh with a new fstab?"
-read -p "$(echo -e "${BOLD_RED}(This will retain disk drives but refresh P, S, and U drives) (y/n): ${NOCOLOR}")" -r
+echo -e "${BOLD_RED}Would you like to start fresh with a new fstab and fresh symlinks?"
+read -p "$(echo -e "${BOLD_RED}(This will retain disk drives but refresh P, S, and U drives and their symlinks) (y/n): ${NOCOLOR}")" -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   print_info "Running reset script..."
@@ -139,4 +139,23 @@ sudo cat /etc/fstab
 echo ""
 print_header "Current /media/ folder"
 ls -la /media/
+
+echo ""
+echo -e "${BOLD_RED}Would you like to symlink the /media/ folders to your home directory?"
+read -p "$(echo -e "${BOLD_RED}(y/n): ${NOCOLOR}")" -r
+echo ""
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  print_info "Creating symlinks..."
+  for mount_point in "${MOUNT_POINTS[@]}"; do
+    symlink_name=~/"${mount_point##*/}"
+    if [ ! -L "$symlink_name" ]; then
+      ln -s "$mount_point" "$symlink_name"
+      print_success "Created symlink: $symlink_name -> $mount_point"
+    else
+      print_info "Symlink already exists: $symlink_name"
+    fi
+  done
+  echo ""
+fi
+
 print_header "Setup Complete"
