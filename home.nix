@@ -1,5 +1,5 @@
 # pkgs lets us access the nix store, which has tons of packages you'd want to get with apt etc.
-{config, pkgs, user, homedir, release, lib, ...}: {
+{config, pkgs, user, homedir, release, kickstart, lib, ...}: {
     nixpkgs.config = {
       allowUnfree = true;
     };
@@ -20,7 +20,7 @@
     programs = {
 
       home-manager.enable = true;
-
+      neovim.enable = true;
       zsh = {
         enable = true;
         oh-my-zsh = {
@@ -28,13 +28,11 @@
           theme = "lambda";
         };
         initContent = ''
-        cowsay -f dragon "Welcome to CFA VAP HM - now using zsh" | lolcat
+        cowsay -f dragon "Welcome to CFA VAP Home Manager" | lolcat
         '';
       };
 
       firefox.enable = true;
-      # docker-cli.enable = true;
-      # vscode.enable = true;
       tmux.enable = true;
       nushell.enable = true;
       obsidian.enable = true;
@@ -42,6 +40,8 @@
 
     };
   
+    xdg.configFile."nvim".source = kickstart;
+
     # most packages are installed here.
     # think of these as things you could install with apt on ubuntu
     home.packages = with pkgs; [
@@ -72,7 +72,6 @@
         ruff
         podman
         gcc
-        neovim
         emacs
 
         # Azure
@@ -102,41 +101,5 @@
 
       # Set ~/.Rprofile for out-of-the-box ubuntu R package binaries. 
       # Thanks to Zack Susswein for the code!
-      home.file.".Rprofile".text = ''
-        # Set default user agent header
-        options(HTTPUserAgent = sprintf(
-          "R/%s R (%s)", 
-          getRversion(), 
-          paste(getRversion(), 
-          R.version["platform"], 
-          R.version["arch"], 
-          R.version["os"]))
-        )
-
-        # Also use this user agent header for wget and curl from within R
-        options(download.file.extra = sprintf(
-          "--header \"User-Agent: R (%s)\"", 
-          paste(getRversion(), 
-          R.version["platform"], 
-          R.version["arch"], 
-          R.version["os"]))
-        )
-
-        LINUX_VERSION = system("grep VERSION_CODENAME /etc/os-release | cut -d '=' -f2", intern = TRUE)
-
-        options(
-          repos = c(
-            CRAN = sprintf(
-              "https://packagemanager.rstudio.com/all/__linux__/%s/latest", 
-              LINUX_VERSION
-            ), 
-            getOption("repos")
-          )
-        )
-
-        rm(LINUX_VERSION)
-        
-        system('echo "nix home-manager .Rprofile for user $USER loaded succesfully" | lolcat')
-        cat("\n")
-      '';
+      home.file.".Rprofile".source = dotfiles/.Rprofile;
 }

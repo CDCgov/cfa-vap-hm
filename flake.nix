@@ -9,9 +9,11 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    kickstart.url = "github:nvim-lua/kickstart.nvim";
+    kickstart.flake = false;
   }; 
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, kickstart, ... }:
     let
       system = builtins.currentSystem;
       pkgs = nixpkgs.legacyPackages.${system};
@@ -23,9 +25,11 @@
       in {
         ${user} = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home.nix ];
+          modules = [ 
+            ./home.nix 
+          ];
           extraSpecialArgs = {
-            inherit user homedir release;
+            inherit user homedir release kickstart;
           };
         };
       };

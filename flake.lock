@@ -21,6 +21,22 @@
         "type": "github"
       }
     },
+    "kickstart": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778101803,
+        "narHash": "sha256-IMT54U6xAaEzSh5lL/OwOVJkELX0YMa12r8vpkVPa5E=",
+        "owner": "nvim-lua",
+        "repo": "kickstart.nvim",
+        "rev": "cfdc17be3ae1607d4427332de0b29d556f9dda13",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-lua",
+        "repo": "kickstart.nvim",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1773222311,
@@ -40,6 +56,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "kickstart": "kickstart",
         "nixpkgs": "nixpkgs"
       }
     }

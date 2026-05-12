@@ -13,7 +13,7 @@ init:
 # Quick switch command - use either in container or outside:
 
 switch:
-	home-manager switch --flake . --impure
+	home-manager switch --flake . --impure 
 
 # Install script - requires running a few times and user input; used for internal automation testing only
 install:
