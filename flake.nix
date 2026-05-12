@@ -3,17 +3,15 @@
   inputs = {
     # Specify the sources of Nixpkgs and Home Manager .
     nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-25.11";
+      url = "github:nixos/nixpkgs/nixos-unstable";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    kickstart.url = "github:nvim-lua/kickstart.nvim";
-    kickstart.flake = false;
   }; 
 
-  outputs = { nixpkgs, home-manager, kickstart, ... }:
+  outputs = { nixpkgs, home-manager, ... }:
     let
       system = builtins.currentSystem;
       pkgs = nixpkgs.legacyPackages.${system};
@@ -21,7 +19,7 @@
       homeConfigurations = let
         user = builtins.getEnv "USER";
         homedir = builtins.getEnv "HOME";
-        release = "25.11";
+        release = "26.05";
       in {
         ${user} = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
@@ -29,7 +27,7 @@
             ./home.nix 
           ];
           extraSpecialArgs = {
-            inherit user homedir release kickstart;
+            inherit user homedir release;
           };
         };
       };

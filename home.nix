@@ -20,7 +20,10 @@
     programs = {
 
       home-manager.enable = true;
-      neovim.enable = true;
+      neovim = {
+        enable = true;
+        package = pkgs.neovim-unwrapped;
+      };
       zsh = {
         enable = true;
         oh-my-zsh = {
@@ -35,13 +38,11 @@
       firefox.enable = true;
       tmux.enable = true;
       nushell.enable = true;
-      obsidian.enable = true;
       uv.enable = true;
 
     };
   
     # .config/ files
-    xdg.configFile."nvim".source = kickstart;
 
     # home directory dotfiles
     home.file.".Rprofile".source = dotfiles/.Rprofile;
