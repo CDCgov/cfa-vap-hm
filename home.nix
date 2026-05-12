@@ -40,7 +40,11 @@
 
     };
   
+    # .config/ files
     xdg.configFile."nvim".source = kickstart;
+
+    # home directory dotfiles
+    home.file.".Rprofile".source = dotfiles/.Rprofile;
 
     # most packages are installed here.
     # think of these as things you could install with apt on ubuntu
@@ -78,28 +82,5 @@
         azure-cli
         azure-storage-azcopy
       ];
-
-      # Mount network drives
-      # Under construction - not sure if this will work
-      # Will let us include drive mounting in home-manager, but not quite declarative
-      # home.file."nix-scripts/Mount-Drives.sh" = {
-      #   executable = true;
-      #   text = ''
-      #   #!/usr/bin/bash
-      #   mkdir -p ${config.home.homeDirectory}/P
-      #   mkdir -p ${config.home.homeDirectory}/S
-      #   mkdir -p ${config.home.homeDirectory}/U
-      #   options=""
-      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 //cfanetapp-5553.ext.cdc.gov/CFAVol1/Private/${config.home.username} ${config.home.homeDirectory}/P
-      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 //cfanetapp-5553.ext.cdc.gov/CFAVol1/Project ${config.home.homeDirectory}/S
-      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 //saazurefilesync1.file.core.windows.net/azurefilesync1 ${config.home.homeDirectory}/U
-      #   '';
-      # };
-      # TODO: can nix run this script on home-manager switch?
-      # TODO: Does it require sudo always? Can we get permissions?)
       
-
-      # Set ~/.Rprofile for out-of-the-box ubuntu R package binaries. 
-      # Thanks to Zack Susswein for the code!
-      home.file.".Rprofile".source = dotfiles/.Rprofile;
 }

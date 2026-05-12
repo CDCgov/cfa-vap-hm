@@ -1,3 +1,5 @@
+# Thanks to Zack Susswein for this .Rprofile
+# This allows us to download binary packages on Linux.
 # Set default user agent header
 options(HTTPUserAgent = sprintf(
     "R/%s R (%s)", 
