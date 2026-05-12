@@ -15,6 +15,9 @@ init:
 switch:
 	home-manager switch --flake . --impure 
 
+switchb:
+	home-manager switch --flake . --impure -b backup
+
 # Install script - requires running a few times and user input; used for internal automation testing only
 install:
 	bash setup.sh
