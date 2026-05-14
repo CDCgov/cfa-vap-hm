@@ -20,10 +20,6 @@
     programs = {
 
       home-manager.enable = true;
-      neovim = {
-        enable = true;
-        package = pkgs.neovim-unwrapped;
-      };
       zsh = {
         enable = true;
         oh-my-zsh = {
@@ -67,6 +63,7 @@
         nautilus # gui file manager
 
         # Development
+        neovim-unwrapped
         cargo
         cargo-binstall # binary installs for rust
         python313
