@@ -1,5 +1,5 @@
 # pkgs lets us access the nix store, which has tons of packages you'd want to get with apt etc.
-{config, pkgs, user, homedir, release, kickstart, lib, ...}: {
+{config, pkgs, user, homedir, release, lib, ...}: {
     nixpkgs.config = {
       allowUnfree = true;
     };
