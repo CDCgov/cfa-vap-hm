@@ -33,5 +33,5 @@ options(
 
 rm(LINUX_VERSION)
 
-system('echo "nix home-manager .Rprofile for user $USER loaded succesfully" | lolcat')
+system('echo "nix home-manager .Rprofile for user $USER loaded successfully" | lolcat')
 cat("\n")
