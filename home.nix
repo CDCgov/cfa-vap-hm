@@ -20,7 +20,6 @@
     programs = {
 
       home-manager.enable = true;
-
       zsh = {
         enable = true;
         oh-my-zsh = {
@@ -28,20 +27,32 @@
           theme = "lambda";
         };
         initContent = ''
-        cowsay -f dragon "Welcome to CFA VAP HM - now using zsh" | lolcat
+        cowsay -f dragon "Welcome to the CFA VAP" | lolcat
+
+        alias runlike="docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike"
+        alias runlike_latest='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike "$(docker ps -l -q)"'
+        alias docker_logs_latest='docker logs "$(docker ps -aql)"'
+
+        # .vaprc is a personal rc file not managed by home-manager
+        # add to your ~/.vaprc any commands/aliases/shell-config 
+        # you want for yourself alone
+        touch ~/.vaprc
+        source ~/.vaprc
         '';
       };
 
       firefox.enable = true;
-      # docker-cli.enable = true;
-      # vscode.enable = true;
       tmux.enable = true;
       nushell.enable = true;
-      obsidian.enable = true;
       uv.enable = true;
 
     };
   
+    # .config/ files
+
+    # home directory dotfiles
+    home.file.".Rprofile".source = dotfiles/.Rprofile;
+
     # most packages are installed here.
     # think of these as things you could install with apt on ubuntu
     home.packages = with pkgs; [
@@ -62,6 +73,7 @@
         nautilus # gui file manager
 
         # Development
+        neovim-unwrapped
         cargo
         cargo-binstall # binary installs for rust
         python313
@@ -72,71 +84,11 @@
         ruff
         podman
         gcc
-        neovim
         emacs
 
         # Azure
         azure-cli
         azure-storage-azcopy
       ];
-
-      # Mount network drives
-      # Under construction - not sure if this will work
-      # Will let us include drive mounting in home-manager, but not quite declarative
-      # home.file."nix-scripts/Mount-Drives.sh" = {
-      #   executable = true;
-      #   text = ''
-      #   #!/usr/bin/bash
-      #   mkdir -p ${config.home.homeDirectory}/P
-      #   mkdir -p ${config.home.homeDirectory}/S
-      #   mkdir -p ${config.home.homeDirectory}/U
-      #   options=""
-      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 //cfanetapp-5553.ext.cdc.gov/CFAVol1/Private/${config.home.username} ${config.home.homeDirectory}/P
-      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 //cfanetapp-5553.ext.cdc.gov/CFAVol1/Project ${config.home.homeDirectory}/S
-      #   mount -t cifs -o uid=$(id -u),gid=$(id -g),cruid=$(id -u),vers=3.0,user=$(id -un),sec=krb5 //saazurefilesync1.file.core.windows.net/azurefilesync1 ${config.home.homeDirectory}/U
-      #   '';
-      # };
-      # TODO: can nix run this script on home-manager switch?
-      # TODO: Does it require sudo always? Can we get permissions?)
       
-
-      # Set ~/.Rprofile for out-of-the-box ubuntu R package binaries. 
-      # Thanks to Zack Susswein for the code!
-      home.file.".Rprofile".text = ''
-        # Set default user agent header
-        options(HTTPUserAgent = sprintf(
-          "R/%s R (%s)", 
-          getRversion(), 
-          paste(getRversion(), 
-          R.version["platform"], 
-          R.version["arch"], 
-          R.version["os"]))
-        )
-
-        # Also use this user agent header for wget and curl from within R
-        options(download.file.extra = sprintf(
-          "--header \"User-Agent: R (%s)\"", 
-          paste(getRversion(), 
-          R.version["platform"], 
-          R.version["arch"], 
-          R.version["os"]))
-        )
-
-        LINUX_VERSION = system("grep VERSION_CODENAME /etc/os-release | cut -d '=' -f2", intern = TRUE)
-
-        options(
-          repos = c(
-            CRAN = sprintf(
-              "https://packagemanager.rstudio.com/all/__linux__/%s/latest", 
-              LINUX_VERSION
-            ), 
-            getOption("repos")
-          )
-        )
-
-        rm(LINUX_VERSION)
-        
-        system('echo "nix home-manager .Rprofile for user $USER loaded succesfully" | lolcat')
-        cat("\n")
-      '';
 }

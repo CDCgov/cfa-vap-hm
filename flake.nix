@@ -3,10 +3,10 @@
   inputs = {
     # Specify the sources of Nixpkgs and Home Manager .
     nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-25.11";
+      url = "github:nixos/nixpkgs/nixos-unstable";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   }; 
@@ -19,11 +19,13 @@
       homeConfigurations = let
         user = builtins.getEnv "USER";
         homedir = builtins.getEnv "HOME";
-        release = "25.11";
+        release = "26.05";
       in {
         ${user} = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home.nix ];
+          modules = [ 
+            ./home.nix 
+          ];
           extraSpecialArgs = {
             inherit user homedir release;
           };
