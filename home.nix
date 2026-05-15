@@ -27,7 +27,17 @@
           theme = "lambda";
         };
         initContent = ''
-        cowsay -f dragon "Welcome to CFA VAP Home Manager" | lolcat
+        cowsay -f dragon "Welcome to the CFA VAP" | lolcat
+
+        alias runlike="docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike"
+        alias runlike_latest='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike "$(docker ps -l -q)"'
+        alias docker_logs_latest='docker logs "$(docker ps -aql)"'
+
+        # .vaprc is a personal rc file not managed by home-manager
+        # add to your ~/.vaprc any commands/aliases/shell-config 
+        # you want for yourself alone
+        touch ~/.vaprc
+        source ~/.vaprc
         '';
       };
 
