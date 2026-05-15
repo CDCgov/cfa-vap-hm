@@ -32,13 +32,13 @@
           docker_logs_latest = "docker logs \"$(docker ps -aql)\"";
         };
         initContent = ''
-        cowsay -f dragon "Welcome to the CFA VAP" | lolcat
+          cowsay -f dragon "Welcome to the CFA VAP" | lolcat
 
-        # .vaprc is a personal rc file not managed by home-manager
-        # add to your ~/.vaprc any commands/aliases/shell-config 
-        # you want for yourself alone
-        touch ~/.vaprc
-        source ~/.vaprc
+          # .vaprc is a personal rc file not managed by home-manager
+          # add to your ~/.vaprc any commands/aliases/shell-config 
+          # you want for yourself alone
+          touch ~/.vaprc
+          source ~/.vaprc
         '';
       };
 
