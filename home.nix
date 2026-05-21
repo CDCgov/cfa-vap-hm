@@ -26,18 +26,22 @@
           enable = true;
           theme = "lambda";
         };
+        shellAliases = {
+          runlike = "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike";
+          runlike_latest = "docker ps -l -q | xargs -r -I{} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike {}";
+          docker_logs_latest = "docker ps -aql | xargs -r docker logs";
+        };
         initContent = ''
-        cowsay -f dragon "Welcome to the CFA VAP" | lolcat
+          cowsay -f dragon "Welcome to the CFA VAP" | lolcat
+          echo "-> Now loading shell customizations you may have set in your ~/.vaprc config... | lolcat
+          # .vaprc is a personal rc file not managed by home-manager
+          # add to your ~/.vaprc any commands/aliases/shell-config 
+          # you want for yourself alone.
+          #
+          # NOTE: This breaks the idea of pure declarative management - use at your own risk.
 
-        alias runlike="docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike"
-        alias runlike_latest='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike "$(docker ps -l -q)"'
-        alias docker_logs_latest='docker logs "$(docker ps -aql)"'
-
-        # .vaprc is a personal rc file not managed by home-manager
-        # add to your ~/.vaprc any commands/aliases/shell-config 
-        # you want for yourself alone
-        touch ~/.vaprc
-        source ~/.vaprc
+          touch ~/.vaprc
+          source ~/.vaprc
         '';
       };
 
