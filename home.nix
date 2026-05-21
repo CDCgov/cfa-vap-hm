@@ -33,10 +33,13 @@
         };
         initContent = ''
           cowsay -f dragon "Welcome to the CFA VAP" | lolcat
-
+          echo "-> Now loading shell customizations you may have set in your ~/.vaprc config... | lolcat
           # .vaprc is a personal rc file not managed by home-manager
           # add to your ~/.vaprc any commands/aliases/shell-config 
-          # you want for yourself alone
+          # you want for yourself alone.
+          #
+          # NOTE: This breaks the idea of pure declarative management - use at your own risk.
+
           touch ~/.vaprc
           source ~/.vaprc
         '';
