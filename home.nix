@@ -35,7 +35,7 @@
           docker_logs_latest = "docker ps -aql | xargs -r docker logs";
         };
         initContent = ''
-          echo "Welcome to the CFA VAP" | lolcat
+          echo "Welcome to the CFA VAP. You are using zsh as managed by nix home-manager." | lolcat
           echo "-> Now loading shell customizations you may have set in your ~/.vaprc config..." | lolcat
           # .vaprc is a personal rc file not managed by home-manager
           # add to your ~/.vaprc any commands/aliases/shell-config 
