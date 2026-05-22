@@ -7,6 +7,9 @@
     home.username = user;
     home.homeDirectory = homedir;
     home.stateVersion = release;
+    home.activation.switchMessage = lib.hm.dag.entryAfter ["WriteBoundary"] ''
+        ${pkgs.cowsay}/bin/cowsay -f dragon "CFA VAP Home Manager updated!" | ${pkgs.lolcat}/bin/lolcat
+      '';
 
     # Programs and pkgs:
 
@@ -32,8 +35,8 @@
           docker_logs_latest = "docker ps -aql | xargs -r docker logs";
         };
         initContent = ''
-          cowsay -f dragon "Welcome to the CFA VAP" | lolcat
-          echo "-> Now loading shell customizations you may have set in your ~/.vaprc config... | lolcat
+          echo "Welcome to the CFA VAP" | lolcat
+          echo "-> Now loading shell customizations you may have set in your ~/.vaprc config..." | lolcat
           # .vaprc is a personal rc file not managed by home-manager
           # add to your ~/.vaprc any commands/aliases/shell-config 
           # you want for yourself alone.
