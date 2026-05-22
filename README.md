@@ -59,6 +59,7 @@ Then you can iteratively:
 2. Make changes to `~/.config/home-manager/home.nix`. For example, you might add to the programs or packages list, or propose a different configuration of an existing program.
 3. Run `home-manager switch --impure` to activate your new changes. That's it!
     - For convenience, you can run `make switch` if you're in the top level of this repository.
+    - On `zsh`, you can also run `hms` from anywhere if you've run `home-manager switch --impure` at least once before.
 
 You can always repeat the low-risk [prototyping](#prototyping-with-docker) process before committing your own changes as an added layer of assurance.
 - Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system. 
