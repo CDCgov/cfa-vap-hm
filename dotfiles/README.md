@@ -8,6 +8,9 @@ To add a dotfile:
 1. Add it to this directory (`dotfiles/`), as is.
 2. Add a line to home.nix: `home.file."<name_of_dotfile>".source = dotfiles/<name_of_dotfile>;`
 3. Run `home-manager switch --flake . --impure` (or `make switch`).
+4. You should not modify the version of the dotfiles at `$HOME`(`~`) like you may be used to doing. These are read-only.
+   - Instead, modify the version controlled versions in `~/.config/home-manager` and then run `make switch`.
+
 
 ## Notes on shell dotfiles (.profile, .zshrc, etc.)
 1. Currently, `cfa-vap-hm` configures `zsh` with `oh-my-zsh` under the hood, including its dotfiles.
