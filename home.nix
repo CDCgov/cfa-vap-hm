@@ -1,5 +1,5 @@
 # pkgs lets us access the nix store, which has tons of packages you'd want to get with apt etc.
-{config, pkgs, user, homedir, release, lib, ...}: {
+{config, pkgs, user, homedir, release, lib, lazyvim, ...}: {
 
     nixpkgs.config = {
       allowUnfree = true;
@@ -20,6 +20,21 @@
     # All programs are pkgs under the hood, with additional config available
     
     # The only thing needed to install a program is to specify <program_name>.enable
+    
+    # Custom program - lazyvim
+    imports = [ lazyvim.homeManagerModules.default ];
+    programs.lazyvim = {
+      enable = true;
+      extras = {
+        lang.nix.enable = true;
+        lang.python = {
+          enable = true;
+          installDependencies = true;        # Install ruff
+          installRuntimeDependencies = true; # Install python3
+        };
+      };
+    };
+    # Programs available on nixpkgs go here
     programs = {
 
       home-manager.enable = true;
