@@ -1,5 +1,6 @@
 # pkgs lets us access the nix store, which has tons of packages you'd want to get with apt etc.
 {config, pkgs, user, homedir, release, lib, ...}: {
+
     nixpkgs.config = {
       allowUnfree = true;
     };
@@ -19,7 +20,6 @@
     # All programs are pkgs under the hood, with additional config available
     
     # The only thing needed to install a program is to specify <program_name>.enable
-    
     programs = {
 
       home-manager.enable = true;
@@ -56,43 +56,42 @@
 
     };
   
-    # .config/ files
-
     # home directory dotfiles
     home.file.".Rprofile".source = dotfiles/.Rprofile;
 
     # most packages are installed here.
     # think of these as things you could install with apt on ubuntu
     home.packages = with pkgs; [
-        # Basic utilities
-        lolcat # rainbow cats
+        
+        # Basics
         cowsay # a cow that says
-        screenfetch # gives you system info
-        htop # system resource manager
         git
         gh # github cli
+        htop # system resource manager
         jq # shell json parsing
+        just
+        lolcat # rainbow cats
+        screenfetch # gives you system info
         tree # filesystem visualization
         xclip
-        just
         
-        # GUI apps
-        rstudio 
+        # GUI apps and IDEs
+        emacs
         nautilus # gui file manager
-
-        # Development
         neovim-unwrapped
+        rstudio 
+
+        # Dev/languages
         cargo
         cargo-binstall # binary installs for rust
-        python313
-        R
+        gcc
         julia
         nodejs
-        pre-commit
-        ruff
         podman
-        gcc
-        emacs
+        pre-commit
+        python313
+        R
+        ruff
 
         # Azure
         azure-cli
