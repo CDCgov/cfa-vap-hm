@@ -30,7 +30,7 @@
           theme = "lambda";
         };
         shellAliases = {
-          hms = "home-manager switch --impure";
+          hms = "home-manager switch --flake ~/.config/home-manager/ --impure";
           docker_logs_latest = "docker ps -aql | xargs -r docker logs";
           runlike = "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike";
           runlike_latest = "docker ps -l -q | xargs -r -I{} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike {}";
@@ -63,39 +63,49 @@
     # think of these as things you could install with apt on ubuntu
     home.packages = with pkgs; [
         
-        # Basics
-        cowsay # a cow that says
-        git
-        gh # github cli
-        htop # system resource manager
-        jq # shell json parsing
-        just
-        lolcat # rainbow cats
-        screenfetch # gives you system info
-        tree # filesystem visualization
-        xclip
-        
-        # GUI apps and IDEs
-        emacs
-        nautilus # gui file manager
-        neovim-unwrapped
-        rstudio 
+      # Basics
+      cowsay # a cow that says
+      git
+      gh # github cli
+      htop # system resource manager
+      jq # shell json parsing
+      just
+      lolcat # rainbow cats
+      screenfetch # gives you system info
+      tree # filesystem visualization
+      xclip
+      
+      # GUI apps and IDEs
+      emacs
+      nautilus # gui file manager
+      neovim-unwrapped
+      rstudio
 
-        # Dev/languages
-        cargo
-        cargo-binstall # binary installs for rust
-        gcc
-        julia
-        nodejs
-        podman
-        pre-commit
-        python313
-        R
-        ruff
+      # Dev/languages
+      cargo
+      cargo-binstall # binary installs for rust
+      gcc
+      julia
+      nodejs
+      podman
+      pre-commit
+      python313
+      ruff
 
-        # Azure
-        azure-cli
-        azure-storage-azcopy
-      ];
+      # Nix managed R packages
+      (
+        rWrapper.override {
+          packages = with pkgs.rPackages; [
+            tidyverse
+            ggplot2
+            furrr
+          ];
+        }
+      )
+
+      # Azure
+      azure-cli
+      azure-storage-azcopy
+    ];
       
 }
