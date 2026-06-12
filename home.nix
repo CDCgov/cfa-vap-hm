@@ -52,7 +52,7 @@
       firefox.enable = true;
       tmux.enable = true;
       nushell.enable = true;
-      uv.enable = true;
+      uv.enable = true; # uv python manager
 
     };
   
@@ -89,19 +89,15 @@
       nodejs
       podman
       pre-commit
-      python313
+      python313 # note that uv is also installed in 'programs', above
       ruff
 
-      # Nix managed R packages
-      (
-        rWrapper.override {
-          packages = with pkgs.rPackages; [
-            tidyverse
-            ggplot2
-            furrr
-          ];
-        }
-      )
+      # Nix managed R and R packages
+      (rWrapper.override {
+        packages = with rPackages; [
+          tidyverse
+        ];
+      })
 
       # Azure
       azure-cli
