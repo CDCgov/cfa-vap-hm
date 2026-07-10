@@ -57,7 +57,7 @@
     };
   
     # home directory dotfiles
-    home.file.".Rprofile".source = dotfiles/.Rprofile;
+    home.file.".Rprofile".source = ../dotfiles/.Rprofile;
 
     # most packages are installed here.
     # think of these as things you could install with apt on ubuntu
@@ -91,30 +91,6 @@
       pre-commit
       python313 # note that uv is also installed in 'programs', above
       ruff
-
-      # Nix managed R and R packages
-      (rWrapper.override {
-        packages = with rPackages; [
-          # analytics
-          data_table
-          rpart
-          tidyverse
-          # package management
-          pak
-          renv
-          # utilities
-          cowplot
-          devtools
-          ggplot2
-          jsonlite
-          languageserver
-          lintr
-          Rcpp
-          readxl
-          styler
-          yaml
-        ];
-      })
 
       # Azure
       azure-cli
