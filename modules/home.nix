@@ -30,8 +30,9 @@
           theme = "lambda";
         };
         shellAliases = {
-          hms = "home-manager switch --flake ~/.config/home-manager/ --impure";
-          docker_logs_latest = "docker ps -aql | xargs -r docker logs";
+          cb = "xclip -sel clipboard"; # pipe to this to add the command to the clipboard
+          dll = "docker ps -aql | xargs -r docker logs"; # docker logs latest
+          hms = "home-manager switch --flake ~/.config/home-manager/ --impure"; # switch from anywhere
           runlike = "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike";
           runlike_latest = "docker ps -l -q | xargs -r -I{} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike {}";
         };
