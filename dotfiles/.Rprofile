@@ -30,8 +30,24 @@ options(
     getOption("repos")
     )
 )
-
 rm(LINUX_VERSION)
+
+# Set user library path
+user_library <- file.path(
+    "/home", 
+    Sys.getenv("USER"), 
+    "R", 
+    "x86_64-pc-linux-gnu-library", 
+    paste(R.version$major, sub("\\..*$", "", R.version$minor), sep = ".")
+)
+
+.libPaths(c(.libPaths(), user_library))
+rm(user_library)
+
+# pak is installed in home-manager
+pak::repo_add(hubverse = 'https://hubverse-org.r-universe.dev');
+
+
 
 system('echo "nix home-manager .Rprofile for user $USER loaded successfully" | lolcat')
 cat("\n")

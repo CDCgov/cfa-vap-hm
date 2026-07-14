@@ -53,50 +53,47 @@
       firefox.enable = true;
       tmux.enable = true;
       nushell.enable = true;
-      uv.enable = true;
+      uv.enable = true; # uv python manager
 
     };
-  
-    # home directory dotfiles
-    home.file.".Rprofile".source = dotfiles/.Rprofile;
-
+    # (.Rprofile and R packages managed in R.nix)
     # most packages are installed here.
     # think of these as things you could install with apt on ubuntu
     home.packages = with pkgs; [
         
-        # Basics
-        cowsay # a cow that says
-        git
-        gh # github cli
-        htop # system resource manager
-        jq # shell json parsing
-        just
-        lolcat # rainbow cats
-        screenfetch # gives you system info
-        tree # filesystem visualization
-        xclip
-        
-        # GUI apps and IDEs
-        emacs
-        nautilus # gui file manager
-        neovim-unwrapped
-        rstudio 
+      # Basics
+      cowsay # a cow that says
+      git
+      gh # github cli
+      htop # system resource manager
+      jq # shell json parsing
+      just
+      lolcat # rainbow cats
+      screenfetch # gives you system info
+      tree # filesystem visualization
+      xclip
+      
+      # GUI apps and IDEs
+      emacs
+      nautilus # gui file manager
+      neovim-unwrapped
+      rstudio
 
-        # Dev/languages
-        cargo
-        cargo-binstall # binary installs for rust
-        gcc
-        julia
-        nodejs
-        podman
-        pre-commit
-        python313
-        R
-        ruff
+      # Dev/languages
+      cargo
+      cargo-binstall # binary installs for rust
+      gcc
+      julia
+      nodejs
+      podman
+      pre-commit
+      python313 # note that uv is also installed in 'programs', above
+      ruff
+      shellcheck
 
-        # Azure
-        azure-cli
-        azure-storage-azcopy
-      ];
+      # Azure
+      azure-cli
+      azure-storage-azcopy
+    ];
       
 }
