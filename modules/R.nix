@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs-unstable, ... }:
 {
   # home directory dotfiles
   home.file.".Rprofile".source = ../dotfiles/.Rprofile;
 
-  # R packages
-  home.packages = with pkgs; [
+  # R packages (built from nixpkgs unstable to get R 4.6)
+  home.packages = with pkgs-unstable; [
     # rWrapper.override gives you r itself,
     # then the with rPackages block gives you
     # individual packages

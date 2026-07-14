@@ -77,7 +77,6 @@
       emacs
       nautilus # gui file manager
       neovim-unwrapped
-      rstudio
 
       # Dev/languages
       cargo
