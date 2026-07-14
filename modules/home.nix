@@ -56,10 +56,7 @@
       uv.enable = true; # uv python manager
 
     };
-  
-    # home directory dotfiles
-    home.file.".Rprofile".source = ../dotfiles/.Rprofile;
-
+    # (.Rprofile and R packages managed in R.nix)
     # most packages are installed here.
     # think of these as things you could install with apt on ubuntu
     home.packages = with pkgs; [
@@ -92,6 +89,7 @@
       pre-commit
       python313 # note that uv is also installed in 'programs', above
       ruff
+      shellcheck
 
       # Azure
       azure-cli

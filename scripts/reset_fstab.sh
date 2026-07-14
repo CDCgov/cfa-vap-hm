@@ -7,7 +7,7 @@ set -euo pipefail
 FSTAB="/etc/fstab"
 BACKUP="/etc/fstab.backup.$(date +%Y-%m-%d_%H-%M-%S)"
 MOUNT_POINTS=("/media/S" "/media/S_CFA" "/media/S_CFA_Predict" "/media/S_CDC" "/media/P" "/media/U")
-SYMLINK_POINTS=("~/S" "~/S_CFA" "~/S_CFA_Predict" "~/S_CDC" "~/P" "~/U")
+SYMLINK_POINTS=("$HOME/S" "$HOME/S_CFA" "$HOME/S_CFA_Predict" "$HOME/S_CDC" "$HOME/P" "$HOME/U")
 
 log_info() {
     echo "[INFO] $*"
@@ -21,8 +21,6 @@ log_error() {
 log_info "Creating backup of fstab..."
 sudo cp "$FSTAB" "$BACKUP"
 log_info "Backup created at: $BACKUP"
-
-USERNAME=$(id -un)
 
 # Start from scratch
 
