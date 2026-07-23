@@ -24,9 +24,15 @@
 
       home-manager.enable = true;
 
-      bat.enable = true;
+      bat.enable = true; # rich cat
       firefox.enable = true;
-      git.enable = true;
+      git = {
+        enable = true;
+        settings = {
+          init.defaultBranch = "main";
+          pull.ff = "only";
+        };
+      };
       gh.enable = true; # github cli
       lazygit.enable = true;
       ripgrep.enable = true;
