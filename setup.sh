@@ -40,3 +40,12 @@ else
     echo ""
     home-manager switch --flake "$HOME/.config/home-manager" --impure
 fi
+# 4. Switch to zsh if currently using bash
+echo ""
+if [ "$SHELL" = "/bin/bash" ]; then
+    echo "> Switching shell from bash to zsh..."
+    chsh -s /bin/zsh
+    zsh
+else
+    echo "> Already using zsh, skipping shell switch."
+fi
