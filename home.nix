@@ -49,7 +49,7 @@
         echo "Welcome to the CFA VAP. You are using zsh as managed by nix home-manager." | lolcat
         echo "-> Now loading shell customizations you may have set in your ~/.vaprc config..." | lolcat
         # .vaprc is a personal rc file not managed by home-manager
-        # add to your ~/.vaprc any commands/aliases/shell-config 
+        # add to your ~/.vaprc any commands/aliases/shell-config
         # you want for yourself alone.
         #
         # NOTE: This breaks the idea of pure declarative management - use at your own risk.
