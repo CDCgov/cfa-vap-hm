@@ -77,7 +77,6 @@
       emacs
       nautilus # gui file manager
       neovim-unwrapped
-      rstudio
       ungoogled-chromium # chromium without google tracking
       dbeaver-bin
 
