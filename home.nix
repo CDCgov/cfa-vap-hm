@@ -60,6 +60,7 @@
           theme = "lambda";
         };
         shellAliases = {
+          bf = "azure-storage-fuse"; # nix's blobfuse is created as azure-storage-fuse
           cb = "xclip -sel clipboard"; # pipe to this to add the command to the clipboard
           dll = "docker ps -aql | xargs -r docker logs"; # docker logs latest
           hms = "home-manager switch --flake ~/.config/home-manager/ --impure"; # switch from anywhere
