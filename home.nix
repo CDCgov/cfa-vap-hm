@@ -54,6 +54,7 @@
       tmux.enable = true;
       nushell.enable = true;
       uv.enable = true; # uv python manager
+      gh.enable = true; # github cli
 
     };
     # (.Rprofile and R packages managed in R.nix)
@@ -64,7 +65,6 @@
       # Basics
       cowsay # a cow that says
       git
-      gh # github cli
       htop # system resource manager
       jq # shell json parsing
       just
