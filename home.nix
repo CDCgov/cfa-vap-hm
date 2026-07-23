@@ -23,6 +23,30 @@
     programs = {
 
       home-manager.enable = true;
+
+      bat.enable = true;
+      firefox.enable = true;
+      git.enable = true;
+      gh.enable = true; # github cli
+      lazygit.enable = true;
+      ripgrep.enable = true;
+      nushell.enable = true;
+      tmux.enable = true;
+      uv.enable = true; # uv python manager
+
+      # fzf: fuzzy finder (Ctrl-R history, Ctrl-T files, Alt-C cd)
+      fzf = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+
+      # zoxide: smarter `cd` (use `z <dir>`); its zsh integration adds the
+      # shell hooks automatically.
+      zoxide = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+
       zsh = {
         enable = true;
         oh-my-zsh = {
@@ -50,12 +74,6 @@
         '';
       };
 
-      firefox.enable = true;
-      tmux.enable = true;
-      nushell.enable = true;
-      uv.enable = true; # uv python manager
-      gh.enable = true; # github cli
-
     };
     # (.Rprofile and R packages managed in R.nix)
     # most packages are installed here.
@@ -63,13 +81,15 @@
     home.packages = with pkgs; [
         
       # Basics
+      btop # system resource manager
       cowsay # a cow that says
-      git
-      htop # system resource manager
+      eza # fancy ls alternative
+      fd # file finder
+      htop # legacy ststem resource manager
       jq # shell json parsing
       just
       lolcat # rainbow cats
-      screenfetch # gives you system info
+      fastfetch # gives you system info
       tree # filesystem visualization
       xclip
       
@@ -83,18 +103,24 @@
       # Dev/languages
       cargo
       cargo-binstall # binary installs for rust
+      docker-compose
+      docker-client
       gcc
       julia
+      lazydocker
+      nixfmt
       nodejs
       podman
       pre-commit
       python313 # note that uv is also installed in 'programs', above
-      ruff
-      shellcheck
+      ruff # python formatter
+      shellcheck # tool that checks and lints shell scripts
+      shfmt # formats shell scripts; complements shellcheck
 
       # Azure
       azure-cli
       azure-storage-azcopy
+      blobfuse
     ];
       
 }
