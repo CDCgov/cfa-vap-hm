@@ -7,7 +7,8 @@ FROM ubuntu:24.04
 # ------------------------
 
 # Add basic utilities
-RUN apt-get update -y && apt-get install curl xz-utils sudo make -y
+RUN apt-get update -y && \
+    apt-get install curl xz-utils git sudo make -y
 
 # Add and swap to our test user
 RUN useradd -m -s /bin/bash vapuser
@@ -31,6 +32,7 @@ RUN echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ENV PATH=/home/vapuser/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH
 ENV USER="vapuser"
 
+# Copy relevant files into the container for home-manager to use
 COPY Makefile /home/vapuser/.config/home-manager/
 COPY flake.lock /home/vapuser/.config/home-manager/
 COPY flake.nix /home/vapuser/.config/home-manager/
@@ -40,4 +42,5 @@ COPY dotfiles/* /home/vapuser/.config/home-manager/dotfiles/
 # Run the home-manager install, run the flake, and run it impurely to detect username and homedir
 RUN nix run home-manager -- init --flake /home/vapuser/.config/home-manager --switch --impure
 
+# Make sure we're in the home-manager directory
 WORKDIR /home/vapuser/.config/home-manager/
