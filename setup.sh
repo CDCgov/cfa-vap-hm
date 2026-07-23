@@ -44,7 +44,7 @@ fi
 echo ""
 if [ "$SHELL" = "/bin/bash" ]; then
     echo "> Switching shell from bash to zsh..."
-    chsh -s /bin/zsh
+    sudo chsh -s /bin/zsh
     zsh
 else
     echo "> Already using zsh, skipping shell switch."
