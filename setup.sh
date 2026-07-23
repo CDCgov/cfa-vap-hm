@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 # 1. Install nix if not already installed
@@ -39,4 +39,14 @@ else
     echo ">> home-manager is already available in your shell. Skipping install but switching to config in flake.nix"
     echo ""
     home-manager switch --flake "$HOME/.config/home-manager" --impure
+fi
+# 4. Switch to zsh if not already using it
+# `where` is a zsh builtin that doesn't exist in bash, so we use it to detect
+# whether we're currently running under zsh.
+echo ""
+if type where &> /dev/null; then
+    echo "> Already using zsh, skipping shell switch."
+else
+    echo "> Not using zsh... switching to zsh..."
+    zsh
 fi
