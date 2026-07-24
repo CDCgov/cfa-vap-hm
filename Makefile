@@ -13,7 +13,7 @@ init:
 # Quick switch command - use either in container or outside:
 
 switch:
-	home-manager switch --flake . --impure 
+	home-manager switch --flake . --impure
 
 switchb:
 	home-manager switch --flake . --impure -b backup

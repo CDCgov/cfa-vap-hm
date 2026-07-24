@@ -2,20 +2,20 @@
 # This allows us to download binary packages on Linux.
 # Set default user agent header
 options(HTTPUserAgent = sprintf(
-    "R/%s R (%s)", 
-    getRversion(), 
-    paste(getRversion(), 
-    R.version["platform"], 
-    R.version["arch"], 
+    "R/%s R (%s)",
+    getRversion(),
+    paste(getRversion(),
+    R.version["platform"],
+    R.version["arch"],
     R.version["os"]))
 )
 
 # Also use this user agent header for wget and curl from within R
 options(download.file.extra = sprintf(
-    "--header \"User-Agent: R (%s)\"", 
-    paste(getRversion(), 
-    R.version["platform"], 
-    R.version["arch"], 
+    "--header \"User-Agent: R (%s)\"",
+    paste(getRversion(),
+    R.version["platform"],
+    R.version["arch"],
     R.version["os"]))
 )
 
@@ -24,9 +24,9 @@ LINUX_VERSION = system("grep VERSION_CODENAME /etc/os-release | cut -d '=' -f2",
 options(
     repos = c(
     CRAN = sprintf(
-        "https://packagemanager.rstudio.com/all/__linux__/%s/latest", 
+        "https://packagemanager.rstudio.com/all/__linux__/%s/latest",
         LINUX_VERSION
-    ), 
+    ),
     getOption("repos")
     )
 )
@@ -34,10 +34,10 @@ rm(LINUX_VERSION)
 
 # Set user library path
 user_library <- file.path(
-    "/home", 
-    Sys.getenv("USER"), 
-    "R", 
-    "x86_64-pc-linux-gnu-library", 
+    "/home",
+    Sys.getenv("USER"),
+    "R",
+    "x86_64-pc-linux-gnu-library",
     paste(R.version$major, sub("\\..*$", "", R.version$minor), sep = ".")
 )
 

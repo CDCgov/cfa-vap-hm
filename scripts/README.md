@@ -4,6 +4,6 @@ The scripts in this directory are imperative rather than declarative. They are n
 
 ## Mounting (and unmounting) VAP network drive
 Run `bash ./scripts/setup-fstab.sh` to mount network drives (you can also run `make drives`).
-- You can also run `bash ./scripts/reset_fstab.sh` to remove your drive mounts. 
+- You can also run `bash ./scripts/reset_fstab.sh` to remove your drive mounts.
 - These are not part of our `home-manager` setup - it's included in this repository for convenience.
 - These scripts can only be run within a Linux or WSL environment on the CFA VAP - they will not work outside of it.
