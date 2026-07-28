@@ -39,7 +39,7 @@
       enable = true;
       settings = {
         init.defaultBranch = "main";
-        pull.ff = "only";
+        pull.rebase = false; # on pull, fast-forward when possible, otherwise merge (never rebase)
       };
     };
     gh.enable = true; # github cli
