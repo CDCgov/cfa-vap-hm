@@ -78,6 +78,3 @@ You can always repeat the low-risk [prototyping](#prototyping-with-docker) proce
 > With thanks to:
 > - https://zenoix.com/posts/get-started-with-nix-and-home-manager/#what-is-home-manager
 > - https://www.chrisportela.com/posts/home-manager-flake/
-
-## Useful Imperative Scripts
-> See [the scripts README](./scripts/README.md) for more information.
