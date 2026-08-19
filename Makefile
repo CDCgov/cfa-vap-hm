@@ -21,8 +21,3 @@ switchb:
 # Install script - requires running a few times and user input; used for internal automation testing only
 install:
 	bash setup.sh
-
-# --- NON DECLARATIVE CONVENIENCE SCRIPTS ---
-# This will only work on the VAP.
-drives:
-	bash ./scripts/setup_fstab.sh
