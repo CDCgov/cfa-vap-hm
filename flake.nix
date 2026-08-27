@@ -54,6 +54,7 @@
               system-graphics.enable = true;
             };
           }
+          ./system.nix
         ];
       };
     };
