@@ -30,19 +30,27 @@
       user = builtins.getEnv "USER";
       homedir = builtins.getEnv "HOME";
       release = "26.05";
+      mkHome = modules:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs modules;
+          extraSpecialArgs = {
+            inherit user homedir release;
+          };
+        };
     in
     {
       homeConfigurations = {
-          ${user} = home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            modules = [
-              ./home.nix
-              ./modules/R.nix
-            ];
-            extraSpecialArgs = {
-              inherit user homedir release;
-            };
-          };
+          # Base profile (no R module)
+          ${user} = mkHome [
+            ./home.nix
+            ./modules/R-lite.nix
+          ];
+
+          # Base profile + R tooling
+          "${user}-r" = mkHome [
+            ./home.nix
+            ./modules/R-full.nix
+          ];
       };
       systemConfigs.default = system-manager.lib.makeSystemConfig {
         modules = [
