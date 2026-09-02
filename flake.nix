@@ -10,20 +10,10 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # System-manager source 
-    system-manager = {
-      url = "github:numtide/system-manager/release-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    # System Graphics acceleration source
-    nix-system-graphics = {
-      url = "github:soupglasses/nix-system-graphics";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
-    { nixpkgs, home-manager, system-manager, nix-system-graphics, ... }:
+    { nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -57,19 +47,6 @@
               ./modules/R-full.nix
             ];
           };
-      };
-      systemConfigs.default = system-manager.lib.makeSystemConfig {
-        modules = [
-          nix-system-graphics.systemModules.default
-          {
-            config = {
-              nixpkgs.hostPlatform = system;
-              system-manager.allowAnyDistro = true;
-              system-graphics.enable = true;
-            };
-          }
-          ./system.nix
-        ];
       };
     };
 }
