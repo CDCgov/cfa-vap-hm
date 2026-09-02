@@ -1,3 +1,6 @@
+# Full R install
+# Includes many packages out of the box and Rstudio
+# You can still install packages manually
 { pkgs, ... }:
 let
   # Shared package list used by both the RStudio wrapper and the

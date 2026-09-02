@@ -1,3 +1,5 @@
+# Lite R install - lacks most packages and does not include Rstudio.
+# You can still install packages manually.
 { pkgs, ... }:
 let
   # Shared package list used by both the RStudio wrapper and the

@@ -5,6 +5,7 @@
   user,
   homedir,
   release,
+  profileName ? "unknown",
   lib,
   ...
 }:
@@ -18,7 +19,7 @@
   home.homeDirectory = homedir;
   home.stateVersion = release;
   home.activation.switchMessage = lib.hm.dag.entryAfter [ "WriteBoundary" ] ''
-    ${pkgs.cowsay}/bin/cowsay -f dragon "CFA VAP Home Manager updated!" | ${pkgs.lolcat}/bin/lolcat
+    ${pkgs.cowsay}/bin/cowsay -f dragon "CFA VAP HM Updated with profile: ${profileName}" | ${pkgs.lolcat}/bin/lolcat
   '';
 
   # Programs and pkgs:
