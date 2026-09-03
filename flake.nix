@@ -30,7 +30,7 @@
     in
     {
       homeConfigurations = {
-          # Base profile (no R module)
+        # Lite R profile
           ${user} = mkHome {
             profileName = "base";
             modules = [
