@@ -15,7 +15,7 @@
   outputs =
     { nixpkgs, home-manager, ... }:
     let
-      system = "x86_64-linux";
+      system = builtins.currentSystem;
       pkgs = nixpkgs.legacyPackages.${system};
       user = builtins.getEnv "USER";
       homedir = builtins.getEnv "HOME";
