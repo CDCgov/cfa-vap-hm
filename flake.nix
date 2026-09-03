@@ -1,5 +1,5 @@
 {
-  description = "Nix Home Manager and System Manager configurations for the CFA VAP";
+  description = "CFA VAP Home Manager configurations";
   inputs = {
     # Specify the sources of Nixpkgs and Home Manager .
     nixpkgs = {
