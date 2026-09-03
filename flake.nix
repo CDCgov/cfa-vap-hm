@@ -35,7 +35,8 @@
             profileName = "base";
             modules = [
               ./home.nix
-              ./modules/R-lite.nix
+              ./modules/personal.nix
+              ./modules/R/lite.nix
             ];
           };
 
@@ -44,7 +45,8 @@
             profileName = "R-full-install";
             modules = [
               ./home.nix
-              ./modules/R-full.nix
+              ./modules/personal.nix
+              ./modules/R/full.nix
             ];
           };
       };
