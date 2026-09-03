@@ -2,8 +2,7 @@
 # You can still install packages manually.
 { pkgs, ... }:
 let
-  # Shared package list used by both the RStudio wrapper and the
-  # command-line R wrapper so they stay in sync.
+  # Package list used by the command-line R wrapper.
   rPackageList = with pkgs.rPackages; [
     # package management
     pak
