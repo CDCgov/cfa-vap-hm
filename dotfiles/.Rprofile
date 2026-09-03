@@ -19,18 +19,12 @@ options(download.file.extra = sprintf(
     R.version["os"]))
 )
 
-LINUX_VERSION = system("grep VERSION_CODENAME /etc/os-release | cut -d '=' -f2", intern = TRUE)
-
 options(
     repos = c(
-    CRAN = sprintf(
-        "https://packagemanager.rstudio.com/all/__linux__/%s/latest",
-        LINUX_VERSION
-    ),
-    getOption("repos")
+        CRAN = "https://p3m.dev/cran/__linux__/manylinux_2_28/latest",
+        getOption("repos")
     )
 )
-rm(LINUX_VERSION)
 
 # Set user library path
 user_library <- file.path(
@@ -46,8 +40,6 @@ rm(user_library)
 
 # pak is installed in home-manager
 pak::repo_add(hubverse = 'https://hubverse-org.r-universe.dev');
-
-
 
 system('echo "nix home-manager .Rprofile for user $USER loaded successfully" | lolcat')
 cat("\n")
