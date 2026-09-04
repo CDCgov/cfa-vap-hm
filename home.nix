@@ -5,6 +5,7 @@
   user,
   homedir,
   release,
+  profileName ? "unknown",
   lib,
   ...
 }:
@@ -18,7 +19,7 @@
   home.homeDirectory = homedir;
   home.stateVersion = release;
   home.activation.switchMessage = lib.hm.dag.entryAfter [ "WriteBoundary" ] ''
-    ${pkgs.cowsay}/bin/cowsay -f dragon "CFA VAP Home Manager updated!" | ${pkgs.lolcat}/bin/lolcat
+    ${pkgs.cowsay}/bin/cowsay -f dragon "CFA VAP HM Updated with profile: ${profileName}" | ${pkgs.lolcat}/bin/lolcat
   '';
 
   # Programs and pkgs:
@@ -83,6 +84,8 @@
         cb = "xclip -sel clipboard"; # pipe to this to add the command to the clipboard
         dll = "docker ps -aql | xargs -r docker logs"; # docker logs latest
         hms = "home-manager switch --flake ~/.config/home-manager/ --impure"; # switch from anywhere
+        hmsr = "home-manager switch --flake ~/.config/home-manager/#${user}-r --impure";
+        # hmsbase = "home-manager switch --flake ~/.config/home-manager/#${user} --impure";
         runlike = "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike";
         runlike_latest = "docker ps -l -q | xargs -r -I{} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike {}";
       };
@@ -111,6 +114,7 @@
     cowsay # a cow that says
     eza # fancy ls alternative
     fd # file finder
+    ghostty # terminal
     htop # legacy system resource manager
     jq # shell json parsing
     just

@@ -60,6 +60,7 @@ Then you can iteratively:
 3. Run `home-manager switch --impure` to activate your new changes. That's it!
     - For convenience, you can run `make switch` if you're in the top level of this repository.
     - On `zsh`, you can also run `hms` from anywhere if you've run `home-manager switch --impure` at least once before.
+    - On `zsh`, run `hmsr` to switch to the full R installation and `hms` to switch back to the lite installation.
 
 You can always repeat the low-risk [prototyping](#prototyping-with-docker) process before committing your own changes as an added layer of assurance.
 - Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system.
