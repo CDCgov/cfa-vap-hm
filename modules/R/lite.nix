@@ -14,7 +14,7 @@ let
 in
 {
   # home directory dotfiles
-  home.file.".Rprofile".source = ../dotfiles/.Rprofile;
+  home.file.".Rprofile".source = ../../dotfiles/.Rprofile;
 
   # R packages
   home.packages = with pkgs; [
