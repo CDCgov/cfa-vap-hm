@@ -18,6 +18,10 @@ switch:
 switchb:
 	home-manager switch --flake . --impure -b backup
 
+# experimental system manager
+system:
+	sudo $$(which nix) run 'github:numtide/system-manager' -- switch --flake '.'
+
 # Install script - requires running a few times and user input; used for internal automation testing only
 install:
 	bash setup.sh

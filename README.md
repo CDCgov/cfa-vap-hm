@@ -8,6 +8,8 @@ For example, instead of writing a script that installs R, python, and the Github
 > To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
+> Note, we are also considering [numtide's nix system manager](https://github.com/numtide/system-manager) for inclusion here. This requires sudo.
+
 ## Goals
 To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the following principles in mind:
 

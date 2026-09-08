@@ -111,6 +111,7 @@
     cowsay # a cow that says
     eza # fancy ls alternative
     fd # file finder
+    ghostty # terminal
     htop # legacy system resource manager
     jq # shell json parsing
     just
