@@ -47,22 +47,8 @@ if [[ -z "$DRIVE_JSON" || "$DRIVE_JSON" == "null" ]]; then
   exit 1
 fi
 
-# Validate before changing the system, then unpack each drive into a TSV row.
-# Whitespace and backslashes require escaping in fstab and are not supported here.
-DRIVE_ROWS="$(jq -er '
-  .drives
-  | if type != "array" then error("drives must be an array") else . end
-  | if length == 0 then error("drives must not be empty") else . end
-  | .[]
-  | if (.mount_point | type) != "string" or (.network_path | type) != "string"
-    then error("Each drive requires mount_point and network_path strings")
-    else . end
-  | if (.mount_point | test("^/[^[:space:]\\\\]+$"))
-       and (.network_path | test("^//[^[:space:]\\\\]+$"))
-    then [.mount_point, .network_path] | @tsv
-    else error("Drive paths must be absolute and contain no whitespace or backslashes")
-    end
-' <<< "$DRIVE_JSON")"
+# Read each drive as a tab-separated mount point and network path.
+DRIVE_ROWS="$(jq -r '.drives[] | [.mount_point, .network_path] | @tsv' <<< "$DRIVE_JSON")"
 
 # ============================================================================
 # FUNCTIONS
@@ -96,7 +82,8 @@ echo ""
 
 # Prompt user about resetting fstab
 echo -e "${BOLD_RED}Would you like to start fresh with a new fstab and fresh symlinks?"
-read -p "$(echo -e "${BOLD_RED}(This will retain disk drives but refresh P, S, and U drives and their symlinks) (y/n): ${NOCOLOR}")" -r
+echo -e "Take care if you have mounted any custom drives or use fstab for blobfuse."
+read -p "$(echo -e "${BOLD_RED}(This will retain basic disk drives but refresh P, S, and U drives and their symlinks) (y/n): ${NOCOLOR}")" -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   print_info "Running reset script..."
@@ -168,6 +155,7 @@ echo ""
 echo -e "${BOLD_RED}Would you like to symlink the /media/ folders to your home directory?"
 read -p "$(echo -e "${BOLD_RED}(y/n): ${NOCOLOR}")" -r
 echo ""
+
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   print_info "Creating symlinks..."
   while IFS=$'\t' read -r mount_point _; do
