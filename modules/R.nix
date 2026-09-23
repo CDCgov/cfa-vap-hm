@@ -6,13 +6,8 @@ let
   rPackageList = with pkgs.rPackages; [
     # package management
     pak
-    renv
     # utilities
-    devtools
-    ggplot2
-    jsonlite
     languageserver
-    Rcpp
   ];
 in
 {
