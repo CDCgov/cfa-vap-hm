@@ -35,7 +35,7 @@ user_library <- file.path(
     paste(R.version$major, sub("\\..*$", "", R.version$minor), sep = ".")
 )
 
-.libPaths(c(.libPaths(), user_library))
+.libPaths(c(user_library, .libPaths()))
 
 # pak is installed in home-manager
 pak::repo_add(hubverse = 'https://hubverse-org.r-universe.dev');

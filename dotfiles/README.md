@@ -13,5 +13,5 @@ To add a dotfile:
 
 
 ## Notes on shell dotfiles (.profile, .zshrc, etc.)
-1. Currently, `cfa-vap-hm` configures `zsh` with `oh-my-zsh` under the hood, including its dotfiles.
+1. Currently, `cfa-vap-hm` configures `zsh` with `oh-my-zsh` under the hood, including its dotfiles, so we do not explicitly include it here.
 2. `home.nix` creates a `.vaprc` if you don't have one, and then sources it. Use this for personal configuration untracked by `home-manager`. Think of this as just adding additional custom lines to your `.zshrc`. If you think something is worth including for everyone, feel free to submit a PR changing the `zsh` `initConent` block in `home.nix`!
