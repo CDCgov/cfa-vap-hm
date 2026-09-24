@@ -14,10 +14,14 @@
   outputs =
     { nixpkgs, home-manager, ... }:
     let
-      system = builtins.currentSystem;
+      # Explicit target platform; builtins.currentSystem is unavailable in pure evaluation.
+      system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
+      # Let `nix run . --impure` launch this flake's Home Manager CLI.
+      packages.${system}.default = home-manager.packages.${system}.home-manager;
+
       homeConfigurations =
         let
           user = builtins.getEnv "USER";
