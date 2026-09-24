@@ -36,8 +36,9 @@ ENV USER="vapuser"
 COPY Makefile /home/vapuser/.config/home-manager/
 COPY flake.lock /home/vapuser/.config/home-manager/
 COPY flake.nix /home/vapuser/.config/home-manager/
-COPY modules/* /home/vapuser/.config/home-manager/modules/
-COPY dotfiles/* /home/vapuser/.config/home-manager/dotfiles/
+COPY home.nix /home/vapuser/.config/home-manager/
+COPY modules /home/vapuser/.config/home-manager/
+COPY dotfiles /home/vapuser/.config/home-manager/
 
 # Run the home-manager install, run the flake, and run it impurely to detect username and homedir
 RUN nix run home-manager -- init --flake /home/vapuser/.config/home-manager --switch --impure
