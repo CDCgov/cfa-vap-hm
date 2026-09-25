@@ -33,14 +33,14 @@ ENV PATH=/home/vapuser/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH
 ENV USER="vapuser"
 
 # Copy relevant files into the container for home-manager to use
-COPY Makefile /home/vapuser/.config/home-manager/
 COPY flake.lock /home/vapuser/.config/home-manager/
 COPY flake.nix /home/vapuser/.config/home-manager/
+COPY home.nix /home/vapuser/.config/home-manager/
 COPY modules/* /home/vapuser/.config/home-manager/modules/
 COPY dotfiles/* /home/vapuser/.config/home-manager/dotfiles/
 
-# Run the home-manager install, run the flake, and run it impurely to detect username and homedir
-RUN nix run home-manager -- init --flake /home/vapuser/.config/home-manager --switch --impure
-
 # Make sure we're in the home-manager directory
 WORKDIR /home/vapuser/.config/home-manager/
+
+# Run the home-manager install, run the flake, and run it impurely to detect username and homedir
+RUN nix run . -- switch --impure
