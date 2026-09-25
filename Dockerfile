@@ -44,4 +44,3 @@ WORKDIR /home/vapuser/.config/home-manager/
 
 # Run the home-manager install, run the flake, and run it impurely to detect username and homedir
 RUN nix run . -- switch --impure
-
