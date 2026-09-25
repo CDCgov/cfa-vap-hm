@@ -36,6 +36,7 @@ ENV USER="vapuser"
 COPY Makefile /home/vapuser/.config/home-manager/
 COPY flake.lock /home/vapuser/.config/home-manager/
 COPY flake.nix /home/vapuser/.config/home-manager/
+COPY home.nix /home/vapuser/.config/home-manager/
 COPY modules/* /home/vapuser/.config/home-manager/modules/
 COPY dotfiles/* /home/vapuser/.config/home-manager/dotfiles/
 

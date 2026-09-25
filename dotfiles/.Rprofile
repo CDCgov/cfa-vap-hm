@@ -36,7 +36,6 @@ user_library <- file.path(
 )
 
 .libPaths(c(.libPaths(), user_library))
-rm(user_library)
 
 # pak is installed in home-manager
 pak::repo_add(hubverse = 'https://hubverse-org.r-universe.dev');
