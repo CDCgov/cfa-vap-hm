@@ -131,7 +131,9 @@
     cargo-binstall # binary installs for rust
     docker-compose
     docker-client
-    gcc
+    gcc # includes gcc and g++
+    gnumake
+    pkg-config # discovers library compiler and linker flags
     julia
     lazydocker
     nixfmt
@@ -142,6 +144,21 @@
     ruff # python formatter
     shellcheck # tool that checks and lints shell scripts
     shfmt # formats shell scripts; complements shellcheck
+
+    # Native libraries and development headers (Ubuntu's lib*-dev equivalents).
+    # Nix splits headers/pkg-config metadata into separate development outputs.
+    # This replicates:
+    # https://potential-adventure-637em36.pages.github.io/guides/vscode_for_r.html?h=languageserver#configure-vscode-for-r-development
+    curl
+    (lib.getDev curl)
+    openssl
+    (lib.getDev openssl)
+    libxml2
+    (lib.getDev libxml2)
+    fontconfig
+    (lib.getDev fontconfig)
+    cairo
+    (lib.getDev cairo)
 
     # Azure
     azure-cli
