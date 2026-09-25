@@ -45,3 +45,5 @@ WORKDIR /home/vapuser/.config/home-manager/
 # Run the home-manager install, run the flake, and run it impurely to detect username and homedir
 RUN nix run . -- switch --impure
 
+# Start the zsh installed in vapuser's Nix profile by Home Manager.
+ENTRYPOINT ["/home/vapuser/.nix-profile/bin/zsh"]
