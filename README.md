@@ -26,10 +26,13 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
 Once you're satisfied with prototyping, you can try installing and initializing `home-manager` for real.
 
 1. Clone this repository (or move your existing instance from before) to `~/.config/home-manager`.
-    - `git clone https://github.com/cdcgov/cfa-vap-hm`
+    - `git clone https://github.com/cdcgov/cfa-vap-hm ~/.config/home-manager`.
 2. Install `nix` on your machine:
     - `curl -fsSL https://install.determinate.systems/nix | sh -s -- install --no-confirm`.
-    - Note that you'll need systemd enabled for this.
+    ![NOTE] You'll need systemd enabled for this. If you don't have systemd, use upstream nix daemonless:
+        1. `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon`
+        1. `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
+        1. Add to your `.zshrc`: `PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH`
 3. Install `home-manager` from our included flake and start your first home-manager generation:
     - Run `nix run ~/.config/home-manager -- switch --impure`.
     - `nix run . --impure`
