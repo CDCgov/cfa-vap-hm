@@ -27,7 +27,7 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
 ## Installation
 
 > [!TIP]
-> Uninstalling home-manager is as simple as running `home-manager uninstall`.
+> Uninstalling `home-manager` is as simple as running `home-manager uninstall`.
 > - However, if you want to try it in a sandbox first, see: [prototyping with docker](#prototyping-with-docker).
 
 1. Clone this repository (or move your existing instance from before) to `~/.config/home-manager`.
