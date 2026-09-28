@@ -1,17 +1,17 @@
 # CFA VAP Home Manager
 
-A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-community/home-manager).  
+A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-community/home-manager).
 - Simply clone and run this repository to setup your VAP.
 - You can run it at any point and undo it at any point.
 
 ## Principles
-Nix and `home-manager` are declaratively reproducible rather than imperative. 
+Nix and `home-manager` are declaratively reproducible rather than imperative.
 We might say something like "nix home-manager provides a virtual-environment for your whole user-space, rather than just a single programming language."
-- You tell `home-manager` that you want R, python, and the Github CLI as an end result rather than that they should install R, python, and the Github CLI. 
+- You tell `home-manager` that you want R, python, and the Github CLI as an end result rather than that they should install R, python, and the Github CLI.
 - Under the hood, `nix` has a sophisticated way of installing exactly what's needed and how to reconcile your installed versions exactly as specified.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Goals
@@ -40,7 +40,7 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
 
 ### Installing for non-`systemd` environments
 > [!NOTE]
-> You'll need systemd enabled for to use the determinate installer (recommended).  
+> You'll need systemd enabled for to use the determinate installer (recommended).
 > If you don't have systemd, use upstream nix daemonless:
 > 1. `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon`
 > 1. `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
@@ -60,8 +60,8 @@ Want to uninstall home-manager and everything you've done with it seamlessly?
 Before committing to having your system managed with nix, you can test the config in this repository with docker to see what it will do.
 To do so, first clone this repository and set it as your working directory.
 
-From the repo root: 
-- `docker build -t vap-hm . && docker run -it --rm -v "$PWD/home.nix:/home/vapuser/.config/home-manager/home.nix" vap-hm` 
+From the repo root:
+- `docker build -t vap-hm . && docker run -it --rm -v "$PWD/home.nix:/home/vapuser/.config/home-manager/home.nix" vap-hm`
     - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
     - This allows you to have a fully fresh session each time without modifying your existing system just yet.
 
