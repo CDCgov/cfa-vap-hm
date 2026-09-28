@@ -36,7 +36,6 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
     - If you're on WSL, using a container, or do not have `systemd` on your machine, see below for an alternative.
 1. Install `home-manager` from our included flake and start your first home-manager generation:
     - Run `nix run ~/.config/home-manager -- switch --impure`.
-    - `nix run . --impure`
 
 ### Installing for non-`systemd` environments
 > [!NOTE]
@@ -70,6 +69,10 @@ While prototyping inside docker (you can also do this after installing outside d
 1. Modify `home.nix` as you like.
 1. Run `home-manager switch --impure` to activate your new changes. That's it!
     - On `zsh`, you can also run `hms` from anywhere.
+
+### Customizing your config
+
+After you install `home-manager`, or while prototyping with docker:
 
 You can always repeat the low-risk [prototyping](#prototyping-with-docker) process before committing your own changes as an added layer of assurance.
 - Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system.
