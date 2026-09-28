@@ -111,12 +111,14 @@
     cowsay # a cow that says
     eza # fancy ls alternative
     fd # file finder
+    git-filter-repo # remove sensitive data
     htop # legacy system resource manager
     jq # shell json parsing
     just
     lolcat # rainbow cats
     fastfetch # gives you system info
     tree # filesystem visualization
+    trufflehog # secrets detection
     xclip
 
     # GUI apps and IDEs
