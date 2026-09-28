@@ -4,15 +4,17 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - Simply clone and run this repository to setup your VAP.
 - You can run it at any point and undo it at any point.
 
+> [!TIP]
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
+> Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
+
 ## Principles
-Nix and `home-manager` are declaratively reproducible rather than imperative.
+Nix and `home-manager` are declaratively reproducible rather than imperative.  
+
 We might say something like "nix home-manager provides a virtual-environment for your whole user-space, rather than just a single programming language."
 - You tell `home-manager` that you want R, python, and the Github CLI as an end result rather than that they should install R, python, and the Github CLI.
 - Under the hood, `nix` has a sophisticated way of installing exactly what's needed and how to reconcile your installed versions exactly as specified.
 
-> [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
-> Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Goals
 To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the following principles in mind:
@@ -24,10 +26,9 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
 
 ## Installation
 
-> [!CAUTION]
-> CFA VAP Home Manager is currently in early development - updates may break things.
-> You might want to try [prototyping with docker](#prototyping-with-docker) before committing to installation.
-> Also note that we use [determinate Nix](https://github.com/DeterminateSystems/nix-installer) to get flakes and run commands out of the box.
+> [!TIP]
+> Uninstalling home-manager is as simple as running `home-manager uninstall`.
+> - However, if you want to try it in a sandbox first, see: [prototyping with docker](#prototyping-with-docker).
 
 1. Clone this repository (or move your existing instance from before) to `~/.config/home-manager`.
     - `git clone https://github.com/cdcgov/cfa-vap-hm ~/.config/home-manager`.
@@ -56,13 +57,15 @@ Want to uninstall home-manager and everything you've done with it seamlessly?
 
 > Make sure you have `docker` installed and enabled before running the following steps.
 
-Before committing to having your system managed with nix, you can test the config in this repository with docker to see what it will do.
+Before committing to managing your environment with nix, you can test the changes with docker.  
 To do so, first clone this repository and set it as your working directory.
 
 From the repo root:
 - `docker build -t vap-hm . && docker run -it --rm -v "$PWD/home.nix:/home/vapuser/.config/home-manager/home.nix" vap-hm`
     - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
     - This allows you to have a fully fresh session each time without modifying your existing system just yet.
+
+How do you like it? Do commands work as you'd expect?
 
 While prototyping inside docker (you can also do this after installing outside docker):
 1. Try any normal development commands (e.g., `uv run`, `Rscript`, etc.) and see what works, or what doesn't.
