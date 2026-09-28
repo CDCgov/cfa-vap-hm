@@ -36,7 +36,6 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
     - If you're on WSL, using a container, or do not have `systemd` on your machine, see below for an alternative.
 1. Install `home-manager` from our included flake and start your first home-manager generation:
     - Run `nix run ~/.config/home-manager -- switch --impure`.
-    - `nix run . --impure`
 
 ### Installing for non-`systemd` environments
 > [!NOTE]
