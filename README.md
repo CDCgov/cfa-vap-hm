@@ -5,7 +5,7 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Principles
@@ -16,12 +16,14 @@ Nix and `home-manager` are declarative rather than imperative.
 - You might think Nix (and `home-manager` by extension) as a virtual environment manager for your whole user-space.
 
 ## Project Goals
-To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the following principles in mind:
+Our existing tool, [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap), aim to have an automated, repeatable, and maintainable solution that would configure a CFA VAP user's development environment. The goal here is the same.
 
-- Simplicity, in terms of maintenance and installation
-- Extensibility and customization
-- [Declarative reproducibility](https://en.wikipedia.org/wiki/Declarative_programming)
-- Platform agnosticisty
+`cfa-vap-hm` aims to improve on `cfa-vap-autoconfig` by being:
+
+- simpler, in terms of maintenance and installation
+- more customizable
+- [declaratively reproducible](https://en.wikipedia.org/wiki/Declarative_programming)
+- (somewhat) platform agnostic
 
 ## Installation
 
@@ -47,9 +49,8 @@ To install `cfa-vap-hm`, simply:
 > 1. Add to your shell profile: `PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH`
 
 ### Uninstalling
-Want to uninstall home-manager and everything you've done with it seamlessly?
-- `home-manager uninstall`
-- All programs and config you've setup with `home-manager` will be removed instantly.
+If you run `home-manager uninstall`, all programs and config you've setup with `home-manager` will be removed instantly.  
+You can reinstall simply by running `nix run ~/.config/home-manager -- switch --impure` again.
 
 ## Development and Customization
 
