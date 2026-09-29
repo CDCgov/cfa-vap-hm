@@ -9,14 +9,13 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Principles
-Nix and `home-manager` are declaratively reproducible rather than imperative.
+Nix and `home-manager` are declarative rather than imperative.  
+- This means you declare what setup your system should have, not what it should do to get there.
+- If you're familiar with `uv` for python:
+    - Nix uses `flake.nix` (akin to `pyproject.toml`) and `flake.lock` (akin to `uv.lock`) to maintain reproducibility.
+- You might think Nix (and `home-manager` by extension) as a virtual environment manager for your whole user-space.
 
-We might say something like "nix home-manager provides a virtual-environment for your whole user-space, rather than just a single programming language."
-- You tell `home-manager` that you want R, python, and the Github CLI as an end result rather than that they should install R, python, and the Github CLI.
-- Under the hood, `nix` has a sophisticated way of installing exactly what's needed and how to reconcile your installed versions exactly as specified.
-
-
-## Goals
+## Project Goals
 To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the following principles in mind:
 
 - Simplicity, in terms of maintenance and installation
@@ -30,12 +29,13 @@ To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the
 > Uninstalling `home-manager` (and reverting anything you've done with it) is as simple as running `home-manager uninstall`.
 > - However, if you want to try it in a sandbox first, see: [prototyping with docker](#prototyping-with-docker).
 
+To install `cfa-vap-hm`, simply:
 1. Clone this repository (or move your existing instance from before) to `~/.config/home-manager`.
     - `git clone https://github.com/cdcgov/cfa-vap-hm ~/.config/home-manager`.
 1. Install `nix` on your machine using the [Determinate](https://determinate.systems/products/nix/) installer (recommended):
     - `curl -fsSL https://install.determinate.systems/nix | sh -s -- install --no-confirm`.
     - If you're on WSL, using a container, or do not have `systemd` on your machine, see below for an alternative.
-1. Install `home-manager` from our included flake and start your first home-manager generation:
+1. Install `home-manager` from our included flake and start your first `home-manager` generation:
     - Run `nix run ~/.config/home-manager -- switch --impure`.
 
 ### Installing for non-`systemd` environments
@@ -57,7 +57,7 @@ Want to uninstall home-manager and everything you've done with it seamlessly?
 
 > Make sure you have `docker` installed and enabled before running the following steps.
 
-Before committing to managing your environment with nix, you can test the changes with docker.
+Before committing to managing your environment with nix, you can test the changes with docker.  
 To do so, first clone this repository and set it as your working directory.
 
 From the repo root:
