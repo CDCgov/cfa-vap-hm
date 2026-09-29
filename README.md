@@ -65,17 +65,18 @@ From the repo root:
     - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
     - This allows you to have a fully fresh session each time without modifying your existing system just yet.
 
-How do you like it? Do commands work as you'd expect?
-
-While prototyping inside docker (you can also do this after installing outside docker):
-1. Try any normal development commands (e.g., `uv run`, `Rscript`, etc.) and see what works, or what doesn't.
-1. Modify `home.nix` as you like.
-1. Run `home-manager switch --impure` to activate your new changes. That's it!
-    - On `zsh`, you can also run `hms` from anywhere.
+Ask yourself: 
+- "Do commands work as I'd expect?"
 
 ### Customizing your config
 
 After you install `home-manager`, or while prototyping with docker:
+
+1. Try any normal development commands (e.g., `uv run`, `Rscript`, etc.) and see what works, or what doesn't.
+1. Modify `home.nix` as you like.
+1. Run `home-manager switch --impure` to activate your new changes. That's it!
+    - Note that you'll need to keep your `home-manager` `flake.nix` in `~/.config/home-manager` for this to work correctly.
+    - On `zsh`, you can also run `hms` from anywhere.
 
 You can always repeat the low-risk [prototyping](#prototyping-with-docker) process before committing your own changes as an added layer of assurance.
 - Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system.
@@ -85,6 +86,8 @@ You can always repeat the low-risk [prototyping](#prototyping-with-docker) proce
 1. Open a new branch in your local `.config/home-manager` repository.
 2. Make changes, commit, and push your branch. Test in docker or on your system first.
 3. Open a PR!
+
+If you want to make a config tailored to your own use-cases but don't think it's useful for the entire organization, please make a fork!
 
 ## Helpful links:
 > See the official docs:
