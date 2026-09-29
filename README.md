@@ -5,11 +5,11 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Principles
-Nix and `home-manager` are declaratively reproducible rather than imperative.  
+Nix and `home-manager` are declaratively reproducible rather than imperative.
 
 We might say something like "nix home-manager provides a virtual-environment for your whole user-space, rather than just a single programming language."
 - You tell `home-manager` that you want R, python, and the Github CLI as an end result rather than that they should install R, python, and the Github CLI.
@@ -57,7 +57,7 @@ Want to uninstall home-manager and everything you've done with it seamlessly?
 
 > Make sure you have `docker` installed and enabled before running the following steps.
 
-Before committing to managing your environment with nix, you can test the changes with docker.  
+Before committing to managing your environment with nix, you can test the changes with docker.
 To do so, first clone this repository and set it as your working directory.
 
 From the repo root:
@@ -65,7 +65,7 @@ From the repo root:
     - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
     - This allows you to have a fully fresh session each time without modifying your existing system just yet.
 
-Ask yourself: 
+Ask yourself:
 - "Do commands work as I'd expect?"
 
 ### Customizing your config
