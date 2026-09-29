@@ -5,11 +5,11 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Principles
-Nix and `home-manager` are declarative rather than imperative.  
+Nix and `home-manager` are declarative rather than imperative.
 - This means you declare what setup your system should have, not what it should do to get there.
 - If you're familiar with `uv` for python:
     - Nix uses `flake.nix` (akin to `pyproject.toml`) and `flake.lock` (akin to `uv.lock`) to maintain reproducibility.
@@ -49,7 +49,7 @@ To install `cfa-vap-hm`, simply:
 > 1. Add to your shell profile: `PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH`
 
 ### Uninstalling
-If you run `home-manager uninstall`, all programs and config you've setup with `home-manager` will be removed instantly.  
+If you run `home-manager uninstall`, all programs and config you've setup with `home-manager` will be removed instantly.
 You can reinstall simply by running `nix run ~/.config/home-manager -- switch --impure` again.
 
 ## Development and Customization
@@ -58,7 +58,7 @@ You can reinstall simply by running `nix run ~/.config/home-manager -- switch --
 
 > Make sure you have `docker` installed and enabled before running the following steps.
 
-Before committing to managing your environment with nix, you can test the changes with docker.  
+Before committing to managing your environment with nix, you can test the changes with docker.
 To do so, first clone this repository and set it as your working directory.
 
 From the repo root:
