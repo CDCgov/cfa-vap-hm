@@ -5,7 +5,7 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Principles
@@ -16,14 +16,16 @@ Nix and `home-manager` are declarative rather than imperative.
 - You might think Nix (and `home-manager` by extension) as a virtual environment manager for your whole user-space.
 
 ## Project Goals
-Our existing tool, [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap), aim to have an automated, repeatable, and maintainable solution that would configure a CFA VAP user's development environment. The goal here is the same.
 
-`cfa-vap-hm` aims to improve on `cfa-vap-autoconfig` by being:
+To provide an automated, repeatable, and maintainable way to configure every CFA VAP user's development environment.
+
+ `cfa-vap-hm` improves on our previous solution, [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap), by being:
 
 - simpler, in terms of maintenance and installation
 - more customizable
 - [declaratively reproducible](https://en.wikipedia.org/wiki/Declarative_programming)
 - (somewhat) platform agnostic
+
 
 ## Installation
 
@@ -42,15 +44,15 @@ To install `cfa-vap-hm`, simply:
 
 ### Installing for non-`systemd` environments
 > [!NOTE]
-> You'll need systemd enabled for to use the determinate installer (recommended).
+> You'll need systemd enabled for to use the determinate installer (recommended).  
 > If you don't have systemd, use upstream nix daemonless:
 > 1. `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon`
 > 1. `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 > 1. Add to your shell profile: `PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH`
 
 ### Uninstalling
-If you run `home-manager uninstall`, all programs and config you've setup with `home-manager` will be removed instantly.
-You can reinstall simply by running `nix run ~/.config/home-manager -- switch --impure` again.
+- If you run `home-manager uninstall`, all programs and config you've setup with `home-manager` will be removed instantly.  
+- You can reinstall simply by running `nix run ~/.config/home-manager -- switch --impure` again.
 
 ## Development and Customization
 
@@ -65,9 +67,6 @@ From the repo root:
 - `docker build -t vap-hm . && docker run -it --rm -v "$PWD/home.nix:/home/vapuser/.config/home-manager/home.nix" vap-hm`
     - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
     - This allows you to have a fully fresh session each time without modifying your existing system just yet.
-
-Ask yourself:
-- "Do commands work as I'd expect?"
 
 ### Customizing your config
 
@@ -98,6 +97,7 @@ If you want to make a config tailored to your own use-cases but don't think it's
 > With thanks to:
 > - https://zenoix.com/posts/get-started-with-nix-and-home-manager/#what-is-home-manager
 > - https://www.chrisportela.com/posts/home-manager-flake/
+> - [Gio's home-manager config](https://github.com/giomrella/nix-home-manager)
 
 ## Disclaimers
 
