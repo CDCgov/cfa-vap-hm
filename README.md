@@ -5,7 +5,7 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Principles
@@ -17,7 +17,7 @@ Nix and `home-manager` are declarative rather than imperative.
 
 ## Project Goals
 
-To provide an automated, repeatable, and maintainable way to configure every CFA VAP user's development environment.
+To provide an automated, repeatable, and maintainable way to configure every CFA VAP user's development environment.  
 
  `cfa-vap-hm` improves on our previous solution, [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap), by being:
 
@@ -30,7 +30,7 @@ To provide an automated, repeatable, and maintainable way to configure every CFA
 ## Installation
 
 > [!TIP]
-> Uninstalling `home-manager` (and reverting anything you've done with it) is as simple as running `home-manager uninstall`.
+> Uninstalling `home-manager` (and reverting anything you've done with it) is as simple as running `home-manager uninstall`.  
 > - However, if you want to try it in a sandbox first, see: [prototyping with docker](#prototyping-with-docker).
 
 To install `cfa-vap-hm`, simply:
@@ -44,8 +44,8 @@ To install `cfa-vap-hm`, simply:
 
 ### Installing for non-`systemd` environments
 > [!NOTE]
-> You'll need systemd enabled for to use the determinate installer (recommended).
-> If you don't have systemd, use upstream nix daemonless:
+> You'll need systemd enabled for to use the determinate installer (recommended).  
+> If you don't have systemd, use upstream nix daemonless:  
 > 1. `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon`
 > 1. `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 > 1. Add to your shell profile: `PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH`
@@ -60,7 +60,7 @@ To install `cfa-vap-hm`, simply:
 
 > Make sure you have `docker` installed and enabled before running the following steps.
 
-Before committing to managing your environment with nix, you can test the changes with docker.
+Before committing to managing your environment with nix, you can test the changes with docker.  
 To do so, first clone this repository and set it as your working directory.
 
 From the repo root:
