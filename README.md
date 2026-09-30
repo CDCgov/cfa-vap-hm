@@ -13,7 +13,7 @@ Nix and `home-manager` are declarative rather than imperative.
 - This means you declare what setup your system should have, not what it should do to get there.
 - If you're familiar with `uv` for python:
     - Nix uses `flake.nix` (akin to `pyproject.toml`) and `flake.lock` (akin to `uv.lock`) to maintain reproducibility.
-- You might think Nix (and `home-manager` by extension) as a virtual environment manager for your whole user-space.
+- You might think of Nix (and `home-manager` by extension) as a virtual environment manager for your whole user-space.
 
 ## Project Goals
 
