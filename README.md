@@ -5,28 +5,32 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Principles
-Nix and `home-manager` are declarative rather than imperative.  
+Nix and `home-manager` are declarative rather than imperative.
 - This means you declare what setup your system should have, not what it should do to get there.
 - If you're familiar with `uv` for python:
     - Nix uses `flake.nix` (akin to `pyproject.toml`) and `flake.lock` (akin to `uv.lock`) to maintain reproducibility.
 - You might think Nix (and `home-manager` by extension) as a virtual environment manager for your whole user-space.
 
 ## Project Goals
-To improve upon [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap) with the following principles in mind:
 
-- Simplicity, in terms of maintenance and installation
-- Extensibility and customization
-- [Declarative reproducibility](https://en.wikipedia.org/wiki/Declarative_programming)
-- Platform agnosticisty
+To provide an automated, repeatable, and maintainable way to configure every CFA VAP user's development environment.  
+
+ `cfa-vap-hm` improves on our previous solution, [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap), by being:
+
+- simpler, in terms of maintenance and installation
+- more customizable
+- [declaratively reproducible](https://en.wikipedia.org/wiki/Declarative_programming)
+- (somewhat) platform agnostic
+
 
 ## Installation
 
 > [!TIP]
-> Uninstalling `home-manager` (and reverting anything you've done with it) is as simple as running `home-manager uninstall`.
+> Uninstalling `home-manager` (and reverting anything you've done with it) is as simple as running `home-manager uninstall`.  
 > - However, if you want to try it in a sandbox first, see: [prototyping with docker](#prototyping-with-docker).
 
 To install `cfa-vap-hm`, simply:
@@ -40,16 +44,15 @@ To install `cfa-vap-hm`, simply:
 
 ### Installing for non-`systemd` environments
 > [!NOTE]
-> You'll need systemd enabled for to use the determinate installer (recommended).
-> If you don't have systemd, use upstream nix daemonless:
+> You'll need systemd enabled for to use the determinate installer (recommended).  
+> If you don't have systemd, use upstream nix daemonless:  
 > 1. `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon`
 > 1. `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 > 1. Add to your shell profile: `PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH`
 
 ### Uninstalling
-Want to uninstall home-manager and everything you've done with it seamlessly?
-- `home-manager uninstall`
-- All programs and config you've setup with `home-manager` will be removed instantly.
+- If you run `home-manager uninstall`, all programs and config you've setup with `home-manager` will be removed instantly.
+- You can reinstall simply by running `nix run ~/.config/home-manager -- switch --impure` again.
 
 ## Development and Customization
 
@@ -64,9 +67,6 @@ From the repo root:
 - `docker build -t vap-hm . && docker run -it --rm -v "$PWD/home.nix:/home/vapuser/.config/home-manager/home.nix" vap-hm`
     - This builds and jumps into a development docker container with `home-manager` installed and initialized, using `flake.nix` and `home.nix` defined here.
     - This allows you to have a fully fresh session each time without modifying your existing system just yet.
-
-Ask yourself:
-- "Do commands work as I'd expect?"
 
 ### Customizing your config
 
@@ -97,6 +97,11 @@ If you want to make a config tailored to your own use-cases but don't think it's
 > With thanks to:
 > - https://zenoix.com/posts/get-started-with-nix-and-home-manager/#what-is-home-manager
 > - https://www.chrisportela.com/posts/home-manager-flake/
+> - [Gio's home-manager config](https://github.com/giomrella/nix-home-manager)
+
+## Utility Scripts
+We include some utility scripts outside of the `home-manager` ecosystem for convenience.
+- See [utils/](./utils/)
 
 ## Disclaimers
 
