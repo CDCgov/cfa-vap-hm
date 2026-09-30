@@ -5,7 +5,7 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Principles
@@ -44,14 +44,14 @@ To install `cfa-vap-hm`, simply:
 
 ### Installing for non-`systemd` environments
 > [!NOTE]
-> You'll need systemd enabled for to use the determinate installer (recommended).  
+> You'll need systemd enabled for to use the determinate installer (recommended).
 > If you don't have systemd, use upstream nix daemonless:
 > 1. `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon`
 > 1. `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 > 1. Add to your shell profile: `PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH`
 
 ### Uninstalling
-- If you run `home-manager uninstall`, all programs and config you've setup with `home-manager` will be removed instantly.  
+- If you run `home-manager uninstall`, all programs and config you've setup with `home-manager` will be removed instantly.
 - You can reinstall simply by running `nix run ~/.config/home-manager -- switch --impure` again.
 
 ## Development and Customization
@@ -98,6 +98,10 @@ If you want to make a config tailored to your own use-cases but don't think it's
 > - https://zenoix.com/posts/get-started-with-nix-and-home-manager/#what-is-home-manager
 > - https://www.chrisportela.com/posts/home-manager-flake/
 > - [Gio's home-manager config](https://github.com/giomrella/nix-home-manager)
+
+## Utility Scripts
+We include some utility scripts outside of the `home-manager` ecosystem for convenience.
+- See [utils/](./utils/)
 
 ## Disclaimers
 
