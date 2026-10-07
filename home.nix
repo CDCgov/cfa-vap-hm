@@ -109,6 +109,7 @@
     # Basics
     btop # system resource manager
     cowsay # a cow that says
+    dysk # a better df (disk management)
     eza # fancy ls alternative
     fd # file finder
     git-filter-repo # remove sensitive data
