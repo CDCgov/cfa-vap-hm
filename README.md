@@ -8,15 +8,7 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 > To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
-## Principles
-Nix and `home-manager` are declarative rather than imperative.
-- This means you declare what setup your system should have, not what it should do to get there.
-- If you're familiar with `uv` for python:
-    - Nix uses `flake.nix` (akin to `pyproject.toml`) and `flake.lock` (akin to `uv.lock`) to maintain reproducibility.
-- You might think of Nix (and `home-manager` by extension) as a virtual environment manager for your whole user-space.
-
 ## Project Goals
-
 To provide an automated, repeatable, and maintainable way to configure every CFA VAP user's development environment.  
 
  `cfa-vap-hm` improves on our previous solution, [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap), by being:
@@ -26,6 +18,12 @@ To provide an automated, repeatable, and maintainable way to configure every CFA
 - [declaratively reproducible](https://en.wikipedia.org/wiki/Declarative_programming)
 - (somewhat) platform agnostic
 
+### Principles
+Nix and `home-manager` are declarative rather than imperative.
+- This means you declare what setup your system should have, not what it should do to get there.
+- If you're familiar with `uv` for python:
+    - Nix uses `flake.nix` (akin to `pyproject.toml`) and `flake.lock` (akin to `uv.lock`) to maintain reproducibility.
+- You might think of Nix (and `home-manager` by extension) as a virtual environment manager for your whole user-space.
 
 ## Installation
 
