@@ -124,7 +124,6 @@
     # GUI apps and IDEs
     emacs
     neovim-unwrapped
-    dbeaver-bin
 
     # Dev/languages
     cargo
@@ -134,7 +133,6 @@
     gcc # includes gcc and g++
     gnumake
     pkg-config # discovers library compiler and linker flags
-    julia
     lazydocker
     nixfmt
     nodejs
