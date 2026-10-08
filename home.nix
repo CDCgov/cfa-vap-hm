@@ -119,14 +119,11 @@
     lolcat # rainbow cats
     fastfetch # gives you system info
     tree # filesystem visualization
-    trufflehog # secrets detection
     xclip
 
     # GUI apps and IDEs
     emacs
-    nautilus # gui file manager
     neovim-unwrapped
-    ungoogled-chromium # chromium without google tracking
     dbeaver-bin
 
     # Dev/languages
