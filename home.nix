@@ -109,6 +109,7 @@
     # Basics
     btop # system resource manager
     cowsay # a cow that says
+    dysk # a better df (disk management)
     eza # fancy ls alternative
     fd # file finder
     git-filter-repo # remove sensitive data
@@ -118,15 +119,11 @@
     lolcat # rainbow cats
     fastfetch # gives you system info
     tree # filesystem visualization
-    trufflehog # secrets detection
     xclip
 
     # GUI apps and IDEs
     emacs
-    nautilus # gui file manager
     neovim-unwrapped
-    ungoogled-chromium # chromium without google tracking
-    dbeaver-bin
 
     # Dev/languages
     cargo
@@ -136,7 +133,6 @@
     gcc # includes gcc and g++
     gnumake
     pkg-config # discovers library compiler and linker flags
-    julia
     lazydocker
     nixfmt
     nodejs
