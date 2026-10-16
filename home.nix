@@ -34,7 +34,6 @@
     home-manager.enable = true;
 
     bat.enable = true; # rich cat
-    firefox.enable = true;
     git = {
       enable = true;
       settings = {
@@ -127,7 +126,6 @@
 
     # Dev/languages
     cargo
-    cargo-binstall # binary installs for rust
     docker-compose
     docker-client
     gcc # includes gcc and g++
