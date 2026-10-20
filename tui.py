@@ -34,9 +34,12 @@ MANIFEST_REL = Path("modules/manifest.json")
 USER_STATE_REL = Path("modules/user-state.json")
 DEFAULT_STATE_REL = Path("modules/state.json")
 
-KEYS_HELP = (
-    "j/k/arrows: move  Space: toggle  s: save  x: defaults  a: apply & quit  q: quit"
-)
+KEYS_HELP = "j/k/arrows: move  Space: toggle  s: save  x: defaults  "
+
+# The apply-and-quit key is the primary action, so it is shown in its own
+# brighter segment; the remaining keys stay dim.
+KEYS_HELP_PRIMARY = "a: apply & quit"
+KEYS_HELP_TAIL = "  q: quit"
 
 # curses colour-pair ids 1-4 are used by the chrome; the rainbow art's shades
 # start here.
@@ -165,14 +168,18 @@ class Config:
         for group in groups:
             for key in ("id", "title", "description", "default", "options"):
                 if key not in group:
-                    raise ManifestError(f"group {group.get('id', group)!r} is missing '{key}'")
+                    raise ManifestError(
+                        f"group {group.get('id', group)!r} is missing '{key}'"
+                    )
             if not isinstance(group["options"], list) or not group["options"]:
                 raise ManifestError(f"group '{group['id']}' declares no options")
             option_ids = [option["id"] for option in group["options"]]
             if len(option_ids) != len(set(option_ids)):
                 raise ManifestError(f"group '{group['id']}' has duplicate option ids")
             default = group["default"]
-            if not isinstance(default, list) or any(i not in option_ids for i in default):
+            if not isinstance(default, list) or any(
+                i not in option_ids for i in default
+            ):
                 raise ManifestError(
                     f"group '{group['id']}': default must be a list within {option_ids}"
                 )
@@ -200,7 +207,9 @@ class Config:
         for group in self.groups:
             option_ids = [option["id"] for option in group["options"]]
             selection = raw.get(group["id"], group["default"])
-            if not isinstance(selection, list) or not all(isinstance(i, str) and i in option_ids for i in selection):
+            if not isinstance(selection, list) or not all(
+                isinstance(i, str) and i in option_ids for i in selection
+            ):
                 selection = group["default"]
             state[group["id"]] = [i for i in option_ids if i in selection]
         return state
@@ -235,7 +244,9 @@ class Config:
     def apply_assignment(self, assignment: str) -> str:
         """Apply a `GROUP=OPTION[,OPTION]` assignment from --set."""
         if "=" not in assignment:
-            raise ManifestError(f"--set expects GROUP=OPTION[,OPTION...], got {assignment!r}")
+            raise ManifestError(
+                f"--set expects GROUP=OPTION[,OPTION...], got {assignment!r}"
+            )
         group_id, _, value = assignment.partition("=")
         group = self.group(group_id.strip())
         option_ids = [option["id"] for option in group["options"]]
@@ -321,7 +332,9 @@ def describe(cfg: Config) -> str:
     else:
         origin = "manifest defaults"
     dirty = " - unsaved changes" if cfg.dirty else ""
-    lines.append(f"state: {(cfg.state_source or DEFAULT_STATE_REL).as_posix()} ({origin}){dirty}")
+    lines.append(
+        f"state: {(cfg.state_source or DEFAULT_STATE_REL).as_posix()} ({origin}){dirty}"
+    )
     return "\n".join(lines)
 
 
@@ -402,7 +415,11 @@ def tui_main(stdscr, cfg: Config) -> str | None:
         index = 0
         while index < len(cells) and column < width - 1:
             colour = cells[index][1]
-            attr = rainbow_pairs.get(colour, selected_attr) if colour is not None else selected_attr
+            attr = (
+                rainbow_pairs.get(colour, selected_attr)
+                if colour is not None
+                else selected_attr
+            )
             run = ""
             while index < len(cells) and cells[index][1] == colour:
                 run += cells[index][0]
@@ -428,8 +445,29 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             rows.append(("blank",))
             rows.append(("header", group))
             rows.append(("blank",))
-            for option in group["options"]:
-                rows.append(("option", group, option))
+            if group.get("id") == "options":
+                defaults = set(group.get("default", []))
+                first_default = None
+                for idx, opt in enumerate(group["options"]):
+                    if opt["id"] in defaults:
+                        first_default = idx
+                        break
+                first_nondefault = None
+                for idx, opt in enumerate(group["options"]):
+                    if opt["id"] not in defaults:
+                        first_nondefault = idx
+                        break
+                for i, opt in enumerate(group["options"]):
+                    if first_default == i:
+                        rows.append(("separator",))
+                        rows.append(("subtitle", "Core tools (on by default)"))
+                    if first_nondefault == i:
+                        rows.append(("separator",))
+                        rows.append(("subtitle", "Optional (off by default)"))
+                    rows.append(("option", group, opt))
+            else:
+                for option in group["options"]:
+                    rows.append(("option", group, option))
         option_rows = [index for index, row in enumerate(rows) if row[0] == "option"]
         if cursor not in option_rows:
             cursor = option_rows[0]
@@ -448,7 +486,9 @@ def tui_main(stdscr, cfg: Config) -> str | None:
         title_width = max((len(line) for line in title), default=0)
         title_height = len(title)
         banner_fits = (
-            title_width + 2 <= width and height - title_height >= 14 and title_height > 1
+            title_width + 2 <= width
+            and height - title_height >= 14
+            and title_height > 1
         )
         if banner_fits:
             for offset, line in enumerate(title):
@@ -483,15 +523,43 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             y = list_top + offset
             if row[0] == "blank":
                 continue
+            if row[0] == "separator":
+                sep = "─" * (width - list_x)
+                put(y, list_x, sep[:list_limit], curses.A_DIM)
+                continue
+            if row[0] == "subtitle":
+                put(
+                    y,
+                    list_x + 2,
+                    row[1][: list_limit - 2],
+                    curses.A_DIM | curses.A_BOLD,
+                )
+                continue
             if row[0] == "header":
                 group = row[1]
-                put(y, list_x, f" {group['title']} - {group['description']}"[:list_limit], header)
+                put(
+                    y,
+                    list_x,
+                    f" {group['title']} - {group['description']}"[:list_limit],
+                    header,
+                )
                 continue
             _, group, option = row
             chosen = cfg.is_selected(group, option["id"])
             mark = "[x]" if chosen else "[ ]"
-            attr = cursor_attr if index == cursor else (selected_attr if chosen else curses.A_DIM)
-            put(y, list_x + 2, f"{mark} {option['title']:<17} {option['description']}"[: list_limit - 2], attr)
+            attr = (
+                cursor_attr
+                if index == cursor
+                else (selected_attr if chosen else curses.A_DIM)
+            )
+            put(
+                y,
+                list_x + 2,
+                f"{mark} {option['title']:<17} {option['description']}"[
+                    : list_limit - 2
+                ],
+                attr,
+            )
 
         _, group, option = rows[cursor]
         put(
@@ -507,6 +575,13 @@ def tui_main(stdscr, cfg: Config) -> str | None:
         else:
             put(height - 2, 0, "Saved. Run `hms` after saving to apply.", curses.A_DIM)
         put(height - 1, 0, KEYS_HELP, curses.A_DIM)
+        x = len(KEYS_HELP)
+        if cfg.dirty and color_supported:
+            primary_attr = curses.color_pair(2) | curses.A_DIM
+        else:
+            primary_attr = curses.A_DIM
+        put(height - 1, x, KEYS_HELP_PRIMARY, primary_attr)
+        put(height - 1, x + len(KEYS_HELP_PRIMARY), KEYS_HELP_TAIL, curses.A_DIM)
         stdscr.refresh()
 
     rebuild()
@@ -551,7 +626,9 @@ def main() -> int:
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument("--show", action="store_true", help="print the selection and exit")
+    parser.add_argument(
+        "--show", action="store_true", help="print the selection and exit"
+    )
     parser.add_argument(
         "--set",
         dest="assignments",

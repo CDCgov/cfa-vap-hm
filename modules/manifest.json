@@ -66,7 +66,7 @@
         {
           "id": "rust",
           "title": "Rust",
-          "description": "rustup + cargo, rustc, rustfmt, clippy",
+          "description": "rustup-managed toolchain",
           "path": "rust.nix"
         },
         {
@@ -74,18 +74,6 @@
           "title": "Julia",
           "description": "julia-bin",
           "path": "julia.nix"
-        },
-        {
-          "id": "firefox",
-          "title": "Firefox",
-          "description": "Mozilla Firefox web browser",
-          "path": "firefox.nix"
-        },
-        {
-          "id": "code",
-          "title": "VS Code",
-          "description": "Visual Studio Code editor",
-          "path": "code.nix"
         },
         {
           "id": "sql",

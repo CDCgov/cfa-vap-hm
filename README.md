@@ -95,7 +95,7 @@ The environment is split into a small core ([home.nix](./home.nix)) plus optiona
     - `julia` - julia-bin (off by default)
     - `azure` - azure-cli, azcopy, blobfuse
     - `containers` - docker-compose, podman, lazydocker
-    - `firefox`, `code`, `sql` (dbeaver/psql/duckdb) - off by default
+    - `sql` (dbeaver/psql/duckdb) - off by default
     - `cli-tools` - lazygit, nushell (off by default)
 - `modules/state.json` - the default selection every clone starts with (tracked)
 - `modules/user-state.json` - your personal overrides (gitignored); the TUI writes here, and it wins over `state.json` when present

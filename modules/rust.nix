@@ -1,15 +1,11 @@
 # Rust toolchain; an extra toggled via modules/manifest.json
 # (toggle with `hmt` / tui.py).
-# rustup manages the toolchain (rustc, cargo, rustfmt, clippy); the
-# standalone cargo/rustc also come along so a fresh shell works without
-# running `rustup default` first.
+# rustup manages the toolchain and provides the cargo/rustc/rustfmt/clippy
+# shims, so the standalone packages are intentionally not installed (they would
+# collide with rustup's shims in the profile).
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
     rustup
-    cargo
-    rustc
-    rustfmt
-    clippy
   ];
 }
