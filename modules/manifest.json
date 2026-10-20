@@ -3,7 +3,7 @@
     {
       "id": "options",
       "title": "Options",
-      "description": "Select what you'd like to install; home-manager will remember for next time.",
+      "description": "Select what to install.",
       "default": [
         "omz",
         "python",
@@ -18,13 +18,13 @@
         {
           "id": "omz",
           "title": "oh-my-zsh",
-          "description": "oh-my-zsh theme (lambda) with azure/docker/gh/git/podman plugins",
+          "description": "oh-my-zsh theme with azure/docker/gh/git/podman plugins",
           "path": "omz.nix"
         },
         {
           "id": "python",
           "title": "Python (uv)",
-          "description": "uv python manager (python313 itself is in the core)",
+          "description": "uv python manager",
           "path": "python.nix"
         },
         {
@@ -48,19 +48,19 @@
         {
           "id": "r",
           "title": "R",
-          "description": "R with pak + languageserver and ~/.Rprofile (modules/R.nix)",
+          "description": "R with pak + languageserver and ~/.Rprofile",
           "path": "R.nix"
         },
         {
           "id": "azure",
           "title": "Azure",
-          "description": "azure-cli, azcopy, blobfuse and the bf alias (modules/azure.nix)",
+          "description": "azure-cli, azcopy, blobfuse and the bf alias",
           "path": "azure.nix"
         },
         {
           "id": "containers",
           "title": "Containers",
-          "description": "docker-compose, podman, lazydocker and docker aliases (modules/containers.nix)",
+          "description": "docker-compose, podman, lazydocker and docker aliases",
           "path": "containers.nix"
         },
         {
@@ -72,31 +72,31 @@
         {
           "id": "julia",
           "title": "Julia",
-          "description": "julia-bin (juliaup is not packaged in this nixpkgs)",
+          "description": "julia-bin",
           "path": "julia.nix"
         },
         {
           "id": "firefox",
           "title": "Firefox",
-          "description": "Mozilla Firefox web browser (off by default)",
+          "description": "Mozilla Firefox web browser",
           "path": "firefox.nix"
         },
         {
           "id": "code",
           "title": "VS Code",
-          "description": "Visual Studio Code editor (off by default)",
+          "description": "Visual Studio Code editor",
           "path": "code.nix"
         },
         {
           "id": "sql",
           "title": "SQL tools",
-          "description": "dbeaver, psql (postgresql), duckdb (off by default)",
+          "description": "dbeaver, psql (postgresql), duckdb",
           "path": "sql.nix"
         },
         {
           "id": "cli-tools",
           "title": "Extra CLI tools",
-          "description": "lazygit, nushell (off by default)",
+          "description": "lazygit, nushell",
           "path": "cli-tools.nix"
         }
       ]

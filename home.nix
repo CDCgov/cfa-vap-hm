@@ -71,7 +71,7 @@
       shellAliases = {
         cb = "xclip -sel clipboard"; # pipe to this to add the command to the clipboard
         hms = "home-manager switch --flake ~/.config/home-manager/ --impure"; # switch from anywhere
-        hmt = "python3 $HOME/.config/home-manager/utils/module_tui.py"; # toggle home-manager modules (TUI)
+        hmt = "python3 $HOME/.config/home-manager/tui.py"; # toggle home-manager modules (TUI)
       };
       initContent = ''
         echo "Welcome to the CFA VAP. You are using zsh as managed by nix home-manager." | lolcat

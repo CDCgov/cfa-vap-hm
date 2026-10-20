@@ -8,14 +8,14 @@ overrides to the gitignored modules/user-state.json, which takes
 precedence (read by modules/selection.nix on the next switch).
 
 Interactive (zsh alias `hmt`):
-    ./utils/module_tui.py
+    ./tui.py
     # key `a` saves, runs `hms`, and exits - no need to quit first
 
 Scriptable:
-    ./utils/module_tui.py --show
-    ./utils/module_tui.py --set options=editors,omz
-    ./utils/module_tui.py --set options=r --apply
-    ./utils/module_tui.py --reset
+    ./tui.py --show
+    ./tui.py --set options=editors,omz
+    ./tui.py --set options=r --apply
+    ./tui.py --reset
 """
 
 from __future__ import annotations

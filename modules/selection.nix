@@ -5,7 +5,7 @@
 # - modules/state.json (tracked) holds the default selection every fresh
 #   clone starts with.
 # - modules/user-state.json (user-local, gitignored) optionally overrides
-#   the defaults per user; the TUI (utils/module_tui.py, alias `hmt`)
+#   the defaults per user; the TUI (tui.py, alias `hmt`)
 #   writes there. It takes precedence when present. Since the flake source
 #   never contains gitignored files, it is read through $HOME - this flake
 #   evaluates impurely anyway (see flake.nix).
