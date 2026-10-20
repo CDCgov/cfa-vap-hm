@@ -97,9 +97,10 @@ hmt   # or: python3 ~/.config/home-manager/utils/module_tui.py
 ```
 
 - `Up`/`Down` (or `j`/`k`) move, `Space` toggles, `s` saves, `x` resets to defaults, `q` quits.
+- Press `a` to save, run `hms`, and close the TUI - no need to quit first.
 - Exclusive groups always keep exactly one option selected; combo groups accept any subset.
-- Saving writes `modules/state.json`; run `hms` to apply it.
-- Non-interactive use: `python3 utils/module_tui.py --show`, `--set profile=lite`, `--set extras=r,azure`, `--reset`.
+- Saving writes `modules/state.json`; press `a` or run `hms` to apply it.
+- Non-interactive use: `python3 utils/module_tui.py --show`, `--set profile=lite`, `--set extras=r,azure --apply`, `--reset`.
 
 ### Submitting your own changes as PRs
 1. Open a new branch in your local `.config/home-manager` repository.

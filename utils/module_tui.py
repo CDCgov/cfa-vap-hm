@@ -8,11 +8,12 @@ modules/profiles.nix on the next switch.
 
 Interactive (zsh alias `hmt`):
     ./utils/module_tui.py
+    # key `a` saves, runs `hms`, and exits - no need to quit first
 
 Scriptable:
     ./utils/module_tui.py --show
     ./utils/module_tui.py --set profile=lite
-    ./utils/module_tui.py --set extras=r,azure
+    ./utils/module_tui.py --set extras=r,azure --apply
     ./utils/module_tui.py --reset
 """
 
@@ -22,6 +23,7 @@ import argparse
 import copy
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -30,7 +32,7 @@ MANIFEST_REL = Path("modules/manifest.json")
 STATE_REL = Path("modules/state.json")
 
 KEYS_HELP = (
-    "Up/Down or j/k: move   Space/Enter: toggle   s: save   x: defaults   q: quit"
+    "j/k/arrows: move  Space: toggle  s: save  x: defaults  a: apply & quit  q: quit"
 )
 
 
@@ -216,6 +218,43 @@ class Config:
         return " (note: run `git add modules/state.json` so the flake sees it)"
 
 
+def switch_command(repo: Path) -> list[str] | None:
+    """The `hms` alias as a command; None when no runner is on PATH."""
+    if shutil.which("home-manager"):
+        return ["home-manager", "switch", "--flake", f"{repo}/", "--impure"]
+    if shutil.which("nix"):
+        return ["nix", "run", str(repo), "--", "switch", "--impure"]
+    return None
+
+
+def apply_config(cfg: Config) -> int:
+    """Save the selection, run `hms` on the restored terminal, then exit."""
+    if cfg.dirty:
+        print(cfg.save())
+    command = switch_command(cfg.repo)
+    if command is None:
+        print(
+            "error: neither `home-manager` nor `nix` is on PATH - run `hms` yourself.",
+            file=sys.stderr,
+        )
+        return 1
+    print(f"Applying: {' '.join(command)}", flush=True)
+    try:
+        code = subprocess.call(command)
+    except KeyboardInterrupt:
+        print("\nInterrupted - the switch did not finish.", file=sys.stderr)
+        return 130
+    if code == 0:
+        print("Applied - your environment now matches modules/state.json.")
+        return 0
+    print(
+        f"home-manager switch failed (exit {code}). Your selection is still saved; "
+        "fix the error above and run `hms` to retry.",
+        file=sys.stderr,
+    )
+    return code if code > 0 else 1
+
+
 def describe(cfg: Config) -> str:
     lines = [f"repo: {cfg.repo}"]
     for group in cfg.groups:
@@ -234,16 +273,17 @@ def describe(cfg: Config) -> str:
     return "\n".join(lines)
 
 
-def run_tui(cfg: Config) -> None:
+def run_tui(cfg: Config) -> str | None:
+    """Run the interactive TUI; return "apply" when the user asked to apply."""
     import curses
 
     try:
-        curses.wrapper(tui_main, cfg)
+        return curses.wrapper(tui_main, cfg)
     except KeyboardInterrupt:
-        pass
+        return None
 
 
-def tui_main(stdscr, cfg: Config) -> None:
+def tui_main(stdscr, cfg: Config) -> str | None:
     import curses
 
     stdscr.keypad(True)
@@ -373,6 +413,10 @@ def tui_main(stdscr, cfg: Config) -> None:
             message = cfg.toggle(group["id"], option["id"])
         elif key == ord("s"):
             message = cfg.save()
+        elif key == ord("a"):
+            # Save + run `hms` happen after curses.wrapper has restored the
+            # terminal (see apply_config), so switch output is fully usable.
+            return "apply"
         elif key == ord("x"):
             cfg.reset()
             message = "Reset every group to its manifest default (not saved yet)."
@@ -399,6 +443,11 @@ def main() -> int:
         action="store_true",
         help="reset every group to its manifest default; implies saving",
     )
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="run home-manager switch (`hms`) afterwards and exit",
+    )
     args = parser.parse_args()
 
     try:
@@ -406,15 +455,18 @@ def main() -> int:
         if args.show:
             print(describe(cfg))
             return 0
-        if not args.assignments and not args.reset:
-            run_tui(cfg)
-            return 0
+        if not args.assignments and not args.reset and not args.apply:
+            outcome = run_tui(cfg)
+            return apply_config(cfg) if outcome == "apply" else 0
         for assignment in args.assignments:
             print(cfg.apply_assignment(assignment))
         if args.reset:
             cfg.reset()
             print("reset every group to its manifest default")
-        print(cfg.save())
+        if args.assignments or args.reset:
+            print(cfg.save())
+        if args.apply:
+            return apply_config(cfg)
         return 0
     except ManifestError as exc:
         print(f"error: {exc}", file=sys.stderr)

@@ -7,8 +7,9 @@ They are co-located here for conveneience.
 Run (from the top level of this repository):
 1. `python3 ./utils/module_tui.py` (or the `hmt` alias) to toggle home-manager modules interactively.
     - Mutually exclusive groups (e.g. the `full` vs `lite` profile) always keep one selection; `extras` accepts any combination.
-    - Saving writes `modules/state.json`, which `modules/profiles.nix` reads; apply with `hms`.
-2. Non-interactive variants: `--show`, `--set profile=lite`, `--set extras=r,azure`, `--reset`.
+    - Saving writes `modules/state.json`, which `modules/profiles.nix` reads.
+    - Press `a` to save, run `hms`, and close the TUI in one step.
+2. Non-interactive variants: `--show`, `--set profile=lite`, `--set extras=r,azure --apply`, `--reset`.
 
 ## Drive Mounting scripts
 Run (from the top level of this repository):
