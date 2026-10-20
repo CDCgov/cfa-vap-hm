@@ -5,7 +5,7 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix) (the core) and the optional modules under [modules/](./modules/).  
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Project Goals
@@ -79,6 +79,27 @@ After you install `home-manager`, or while prototyping with docker:
 You can always repeat the low-risk [prototyping](#prototyping-with-docker) process before committing your own changes as an added layer of assurance.
 - Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system.
 - See: https://nix-community.github.io/home-manager/#sec-usage-rollbacks
+
+### Toggling optional modules (lite vs full)
+
+The environment is split into a small core ([home.nix](./home.nix)) plus optional modules under [modules/](./modules/) that you can switch on and off:
+
+- `modules/manifest.json` - declares what may be toggled and how groups behave:
+    - `profile` - **mutually exclusive**: `full` (default: GUI apps/IDEs, oh-my-zsh, dev toolchain) or `lite` (core essentials only)
+    - `extras` - any combination of `r`, `azure`, `containers` (or none)
+- `modules/state.json` - your current selection; safe to edit by hand
+- `modules/profiles.nix` - imports whatever `state.json` selects on the next switch
+
+Run the TUI to toggle interactively (zsh alias `hmt`):
+
+```sh
+hmt   # or: python3 ~/.config/home-manager/utils/module_tui.py
+```
+
+- `Up`/`Down` (or `j`/`k`) move, `Space` toggles, `s` saves, `x` resets to defaults, `q` quits.
+- Exclusive groups always keep exactly one option selected; combo groups accept any subset.
+- Saving writes `modules/state.json`; run `hms` to apply it.
+- Non-interactive use: `python3 utils/module_tui.py --show`, `--set profile=lite`, `--set extras=r,azure`, `--reset`.
 
 ### Submitting your own changes as PRs
 1. Open a new branch in your local `.config/home-manager` repository.

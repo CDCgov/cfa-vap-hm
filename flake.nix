@@ -33,7 +33,9 @@
             inherit pkgs;
             modules = [
               ./home.nix
-              ./modules/R.nix
+              # profiles.nix imports the modules selected in modules/state.json
+              # (manifest.json lists what may be selected; toggle with `hmt`)
+              ./modules/profiles.nix
             ];
             extraSpecialArgs = {
               inherit user homedir release;

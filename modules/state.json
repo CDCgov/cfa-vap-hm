@@ -1,0 +1,8 @@
+{
+  "profile": "full",
+  "extras": [
+    "r",
+    "azure",
+    "containers"
+  ]
+}

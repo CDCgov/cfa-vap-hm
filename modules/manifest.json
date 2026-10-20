@@ -1,0 +1,52 @@
+{
+  "groups": [
+    {
+      "id": "profile",
+      "title": "Profile",
+      "description": "Overall size of the environment (mutually exclusive - pick one)",
+      "exclusive": true,
+      "default": "full",
+      "options": [
+        {
+          "id": "full",
+          "title": "Full",
+          "description": "GUI apps and IDEs, oh-my-zsh, nushell, uv, dev toolchain",
+          "path": "profiles/full.nix"
+        },
+        {
+          "id": "lite",
+          "title": "Lite",
+          "description": "Core shell, git, tmux and CLI essentials from home.nix only",
+          "path": "profiles/lite.nix"
+        }
+      ]
+    },
+    {
+      "id": "extras",
+      "title": "Optional toolchains",
+      "description": "Independent add-ons - any combination, or none",
+      "exclusive": false,
+      "default": ["r", "azure", "containers"],
+      "options": [
+        {
+          "id": "r",
+          "title": "R",
+          "description": "R with pak + languageserver and ~/.Rprofile (modules/R.nix)",
+          "path": "R.nix"
+        },
+        {
+          "id": "azure",
+          "title": "Azure",
+          "description": "azure-cli, azcopy, blobfuse and the bf alias (modules/azure.nix)",
+          "path": "azure.nix"
+        },
+        {
+          "id": "containers",
+          "title": "Containers",
+          "description": "docker-compose, podman, lazydocker and docker aliases (modules/containers.nix)",
+          "path": "containers.nix"
+        }
+      ]
+    }
+  ]
+}
