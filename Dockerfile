@@ -33,7 +33,7 @@ ENV PATH=/home/vapuser/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH
 ENV USER="vapuser"
 
 # Copy relevant files into the container for home-manager to use
-# (copy modules/ as a directory so nested dirs like modules/profiles/ survive)
+# (copy directories wholesale so nested paths are preserved)
 COPY flake.lock /home/vapuser/.config/home-manager/
 COPY flake.nix /home/vapuser/.config/home-manager/
 COPY home.nix /home/vapuser/.config/home-manager/

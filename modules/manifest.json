@@ -1,33 +1,50 @@
 {
   "groups": [
     {
-      "id": "profile",
-      "title": "Profile",
-      "description": "Overall size of the environment (mutually exclusive - pick one)",
-      "exclusive": true,
-      "default": "full",
+      "id": "options",
+      "title": "Options",
+      "description": "Select what you'd like to install; home-manager will remember for next time.",
+      "default": [
+        "omz",
+        "python",
+        "editors",
+        "ai-tools",
+        "dev",
+        "r",
+        "azure",
+        "containers"
+      ],
       "options": [
         {
-          "id": "full",
-          "title": "Full",
-          "description": "GUI apps and IDEs, oh-my-zsh, nushell, uv, dev toolchain",
-          "path": "profiles/full.nix"
+          "id": "omz",
+          "title": "oh-my-zsh",
+          "description": "oh-my-zsh theme (lambda) with azure/docker/gh/git/podman plugins",
+          "path": "omz.nix"
         },
         {
-          "id": "lite",
-          "title": "Lite",
-          "description": "Core shell, git, tmux and CLI essentials from home.nix only",
-          "path": "profiles/lite.nix"
-        }
-      ]
-    },
-    {
-      "id": "extras",
-      "title": "Optional toolchains",
-      "description": "Independent add-ons - any combination, or none",
-      "exclusive": false,
-      "default": ["r", "azure", "containers"],
-      "options": [
+          "id": "python",
+          "title": "Python (uv)",
+          "description": "uv python manager (python313 itself is in the core)",
+          "path": "python.nix"
+        },
+        {
+          "id": "editors",
+          "title": "Editors",
+          "description": "emacs, neovim",
+          "path": "editors.nix"
+        },
+        {
+          "id": "ai-tools",
+          "title": "AI coding tools",
+          "description": "codex, opencode",
+          "path": "ai-tools.nix"
+        },
+        {
+          "id": "dev",
+          "title": "Dev toolchain",
+          "description": "gcc, gnumake, pkg-config, nodejs",
+          "path": "dev.nix"
+        },
         {
           "id": "r",
           "title": "R",
@@ -45,6 +62,42 @@
           "title": "Containers",
           "description": "docker-compose, podman, lazydocker and docker aliases (modules/containers.nix)",
           "path": "containers.nix"
+        },
+        {
+          "id": "rust",
+          "title": "Rust",
+          "description": "rustup + cargo, rustc, rustfmt, clippy",
+          "path": "rust.nix"
+        },
+        {
+          "id": "julia",
+          "title": "Julia",
+          "description": "julia-bin (juliaup is not packaged in this nixpkgs)",
+          "path": "julia.nix"
+        },
+        {
+          "id": "firefox",
+          "title": "Firefox",
+          "description": "Mozilla Firefox web browser (off by default)",
+          "path": "firefox.nix"
+        },
+        {
+          "id": "code",
+          "title": "VS Code",
+          "description": "Visual Studio Code editor (off by default)",
+          "path": "code.nix"
+        },
+        {
+          "id": "sql",
+          "title": "SQL tools",
+          "description": "dbeaver, psql (postgresql), duckdb (off by default)",
+          "path": "sql.nix"
+        },
+        {
+          "id": "cli-tools",
+          "title": "Extra CLI tools",
+          "description": "lazygit, nushell (off by default)",
+          "path": "cli-tools.nix"
         }
       ]
     }

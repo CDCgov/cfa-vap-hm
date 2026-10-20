@@ -23,9 +23,9 @@
 
   # Programs and pkgs:
 
-  # This file holds the *core* environment that every profile gets.
-  # Optional modules (full/lite profiles, R, Azure, containers) live in
-  # modules/ and are selected by modules/state.json - toggle them with `hmt`.
+  # This file holds the *core* environment. Optional extras (editors, dev
+  # toolchain, oh-my-zsh, R, Azure, containers, ...) live in modules/ and are
+  # selected by modules/state.json - toggle them with `hmt`.
 
   # Programs are preferrable to "pkgs" if they exist due to configurability;
   # However, there are far fewer software available as "programs"
@@ -67,8 +67,7 @@
       enableCompletion = true;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
-      # oh-my-zsh theming/plugins are part of the "full" profile:
-      # see modules/profiles/full.nix
+      # oh-my-zsh theming/plugins are an optional extra: see modules/omz.nix
       shellAliases = {
         cb = "xclip -sel clipboard"; # pipe to this to add the command to the clipboard
         hms = "home-manager switch --flake ~/.config/home-manager/ --impure"; # switch from anywhere
@@ -89,8 +88,8 @@
     };
 
   };
-  # Optional packages are declared in modules/ (profiles, R, Azure, ...)
-  # and merged in by modules/profiles.nix according to modules/state.json.
+  # Optional extras are declared in modules/ (editors, dev toolchain, R,
+  # Azure, ...) and merged in by modules/selection.nix per modules/state.json.
   # Think of the list below as things you could install with apt on ubuntu.
   home.packages = with pkgs; [
 
@@ -100,6 +99,7 @@
     dysk # a better df (disk management)
     eza # fancy ls alternative
     fd # file finder
+    figlet # ASCII-art banners (used by the `hmt` TUI title)
     git-filter-repo # remove sensitive data
     htop # legacy system resource manager
     jq # shell json parsing
@@ -109,13 +109,27 @@
     tree # filesystem visualization
     xclip
 
-    # Dev/languages (lint + repo tooling; heavy toolchains are the "full" profile)
+    # Dev/languages (lint + repo tooling; the heavy toolchain is the `dev` extra)
     nixfmt
     pre-commit
     python313 # note that uv is also installed in 'programs'; also runs `hmt`
     ruff # python formatter
     shellcheck # tool that checks and lints shell scripts
     shfmt # formats shell scripts; complements shellcheck
+
+    # Native libraries and development headers (Ubuntu's lib*-dev equivalents).
+    # Nix splits headers/pkg-config metadata into separate development outputs.
+    # This replicates the VS Code for R development guide.
+    curl
+    (lib.getDev curl)
+    openssl
+    (lib.getDev openssl)
+    libxml2
+    (lib.getDev libxml2)
+    fontconfig
+    (lib.getDev fontconfig)
+    cairo
+    (lib.getDev cairo)
   ];
 
 }

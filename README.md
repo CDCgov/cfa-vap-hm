@@ -80,15 +80,27 @@ You can always repeat the low-risk [prototyping](#prototyping-with-docker) proce
 - Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system.
 - See: https://nix-community.github.io/home-manager/#sec-usage-rollbacks
 
-### Toggling optional modules (lite vs full)
+### Toggling optional extras
 
-The environment is split into a small core ([home.nix](./home.nix)) plus optional modules under [modules/](./modules/) that you can switch on and off:
+The environment is split into a small core ([home.nix](./home.nix)) plus optional extras under [modules/](./modules/) that you can switch on and off independently:
 
-- `modules/manifest.json` - declares what may be toggled and how groups behave:
-    - `profile` - **mutually exclusive**: `full` (default: GUI apps/IDEs, oh-my-zsh, dev toolchain) or `lite` (core essentials only)
-    - `extras` - any combination of `r`, `azure`, `containers` (or none)
-- `modules/state.json` - your current selection; safe to edit by hand
-- `modules/profiles.nix` - imports whatever `state.json` selects on the next switch
+- `modules/manifest.json` - declares each extra and its module file:
+    - `omz` - oh-my-zsh theme + plugins
+    - `python` - uv python manager
+    - `editors` - emacs, neovim
+    - `ai-tools` - codex, opencode
+    - `dev` - gcc, gnumake, pkg-config, nodejs
+    - `r` - R with pak + languageserver
+    - `rust` - rustup + cargo, rustc, rustfmt, clippy (off by default)
+    - `julia` - julia-bin (off by default)
+    - `azure` - azure-cli, azcopy, blobfuse
+    - `containers` - docker-compose, podman, lazydocker
+    - `firefox`, `code`, `sql` (dbeaver/psql/duckdb) - off by default
+    - `cli-tools` - lazygit, nushell (off by default)
+- note: native development headers (curl, openssl, libxml2, fontconfig, cairo) live in the core `home.nix`, not as a toggle
+- `modules/state.json` - the default selection every clone starts with (tracked)
+- `modules/user-state.json` - your personal overrides (gitignored); the TUI writes here, and it wins over `state.json` when present
+- `modules/selection.nix` - reads `user-state.json` if present, else `state.json`, and imports the selected modules on the next switch
 
 Run the TUI to toggle interactively (zsh alias `hmt`):
 
@@ -96,11 +108,10 @@ Run the TUI to toggle interactively (zsh alias `hmt`):
 hmt   # or: python3 ~/.config/home-manager/utils/module_tui.py
 ```
 
-- `Up`/`Down` (or `j`/`k`) move, `Space` toggles, `s` saves, `x` resets to defaults, `q` quits.
+- `Up`/`Down` (or `j`/`k`) move, `Space` toggles an extra on/off, `s` saves, `x` resets to defaults, `q` quits.
 - Press `a` to save, run `hms`, and close the TUI - no need to quit first.
-- Exclusive groups always keep exactly one option selected; combo groups accept any subset.
 - Saving writes `modules/state.json`; press `a` or run `hms` to apply it.
-- Non-interactive use: `python3 utils/module_tui.py --show`, `--set profile=lite`, `--set extras=r,azure --apply`, `--reset`.
+- Non-interactive use: `python3 utils/module_tui.py --show`, `--set options=editors,omz`, `--set options=r --apply`, `--reset`.
 
 ### Submitting your own changes as PRs
 1. Open a new branch in your local `.config/home-manager` repository.

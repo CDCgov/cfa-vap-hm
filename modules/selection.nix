@@ -1,0 +1,70 @@
+# Decides which optional home-manager modules get imported.
+#
+# - modules/manifest.json (tracked) declares the selectable extras: each
+#   option maps to a module file under modules/.
+# - modules/state.json (tracked) holds the default selection every fresh
+#   clone starts with.
+# - modules/user-state.json (user-local, gitignored) optionally overrides
+#   the defaults per user; the TUI (utils/module_tui.py, alias `hmt`)
+#   writes there. It takes precedence when present. Since the flake source
+#   never contains gitignored files, it is read through $HOME - this flake
+#   evaluates impurely anyway (see flake.nix).
+# - Missing or invalid selections fall back to the group's default, so the
+#   config always evaluates.
+{
+  lib,
+  homedir ? "",
+  ...
+}:
+let
+  inherit (builtins)
+    all
+    elem
+    fromJSON
+    getAttr
+    hasAttr
+    isList
+    isString
+    pathExists
+    readFile
+    ;
+
+  manifest = fromJSON (readFile ./manifest.json);
+
+  defaultState = if pathExists ./state.json then fromJSON (readFile ./state.json) else { };
+
+  userStateFile = "${homedir}/.config/home-manager/modules/user-state.json";
+
+  useUserState = homedir != "" && pathExists userStateFile;
+
+  stateSource = if useUserState then "modules/user-state.json" else "modules/state.json";
+
+  state = if useUserState then fromJSON (readFile userStateFile) else defaultState;
+
+  # Validate one group's selection against the manifest; warn and fall back to
+  # the default when the state file holds something that can't be selected.
+  selectionOf =
+    group:
+    let
+      ids = map (option: option.id) group.options;
+      raw = if hasAttr group.id state then getAttr group.id state else group.default;
+      valid = isList raw && all (id: isString id && elem id ids) raw;
+    in
+    lib.warnIfNot valid "${stateSource}: invalid selection for group '${group.id}', using its default" (
+      if valid then raw else group.default
+    );
+
+  pathOf =
+    group: id:
+    (lib.findFirst (
+      option: option.id == id
+    ) (throw "modules/manifest.json: group '${group.id}' has no option '${id}'") group.options).path;
+
+  # The manifest-relative paths of every module the user has selected.
+  selectedPaths = lib.concatMap (group: map (pathOf group) (selectionOf group)) manifest.groups;
+in
+{
+  # Paths are relative to this file (modules/); the module system merges the
+  # imported modules with home.nix, so selection is purely additive.
+  imports = map (relative: ./. + "/${relative}") selectedPaths;
+}
