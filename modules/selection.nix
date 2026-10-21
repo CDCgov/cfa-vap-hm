@@ -13,6 +13,7 @@
 #   config always evaluates.
 {
   lib,
+  pkgs,
   homedir ? "",
   ...
 }:
@@ -62,9 +63,31 @@ let
 
   # The manifest-relative paths of every module the user has selected.
   selectedPaths = lib.concatMap (group: map (pathOf group) (selectionOf group)) manifest.groups;
+
+  modulesWithStatus = lib.concatMap (
+    group: map (option: option // { enabled = elem option.id (selectionOf group); }) group.options
+  ) manifest.groups;
+  enabledModules = builtins.filter (option: option.enabled) modulesWithStatus;
+  disabledModules = builtins.filter (option: !option.enabled) modulesWithStatus;
+  moduleLines = options: lib.concatMapStringsSep "\n" (option: "    • ${option.title}") options;
+  enabledSummary = ''
+      On (${toString (builtins.length enabledModules)})
+    ${if enabledModules == [ ] then "    (none)" else moduleLines enabledModules}
+  '';
+  disabledSummary = ''
+      Off (${toString (builtins.length disabledModules)})
+    ${if disabledModules == [ ] then "    (none)" else moduleLines disabledModules}
+  '';
 in
 {
   # Paths are relative to this file (modules/); the module system merges the
   # imported modules with home.nix, so selection is purely additive.
   imports = map (relative: ./. + "/${relative}") selectedPaths;
+
+  home.activation.moduleSummary = lib.hm.dag.entryAfter [ "switchMessage" ] ''
+    printf '\n── Module selection ──────────────────────\n\n'
+    printf '%s' ${lib.escapeShellArg enabledSummary} | ${pkgs.lolcat}/bin/lolcat --force --seed 1
+    printf '\n\033[90m%s\033[0m\n' ${lib.escapeShellArg disabledSummary}
+    printf '  Core environment: always on\n─────────────────────────────────────────\n'
+  '';
 }

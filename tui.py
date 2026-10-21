@@ -28,6 +28,7 @@ import re
 import shutil
 import subprocess
 import sys
+import textwrap
 from pathlib import Path
 
 MANIFEST_REL = Path("modules/manifest.json")
@@ -39,7 +40,16 @@ KEYS_HELP = "j/k/arrows: move  Space: toggle  s: save  x: defaults  "
 # The apply-and-quit key is the primary action, so it is shown in its own
 # brighter segment; the remaining keys stay dim.
 KEYS_HELP_PRIMARY = "a: apply & quit"
-KEYS_HELP_TAIL = "  q: quit"
+KEYS_HELP_TAIL = "  i: info  q: quit"
+
+SPLASH_SUMMARY = (
+    "A reproducible CFA VAP development environment, managed by Nix and Home Manager.",
+    "home.nix is always on. Toggle extra tools here; defaults are just a starting point.",
+    "Move with arrows or j/k; Space toggles. s saves, x restores defaults, and a saves, applies, and exits.",
+    "Your choices live in modules/user-state.json. Saving alone does not change your environment; apply with a or hms.",
+    "Customize home.nix or modules/. Home Manager generations let you roll back; home-manager uninstall removes the managed setup.",
+    "See README.md for installation, Docker trials, customization, and contributions.",
+)
 
 # curses colour-pair ids 1-4 are used by the chrome; the rainbow art's shades
 # start here.
@@ -140,7 +150,7 @@ def find_repo() -> Path:
     override = os.environ.get("HM_DIR")
     if override:
         return Path(override).expanduser().resolve()
-    here = Path(__file__).resolve().parent.parent
+    here = Path(__file__).resolve().parent
     if (here / MANIFEST_REL).is_file():
         return here
     return Path.home() / ".config" / "home-manager"
@@ -299,7 +309,7 @@ def apply_config(cfg: Config) -> int:
             file=sys.stderr,
         )
         return 1
-    print(f"Applying: {' '.join(command)}", flush=True)
+    print(lolcat(f"Applying: {' '.join(command)}\n"), end="", flush=True)
     try:
         code = subprocess.call(command)
     except KeyboardInterrupt:
@@ -437,6 +447,10 @@ def tui_main(stdscr, cfg: Config) -> str | None:
     top = 0
     message = ""
     pending_quit = False
+    state_home = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state")
+    splash_marker = state_home / "cfa-vap-hm" / "intro-seen"
+    show_info = not splash_marker.exists()
+    info_top = 0
 
     def rebuild() -> None:
         nonlocal rows, option_rows, cursor
@@ -473,7 +487,7 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             cursor = option_rows[0]
 
     def draw() -> None:
-        nonlocal top
+        nonlocal top, info_top, message
         stdscr.erase()
         height, width = stdscr.getmaxyx()
         if height < 8 or width < 46:
@@ -500,6 +514,26 @@ def tui_main(stdscr, cfg: Config) -> str | None:
         put(header_y, 0, f" {cfg.repo}", curses.A_DIM)
 
         list_top = header_y + 1
+        if show_info:
+            put(list_top, 1, "Welcome / Quick start", header)
+            info_lines = []
+            for paragraph in SPLASH_SUMMARY:
+                info_lines.extend(textwrap.wrap(paragraph, width=max(1, width - 4)))
+                info_lines.append("")
+            available = max(1, height - list_top - 4)
+            info_top = min(info_top, max(0, len(info_lines) - available))
+            for offset, line in enumerate(info_lines[info_top : info_top + available]):
+                put(list_top + 2 + offset, 2, line)
+            put(height - 1, 0, "i/Enter: tools  j/k/arrows: scroll  q: quit", curses.A_DIM)
+            stdscr.refresh()
+            try:
+                if not splash_marker.exists():
+                    splash_marker.parent.mkdir(parents=True, exist_ok=True)
+                    splash_marker.touch()
+            except OSError:
+                message = "Could not remember intro preference; check your state directory."
+            return
+
         # The choices fill the full width; the list scrolls if there are more
         # rows than fit above the footer.
         footer_top = height - 3
@@ -589,6 +623,24 @@ def tui_main(stdscr, cfg: Config) -> str | None:
         draw()
         key = stdscr.getch()
         if key == curses.KEY_RESIZE:
+            continue
+        if key == ord("i"):
+            show_info = not show_info
+            info_top = 0
+            pending_quit = False
+            continue
+        if show_info:
+            if key in (ord("q"), ord("Q")):
+                if cfg.dirty:
+                    show_info = False
+                else:
+                    break
+            elif key in (curses.KEY_ENTER, 10, 13, ord(" ")):
+                show_info = False
+            elif key in (curses.KEY_UP, ord("k")):
+                info_top = max(0, info_top - 1)
+            elif key in (curses.KEY_DOWN, ord("j")):
+                info_top += 1
             continue
         if key in (ord("q"), ord("Q")):
             if cfg.dirty and not pending_quit:

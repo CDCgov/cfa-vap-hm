@@ -22,12 +22,6 @@
           "path": "omz.nix"
         },
         {
-          "id": "python",
-          "title": "Python (uv)",
-          "description": "uv python manager",
-          "path": "python.nix"
-        },
-        {
           "id": "editors",
           "title": "Editors",
           "description": "emacs, neovim",
@@ -40,10 +34,10 @@
           "path": "ai-tools.nix"
         },
         {
-          "id": "dev",
-          "title": "Dev toolchain",
-          "description": "gcc, gnumake, pkg-config, nodejs",
-          "path": "dev.nix"
+          "id": "python",
+          "title": "Python (with uv)",
+          "description": "Python and uv python manager",
+          "path": "python.nix"
         },
         {
           "id": "r",
@@ -54,14 +48,20 @@
         {
           "id": "azure",
           "title": "Azure",
-          "description": "azure-cli, azcopy, blobfuse and the bf alias",
+          "description": "azure-cli, azcopy, blobfuse",
           "path": "azure.nix"
         },
         {
           "id": "containers",
           "title": "Containers",
-          "description": "docker-compose, podman, lazydocker and docker aliases",
+          "description": "docker-compose, podman, lazydocker and docker cli",
           "path": "containers.nix"
+        },
+        {
+          "id": "dev",
+          "title": "Dev toolchain",
+          "description": "gcc, gnumake, pkg-config, nodejs",
+          "path": "dev.nix"
         },
         {
           "id": "rust",

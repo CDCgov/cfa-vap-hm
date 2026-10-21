@@ -107,8 +107,13 @@ Run the TUI to toggle interactively (`python tui.py` or once running at least on
 hmt   # or: python3 ~/.config/home-manager/tui.py
 ```
 
+Or launch through the flake: `nix run . -- --tui` (from the repo), or
+`nix run ~/.config/home-manager -- --tui` from anywhere.
+Arguments after `--tui` are forwarded, e.g. `nix run . -- --tui --show`.
+
 - `Up`/`Down` (or `j`/`k`) move, `Space` toggles an extra on/off, `s` saves, `x` resets to defaults, `q` quits.
 - Press `a` to save, run `hms`, and close the TUI - no need to quit first.
+- A quick-start splash opens on your first interactive launch. Press `i` to toggle it anytime (Enter also closes it). This preference is stored under `${XDG_STATE_HOME:-~/.local/state}/cfa-vap-hm/`.
 - Saving writes `modules/state.json`; press `a` or run `hms` to apply it.
 - Non-interactive use: `python3 tui.py --show`, `--set options=editors,omz`, `--set options=r --apply`, `--reset`.
 
