@@ -5,7 +5,6 @@
       "title": "Options",
       "description": "Select what to install.",
       "default": [
-        "omz",
         "python",
         "editors",
         "ai-tools",
@@ -15,12 +14,6 @@
         "containers"
       ],
       "options": [
-        {
-          "id": "omz",
-          "title": "oh-my-zsh",
-          "description": "oh-my-zsh theme with azure/docker/gh/git/podman plugins",
-          "path": "omz.nix"
-        },
         {
           "id": "editors",
           "title": "Editors",
@@ -35,7 +28,7 @@
         },
         {
           "id": "python",
-          "title": "Python (with uv)",
+          "title": "Python",
           "description": "Python and uv python manager",
           "path": "python.nix"
         },
@@ -54,7 +47,7 @@
         {
           "id": "containers",
           "title": "Containers",
-          "description": "docker-compose, podman, lazydocker and docker cli",
+          "description": "docker-compose, podman, docker cli",
           "path": "containers.nix"
         },
         {
@@ -84,7 +77,7 @@
         {
           "id": "cli-tools",
           "title": "Extra CLI tools",
-          "description": "lazygit, nushell",
+          "description": "lazygit, lazydocker, nushell",
           "path": "cli-tools.nix"
         }
       ]

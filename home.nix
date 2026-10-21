@@ -24,7 +24,7 @@
   # Programs and pkgs:
 
   # This file holds the *core* environment. Optional extras (editors, dev
-  # toolchain, oh-my-zsh, R, Azure, containers, ...) live in modules/ and are
+  # toolchain, R, Azure, containers, ...) live in modules/ and are
   # selected by modules/state.json - toggle them with `hmt`.
 
   # Programs are preferrable to "pkgs" if they exist due to configurability;
@@ -67,7 +67,17 @@
       enableCompletion = true;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
-      # oh-my-zsh theming/plugins are an optional extra: see modules/omz.nix
+      oh-my-zsh = {
+        enable = true;
+        plugins = [
+          "azure"
+          "docker"
+          "gh"
+          "git"
+          "podman"
+        ];
+        theme = "lambda";
+      };
       shellAliases = {
         cb = "xclip -sel clipboard"; # pipe to this to add the command to the clipboard
         hms = "home-manager switch --flake ~/.config/home-manager/ --impure"; # switch from anywhere

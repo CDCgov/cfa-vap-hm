@@ -5,7 +5,6 @@
   home.packages = with pkgs; [
     docker-compose
     docker-client
-    lazydocker
     podman
   ];
 

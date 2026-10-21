@@ -85,7 +85,6 @@ You can always repeat the low-risk [prototyping](#prototyping-with-docker) proce
 The environment is split into a small core ([home.nix](./home.nix)) plus optional extras under [modules/](./modules/) that you can switch on and off independently:
 
 - `modules/manifest.json` - declares each extra and its module file:
-    - `omz` - oh-my-zsh theme + plugins
     - `python` - uv python manager
     - `editors` - emacs, neovim
     - `ai-tools` - codex, opencode
@@ -94,9 +93,9 @@ The environment is split into a small core ([home.nix](./home.nix)) plus optiona
     - `rust` - rustup + cargo, rustc, rustfmt, clippy (off by default)
     - `julia` - julia-bin (off by default)
     - `azure` - azure-cli, azcopy, blobfuse
-    - `containers` - docker-compose, podman, lazydocker
+    - `containers` - docker-compose, podman, docker cli
     - `sql` (dbeaver/psql/duckdb) - off by default
-    - `cli-tools` - lazygit, nushell (off by default)
+    - `cli-tools` - lazygit, lazydocker, nushell (off by default)
 - `modules/state.json` - the default selection every clone starts with (tracked)
 - `modules/user-state.json` - your personal overrides (gitignored); the TUI writes here, and it wins over `state.json` when present
 - `modules/selection.nix` - reads `user-state.json` if present, else `state.json`, and imports the selected modules on the next switch
@@ -113,9 +112,10 @@ Arguments after `--tui` are forwarded, e.g. `nix run . -- --tui --show`.
 
 - `Up`/`Down` (or `j`/`k`) move, `Space` toggles an extra on/off, `s` saves, `x` resets to defaults, `q` quits.
 - Press `a` to save, run `hms`, and close the TUI - no need to quit first.
+- The third tier, **Scripts (run once)**, runs last, after a successful Home Manager apply: install Docker Engine on Ubuntu or mount VAP drives (which offers a reset mode). Scripts show `(!)` when selected and `()` when unselected; all start unselected each launch. `s` does not save or run them. Scripts run interactively in the order listed, stopping on failure.
 - A quick-start splash opens on your first interactive launch. Press `i` to toggle it anytime (Enter also closes it). This preference is stored under `${XDG_STATE_HOME:-~/.local/state}/cfa-vap-hm/`.
 - Saving writes `modules/state.json`; press `a` or run `hms` to apply it.
-- Non-interactive use: `python3 tui.py --show`, `--set options=editors,omz`, `--set options=r --apply`, `--reset`.
+- Non-interactive use: `python3 tui.py --show`, `--set options=editors,python`, `--set options=r --apply`, `--reset`.
 
 ### Submitting your own changes as PRs
 1. Open a new branch in your local `.config/home-manager` repository.

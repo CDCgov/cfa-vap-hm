@@ -13,7 +13,7 @@ Interactive (zsh alias `hmt`):
 
 Scriptable:
     ./tui.py --show
-    ./tui.py --set options=editors,omz
+    ./tui.py --set options=editors,python
     ./tui.py --set options=r --apply
     ./tui.py --reset
 """
@@ -35,6 +35,26 @@ MANIFEST_REL = Path("modules/manifest.json")
 USER_STATE_REL = Path("modules/user-state.json")
 DEFAULT_STATE_REL = Path("modules/state.json")
 
+SCRIPTS = {
+    "id": "scripts",
+    "title": "Scripts (run once)",
+    "description": "Run last, after Home Manager applies.",
+    "options": [
+        {
+            "id": "docker",
+            "title": "Docker Engine",
+            "description": "Install Docker Engine (Ubuntu)",
+            "path": "utils/install_docker_engine.sh",
+        },
+        {
+            "id": "mount",
+            "title": "Mount VAP drives",
+            "description": "Mount network drives",
+            "path": "utils/mount_vap_drives.sh",
+        },
+    ],
+}
+
 KEYS_HELP = "j/k/arrows: move  Space: toggle  s: save  x: defaults  "
 
 # The apply-and-quit key is the primary action, so it is shown in its own
@@ -47,6 +67,7 @@ SPLASH_SUMMARY = (
     "home.nix is always on. Toggle extra tools here; defaults are just a starting point.",
     "Move with arrows or j/k; Space toggles. s saves, x restores defaults, and a saves, applies, and exits.",
     "Your choices live in modules/user-state.json. Saving alone does not change your environment; apply with a or hms.",
+    "Scripts run once after apply, outside Home Manager. They start unchecked and are never saved.",
     "Customize home.nix or modules/. Home Manager generations let you roll back; home-manager uninstall removes the managed setup.",
     "See README.md for installation, Docker trials, customization, and contributions.",
 )
@@ -165,6 +186,7 @@ class Config:
         self.state_source: Path | None = None
         self.saved = self._normalize(self._read_state())
         self.state = copy.deepcopy(self.saved)
+        self.selected_scripts: set[str] = set()
 
     def _read_manifest(self) -> list[dict]:
         path = self.repo / MANIFEST_REL
@@ -217,6 +239,9 @@ class Config:
         for group in self.groups:
             option_ids = [option["id"] for option in group["options"]]
             selection = raw.get(group["id"], group["default"])
+            # Older selections included oh-my-zsh, which is now always core.
+            if group["id"] == "options" and isinstance(selection, list):
+                selection = [item for item in selection if item != "omz"]
             if not isinstance(selection, list) or not all(
                 isinstance(i, str) and i in option_ids for i in selection
             ):
@@ -233,12 +258,20 @@ class Config:
 
     @property
     def dirty(self) -> bool:
-        return self.state != self.saved
+        return self.state != self.saved or bool(self.selected_scripts)
 
     def is_selected(self, group: dict, option_id: str) -> bool:
+        if group["id"] == "scripts":
+            return option_id in self.selected_scripts
         return option_id in self.state[group["id"]]
 
     def toggle(self, group_id: str, option_id: str) -> str:
+        if group_id == "scripts":
+            if option_id in self.selected_scripts:
+                self.selected_scripts.remove(option_id)
+            else:
+                self.selected_scripts.add(option_id)
+            return "Scripts run once on apply; selections are not saved."
         group = self.group(group_id)
         selected = self.state[group_id]
         if option_id in selected:
@@ -274,6 +307,7 @@ class Config:
         return f"{group['title']} -> {rendered}"
 
     def reset(self) -> None:
+        self.selected_scripts.clear()
         for group in self.groups:
             self.state[group["id"]] = list(group["default"])
 
@@ -300,7 +334,7 @@ def switch_command(repo: Path) -> list[str] | None:
 
 def apply_config(cfg: Config) -> int:
     """Save the selection, run `hms` on the restored terminal, then exit."""
-    if cfg.dirty:
+    if cfg.state != cfg.saved:
         print(cfg.save())
     command = switch_command(cfg.repo)
     if command is None:
@@ -317,6 +351,25 @@ def apply_config(cfg: Config) -> int:
         return 130
     if code == 0:
         print("Applied - your environment now matches your saved selection.")
+        for script in SCRIPTS["options"]:
+            if script["id"] not in cfg.selected_scripts:
+                continue
+            print(lolcat(f"Running: {script['description']}\n"), end="", flush=True)
+            try:
+                code = subprocess.call(
+                    ["bash", str(cfg.repo / script["path"])], cwd=cfg.repo
+                )
+            except OSError as exc:
+                print(f"Cannot run {script['path']}: {exc}", file=sys.stderr)
+                return 1
+            except KeyboardInterrupt:
+                return 130
+            if code != 0:
+                print(
+                    f"{script['path']} failed (exit {code}); remaining scripts were not run.",
+                    file=sys.stderr,
+                )
+                return code if code > 0 else 1
         return 0
     print(
         f"home-manager switch failed (exit {code}). Your selection is still saved; "
@@ -455,10 +508,11 @@ def tui_main(stdscr, cfg: Config) -> str | None:
     def rebuild() -> None:
         nonlocal rows, option_rows, cursor
         rows = []
-        for group in cfg.groups:
+        for group in [*cfg.groups, SCRIPTS]:
             rows.append(("blank",))
             rows.append(("header", group))
-            rows.append(("blank",))
+            if group["id"] != "scripts":
+                rows.append(("blank",))
             if group.get("id") == "options":
                 defaults = set(group.get("default", []))
                 first_default = None
@@ -480,6 +534,7 @@ def tui_main(stdscr, cfg: Config) -> str | None:
                         rows.append(("subtitle", "Optional (off by default)"))
                     rows.append(("option", group, opt))
             else:
+                rows.append(("separator",))
                 for option in group["options"]:
                     rows.append(("option", group, option))
         option_rows = [index for index, row in enumerate(rows) if row[0] == "option"]
@@ -524,14 +579,21 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             info_top = min(info_top, max(0, len(info_lines) - available))
             for offset, line in enumerate(info_lines[info_top : info_top + available]):
                 put(list_top + 2 + offset, 2, line)
-            put(height - 1, 0, "i/Enter: tools  j/k/arrows: scroll  q: quit", curses.A_DIM)
+            put(
+                height - 1,
+                0,
+                "i/Enter: tools  j/k/arrows: scroll  q: quit",
+                curses.A_DIM,
+            )
             stdscr.refresh()
             try:
                 if not splash_marker.exists():
                     splash_marker.parent.mkdir(parents=True, exist_ok=True)
                     splash_marker.touch()
             except OSError:
-                message = "Could not remember intro preference; check your state directory."
+                message = (
+                    "Could not remember intro preference; check your state directory."
+                )
             return
 
         # The choices fill the full width; the list scrolls if there are more
@@ -549,6 +611,9 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             top = cursor
         elif cursor >= top + view_height:
             top = cursor - view_height + 1
+        top = min(top, max(0, len(rows) - view_height))
+        if cursor == option_rows[0] and cursor < view_height:
+            top = 0
         for offset in range(view_height):
             index = top + offset
             if index >= len(rows):
@@ -580,7 +645,10 @@ def tui_main(stdscr, cfg: Config) -> str | None:
                 continue
             _, group, option = row
             chosen = cfg.is_selected(group, option["id"])
-            mark = "[x]" if chosen else "[ ]"
+            if group["id"] == "scripts":
+                mark = "(!)" if chosen else "()"
+            else:
+                mark = "[x]" if chosen else "[ ]"
             attr = (
                 cursor_attr
                 if index == cursor
@@ -589,7 +657,7 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             put(
                 y,
                 list_x + 2,
-                f"{mark} {option['title']:<17} {option['description']}"[
+                f"{mark:<3} {option['title']:<17} {option['description']}"[
                     : list_limit - 2
                 ],
                 attr,
@@ -604,6 +672,13 @@ def tui_main(stdscr, cfg: Config) -> str | None:
         )
         if message:
             put(height - 2, 0, message, status_attr)
+        elif cfg.selected_scripts and cfg.state == cfg.saved:
+            put(
+                height - 2,
+                0,
+                "Scripts queued - press a to apply and run them.",
+                status_attr,
+            )
         elif cfg.dirty:
             put(height - 2, 0, "Unsaved changes - press s to save them.", status_attr)
         else:
@@ -662,6 +737,8 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             message = cfg.toggle(group["id"], option["id"])
         elif key == ord("s"):
             message = cfg.save()
+            if cfg.selected_scripts:
+                message += "; scripts remain queued for a (not saved)."
         elif key == ord("a"):
             # Save + run `hms` happen after curses.wrapper has restored the
             # terminal (see apply_config), so switch output is fully usable.

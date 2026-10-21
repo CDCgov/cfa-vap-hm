@@ -48,7 +48,13 @@ let
     group:
     let
       ids = map (option: option.id) group.options;
-      raw = if hasAttr group.id state then getAttr group.id state else group.default;
+      previous = if hasAttr group.id state then getAttr group.id state else group.default;
+      # Migrate saved selections from when oh-my-zsh was optional.
+      raw =
+        if group.id == "options" && isList previous then
+          builtins.filter (id: id != "omz") previous
+        else
+          previous;
       valid = isList raw && all (id: isString id && elem id ids) raw;
     in
     lib.warnIfNot valid "${stateSource}: invalid selection for group '${group.id}', using its default" (
