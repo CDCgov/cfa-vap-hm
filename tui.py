@@ -37,7 +37,7 @@ DEFAULT_STATE_REL = Path("modules/state.json")
 
 SCRIPTS = {
     "id": "scripts",
-    "title": "Scripts (run once)",
+    "title": "Scripts",
     "description": "Run last, after Home Manager applies.",
     "options": [
         {
@@ -60,16 +60,14 @@ KEYS_HELP = "j/k/arrows: move  Space: toggle  s: save  x: defaults  "
 # The apply-and-quit key is the primary action, so it is shown in its own
 # brighter segment; the remaining keys stay dim.
 KEYS_HELP_PRIMARY = "a: apply & quit"
-KEYS_HELP_TAIL = "  i: info  q: quit"
+KEYS_HELP_TAIL = "  q: quit"
 
-SPLASH_SUMMARY = (
+INFO_SUMMARY = (
     "A reproducible CFA VAP development environment, managed by Nix and Home Manager.",
-    "home.nix is always on. Toggle extra tools here; defaults are just a starting point.",
-    "Move with arrows or j/k; Space toggles. s saves, x restores defaults, and a saves, applies, and exits.",
-    "Your choices live in modules/user-state.json. Saving alone does not change your environment; apply with a or hms.",
-    "Scripts run once after apply, outside Home Manager. They start unchecked and are never saved.",
-    "Customize home.nix or modules/. Home Manager generations let you roll back; home-manager uninstall removes the managed setup.",
-    "See README.md for installation, Docker trials, customization, and contributions.",
+    "Toggle extra tools here; defaults are just a starting point.",
+    "\n",
+    "Your selections are saved in utils/user-state.json;",
+    "home-manager will only change what it needs to.",
 )
 
 # curses colour-pair ids 1-4 are used by the chrome; the rainbow art's shades
@@ -500,19 +498,17 @@ def tui_main(stdscr, cfg: Config) -> str | None:
     top = 0
     message = ""
     pending_quit = False
-    state_home = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state")
-    splash_marker = state_home / "cfa-vap-hm" / "intro-seen"
-    show_info = not splash_marker.exists()
-    info_top = 0
 
-    def rebuild() -> None:
+    def rebuild(width: int) -> None:
         nonlocal rows, option_rows, cursor
+        position = option_rows.index(cursor) if cursor in option_rows else 0
         rows = []
+        for paragraph in INFO_SUMMARY:
+            for line in textwrap.wrap(paragraph, width=max(1, width - 4)):
+                rows.append(("text", line))
         for group in [*cfg.groups, SCRIPTS]:
             rows.append(("blank",))
             rows.append(("header", group))
-            if group["id"] != "scripts":
-                rows.append(("blank",))
             if group.get("id") == "options":
                 defaults = set(group.get("default", []))
                 first_default = None
@@ -530,21 +526,21 @@ def tui_main(stdscr, cfg: Config) -> str | None:
                         rows.append(("separator",))
                         rows.append(("subtitle", "Core tools (on by default)"))
                     if first_nondefault == i:
-                        rows.append(("separator",))
-                        rows.append(("subtitle", "Optional (off by default)"))
+                        rows.append(("blank",))
+                        rows.append(("subtitle", "Optional tools (off by default)"))
                     rows.append(("option", group, opt))
             else:
                 rows.append(("separator",))
                 for option in group["options"]:
                     rows.append(("option", group, option))
         option_rows = [index for index, row in enumerate(rows) if row[0] == "option"]
-        if cursor not in option_rows:
-            cursor = option_rows[0]
+        cursor = option_rows[min(position, len(option_rows) - 1)]
 
     def draw() -> None:
-        nonlocal top, info_top, message
+        nonlocal top
         stdscr.erase()
         height, width = stdscr.getmaxyx()
+        rebuild(width)
         if height < 8 or width < 46:
             put(0, 0, "Terminal too small - resize to at least 46x8.")
             stdscr.refresh()
@@ -568,33 +564,7 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             header_y = 1
         put(header_y, 0, f" {cfg.repo}", curses.A_DIM)
 
-        list_top = header_y + 1
-        if show_info:
-            put(list_top, 1, "Welcome / Quick start", header)
-            info_lines = []
-            for paragraph in SPLASH_SUMMARY:
-                info_lines.extend(textwrap.wrap(paragraph, width=max(1, width - 4)))
-                info_lines.append("")
-            available = max(1, height - list_top - 4)
-            info_top = min(info_top, max(0, len(info_lines) - available))
-            for offset, line in enumerate(info_lines[info_top : info_top + available]):
-                put(list_top + 2 + offset, 2, line)
-            put(
-                height - 1,
-                0,
-                "i/Enter: tools  j/k/arrows: scroll  q: quit",
-                curses.A_DIM,
-            )
-            stdscr.refresh()
-            try:
-                if not splash_marker.exists():
-                    splash_marker.parent.mkdir(parents=True, exist_ok=True)
-                    splash_marker.touch()
-            except OSError:
-                message = (
-                    "Could not remember intro preference; check your state directory."
-                )
-            return
+        list_top = header_y + 2
 
         # The choices fill the full width; the list scrolls if there are more
         # rows than fit above the footer.
@@ -621,6 +591,9 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             row = rows[index]
             y = list_top + offset
             if row[0] == "blank":
+                continue
+            if row[0] == "text":
+                put(y, list_x + 2, row[1], curses.A_DIM)
                 continue
             if row[0] == "separator":
                 sep = "─" * (width - list_x)
@@ -663,11 +636,15 @@ def tui_main(stdscr, cfg: Config) -> str | None:
                 attr,
             )
 
-        _, group, option = rows[cursor]
+        if rows[cursor][0] == "option":
+            _, group, option = rows[cursor]
+            detail = f"{group['id']}/{option['id']} -> {option['path']}: {option['description']}"
+        else:
+            detail = "Info - see README.md for more details."
         put(
             height - 3,
             0,
-            f"{group['id']}/{option['id']} -> {option['path']}: {option['description']}",
+            detail,
             curses.A_DIM,
         )
         if message:
@@ -693,29 +670,10 @@ def tui_main(stdscr, cfg: Config) -> str | None:
         put(height - 1, x + len(KEYS_HELP_PRIMARY), KEYS_HELP_TAIL, curses.A_DIM)
         stdscr.refresh()
 
-    rebuild()
     while True:
         draw()
         key = stdscr.getch()
         if key == curses.KEY_RESIZE:
-            continue
-        if key == ord("i"):
-            show_info = not show_info
-            info_top = 0
-            pending_quit = False
-            continue
-        if show_info:
-            if key in (ord("q"), ord("Q")):
-                if cfg.dirty:
-                    show_info = False
-                else:
-                    break
-            elif key in (curses.KEY_ENTER, 10, 13, ord(" ")):
-                show_info = False
-            elif key in (curses.KEY_UP, ord("k")):
-                info_top = max(0, info_top - 1)
-            elif key in (curses.KEY_DOWN, ord("j")):
-                info_top += 1
             continue
         if key in (ord("q"), ord("Q")):
             if cfg.dirty and not pending_quit:
@@ -733,8 +691,9 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             position = option_rows.index(cursor)
             cursor = option_rows[min(len(option_rows) - 1, position + 1)]
         elif key in (curses.KEY_ENTER, 10, 13, ord(" ")):
-            _, group, option = rows[cursor]
-            message = cfg.toggle(group["id"], option["id"])
+            if rows[cursor][0] == "option":
+                _, group, option = rows[cursor]
+                message = cfg.toggle(group["id"], option["id"])
         elif key == ord("s"):
             message = cfg.save()
             if cfg.selected_scripts:

@@ -20,7 +20,7 @@ Run (from the top level of this repository):
 
 ## Docker Engine
 Run `bash ./utils/install_docker_engine.sh` on Ubuntu, or select it in the TUI's
-**Scripts (run once)** tier. It uses Docker's official apt repository, installs
+**Scripts** tier. It uses Docker's official apt repository, installs
 Engine, Buildx and Compose, starts Docker, verifies it with hello-world, and adds
 your user to the docker group. Log out and back in afterward, or run
 `newgrp docker` manually; the script does not replace your shell.
