@@ -66,7 +66,7 @@ INFO_SUMMARY = (
     "A reproducible CFA VAP development environment, managed by Nix and Home Manager.",
     "Toggle extra tools here; defaults are just a starting point.",
     "\n",
-    "Your selections are saved in utils/user-state.json;",
+    "Your selections are saved in modules/user-state.json;",
     "home-manager will only change what it needs to.",
 )
 
