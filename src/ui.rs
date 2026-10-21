@@ -107,7 +107,7 @@ fn rows(cfg: &Config, width: u16) -> Vec<Row> {
     }
     rows.push(row("", dim()));
     rows.push(row(
-        " Scripts (run once) - Run last, after Home Manager applies.",
+        " Scripts - Run last, after Home Manager applies.",
         heading(),
     ));
     rows.push(row(separator, dim()));
@@ -410,7 +410,7 @@ impl App {
                     if !cfg.scripts.remove(&i) {
                         cfg.scripts.insert(i);
                     }
-                    self.message = "Scripts run once on apply; selections are not saved.".into();
+                    self.message = "Scripts run on apply; selections are not saved.".into();
                 }
             },
             KeyCode::Char('s') => {

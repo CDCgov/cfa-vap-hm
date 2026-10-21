@@ -112,7 +112,7 @@ Arguments after `--tui` are forwarded, e.g. `nix run . -- --tui --show`.
 
 - `Up`/`Down` (or `j`/`k`) move, `Space` toggles an extra on/off, `s` saves, `x` resets to defaults, `q` quits.
 - Press `a` to save, run `hms`, and close the TUI - no need to quit first.
-- The third tier, **Scripts (run once)**, runs last, after a successful Home Manager apply: install Docker Engine on Ubuntu or mount VAP drives (which offers a reset mode). Scripts show `(!)` when selected and `()` when unselected; all start unselected each launch. `s` does not save or run them. Scripts run interactively in the order listed, stopping on failure.
+- The third tier, **Scripts**, runs last, after a successful Home Manager apply: install Docker Engine on Ubuntu or mount VAP drives (which offers a reset mode). Scripts show `(!)` when selected and `()` when unselected; all start unselected each launch. `s` does not save or run them. Scripts run interactively in the order listed, stopping on failure.
 - A quick-start splash opens on your first interactive launch. Press `i` to toggle it anytime (Enter also closes it). This preference is stored under `${XDG_STATE_HOME:-~/.local/state}/cfa-vap-hm/`.
 - Saving writes `modules/state.json`; press `a` or run `hms` to apply it.
 - Non-interactive use: `cfa-vap-tui --show`, `--set options=editors,python`, `--set options=r --apply`, `--reset`.
