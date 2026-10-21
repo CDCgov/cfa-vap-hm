@@ -1,3 +1,4 @@
 .gitignore entries that still make sense. Or just remove vscode specific line.
 __pycache__/
 modules/user-state.json
+target/

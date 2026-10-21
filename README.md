@@ -85,25 +85,25 @@ You can always repeat the low-risk [prototyping](#prototyping-with-docker) proce
 The environment is split into a small core ([home.nix](./home.nix)) plus optional extras under [modules/](./modules/) that you can switch on and off independently:
 
 - `modules/manifest.json` - declares each extra and its module file:
-    - `python` - uv python manager
     - `editors` - emacs, neovim
     - `ai-tools` - codex, opencode
-    - `dev` - gcc, gnumake, pkg-config, nodejs
+    - `python` - uv python manager
     - `r` - R with pak + languageserver
     - `rust` - rustup + cargo, rustc, rustfmt, clippy (off by default)
     - `julia` - julia-bin (off by default)
     - `azure` - azure-cli, azcopy, blobfuse
     - `containers` - docker-compose, podman, docker cli
+    - `dev` - gcc, gnumake, pkg-config, nodejs
     - `sql` (dbeaver/psql/duckdb) - off by default
     - `cli-tools` - lazygit, lazydocker, nushell (off by default)
 - `modules/state.json` - the default selection every clone starts with (tracked)
 - `modules/user-state.json` - your personal overrides (gitignored); the TUI writes here, and it wins over `state.json` when present
 - `modules/selection.nix` - reads `user-state.json` if present, else `state.json`, and imports the selected modules on the next switch
 
-Run the TUI to toggle interactively (`python tui.py` or once running at least once, zsh alias `hmt`):
+Run the Rust TUI to toggle interactively (the `hmt` alias is available after activation):
 
 ```sh
-hmt   # or: python3 ~/.config/home-manager/tui.py
+hmt   # or: cfa-vap-tui
 ```
 
 Or launch through the flake: `nix run . -- --tui` (from the repo), or
@@ -115,7 +115,14 @@ Arguments after `--tui` are forwarded, e.g. `nix run . -- --tui --show`.
 - The third tier, **Scripts (run once)**, runs last, after a successful Home Manager apply: install Docker Engine on Ubuntu or mount VAP drives (which offers a reset mode). Scripts show `(!)` when selected and `()` when unselected; all start unselected each launch. `s` does not save or run them. Scripts run interactively in the order listed, stopping on failure.
 - A quick-start splash opens on your first interactive launch. Press `i` to toggle it anytime (Enter also closes it). This preference is stored under `${XDG_STATE_HOME:-~/.local/state}/cfa-vap-hm/`.
 - Saving writes `modules/state.json`; press `a` or run `hms` to apply it.
-- Non-interactive use: `python3 tui.py --show`, `--set options=editors,python`, `--set options=r --apply`, `--reset`.
+- Non-interactive use: `cfa-vap-tui --show`, `--set options=editors,python`, `--set options=r --apply`, `--reset`.
+
+The standalone TUI is also available as `nix run .#tui`. Set `HM_DIR` to use a
+different checkout; otherwise it uses the current repo or `~/.config/home-manager`.
+To develop the TUI, run `cargo run` or `cargo test` with a Rust toolchain
+(`nix shell nixpkgs#cargo nixpkgs#rustc` provides one). The installed binary does
+not require the optional Rust module. Sources are under `src/`; dependencies
+are pinned in `Cargo.lock` and packaged by `tui.nix`.
 
 ### Submitting your own changes as PRs
 1. Open a new branch in your local `.config/home-manager` repository.

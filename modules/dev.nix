@@ -1,5 +1,5 @@
 # Language/build toolchain; an extra toggled via modules/manifest.json
-# (toggle with `hmt` / tui.py).
+# (toggle with `hmt` / cfa-vap-tui).
 # Note: python313, ruff and the repo linters live in the core (home.nix).
 { pkgs, ... }:
 {

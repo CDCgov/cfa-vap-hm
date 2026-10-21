@@ -1,5 +1,5 @@
 # Julia; an extra toggled via modules/manifest.json
-# (toggle with `hmt` / tui.py).
+# (toggle with `hmt` / cfa-vap-tui).
 # juliaup is not packaged in this nixpkgs pin, so we install the
 # prebuilt julia-bin instead of the source build.
 { pkgs, ... }:

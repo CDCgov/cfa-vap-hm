@@ -5,7 +5,7 @@ They are co-located here for conveneience.
 
 ## Module toggle TUI
 Run (from the top level of this repository):
-1. `python3 ./tui.py` (or the `hmt` alias) to toggle home-manager extras interactively.
+1. `nix run . -- --tui` (or the `hmt` alias) to toggle home-manager extras interactively.
     - The core in `home.nix`, including oh-my-zsh, is always on; every extra (python, editors, ai-tools, dev, r, rust, julia, azure, containers, sql, cli-tools) is independent.
     - Saving writes your overrides to the gitignored `modules/user-state.json`, which `modules/selection.nix` prefers over the tracked defaults in `modules/state.json`.
     - Press `a` to save, run `hms`, and close the TUI in one step.

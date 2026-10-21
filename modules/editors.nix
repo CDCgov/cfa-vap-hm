@@ -1,5 +1,5 @@
 # Text editors; an extra toggled via modules/manifest.json
-# (toggle with `hmt` / tui.py).
+# (toggle with `hmt` / cfa-vap-tui).
 { pkgs, ... }:
 {
   home.packages = with pkgs; [

@@ -1,5 +1,5 @@
 # Extra command-line tools; an extra toggled via modules/manifest.json
-# (toggle with `hmt` / tui.py).
+# (toggle with `hmt` / cfa-vap-tui).
 { pkgs, ... }:
 {
   home.packages = [ pkgs.lazydocker ];

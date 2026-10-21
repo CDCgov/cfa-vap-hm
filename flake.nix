@@ -17,26 +17,25 @@
       # Explicit target platform; builtins.currentSystem is unavailable in pure evaluation.
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      tui = import ./tui.nix { inherit pkgs; };
     in
     {
-      # Use --tui to select tools; otherwise forward to Home Manager.
-      packages.${system}.default = pkgs.writeShellApplication {
-        name = "cfa-vap-hm";
-        runtimeInputs = with pkgs; [
-          python3
-          figlet
-          lolcat
-        ];
-        text = ''
-          if [[ "''${1:-}" == "--tui" ]]; then
-            shift
-            if [[ -z "''${HM_DIR:-}" && -f "$PWD/modules/manifest.json" ]]; then
-              export HM_DIR="$PWD"
+      packages.${system} = {
+        inherit tui;
+        # Use --tui to select tools; otherwise forward to Home Manager.
+        default = pkgs.writeShellApplication {
+          name = "cfa-vap-hm";
+          text = ''
+            if [[ "''${1:-}" == "--tui" ]]; then
+              shift
+              if [[ -z "''${HM_DIR:-}" && -f "$PWD/modules/manifest.json" ]]; then
+                export HM_DIR="$PWD"
+              fi
+              exec ${tui}/bin/cfa-vap-tui "$@"
             fi
-            exec python3 ${./tui.py} "$@"
-          fi
-          exec ${home-manager.packages.${system}.home-manager}/bin/home-manager "$@"
-        '';
+            exec ${home-manager.packages.${system}.home-manager}/bin/home-manager "$@"
+          '';
+        };
       };
 
       homeConfigurations =

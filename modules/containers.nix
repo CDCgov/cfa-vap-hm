@@ -1,5 +1,5 @@
 # Container tooling (docker + podman); a member of the "extras" group
-# declared in modules/manifest.json (toggle with `hmt` / tui.py).
+# declared in modules/manifest.json (toggle with `hmt` / cfa-vap-tui).
 { pkgs, ... }:
 {
   home.packages = with pkgs; [

@@ -81,7 +81,7 @@
       shellAliases = {
         cb = "xclip -sel clipboard"; # pipe to this to add the command to the clipboard
         hms = "home-manager switch --flake ~/.config/home-manager/ --impure"; # switch from anywhere
-        hmt = "python3 $HOME/.config/home-manager/tui.py"; # toggle home-manager modules (TUI)
+        hmt = "cfa-vap-tui"; # toggle home-manager modules (TUI)
       };
       initContent = ''
         echo "Welcome to the CFA VAP. You are using zsh as managed by nix home-manager." | lolcat
@@ -102,6 +102,7 @@
   # Azure, ...) and merged in by modules/selection.nix per modules/state.json.
   # Think of the list below as things you could install with apt on ubuntu.
   home.packages = with pkgs; [
+    (import ./tui.nix { inherit pkgs; })
 
     # Basics
     btop # system resource manager
@@ -122,7 +123,7 @@
     # Dev/languages (lint + repo tooling; the heavy toolchain is the `dev` extra)
     nixfmt
     pre-commit
-    python313 # note that uv is also installed in 'programs'; also runs `hmt`
+    python313 # Python runtime; uv is available through the Python module
     ruff # python formatter
     shellcheck # tool that checks and lints shell scripts
     shfmt # formats shell scripts; complements shellcheck
