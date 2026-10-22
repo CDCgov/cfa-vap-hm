@@ -3,7 +3,7 @@
     {
       "id": "options",
       "title": "Options",
-      "description": "Select what to install.",
+      "description": "Select what to enable.",
       "default": [
         "python",
         "editors",

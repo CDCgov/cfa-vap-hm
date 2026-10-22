@@ -619,7 +619,7 @@ def tui_main(stdscr, cfg: Config) -> str | None:
             _, group, option = row
             chosen = cfg.is_selected(group, option["id"])
             if group["id"] == "scripts":
-                mark = "(!)" if chosen else "()"
+                mark = "(!)" if chosen else "( )"
             else:
                 mark = "[x]" if chosen else "[ ]"
             attr = (

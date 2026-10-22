@@ -112,7 +112,7 @@ Arguments after `--tui` are forwarded, e.g. `nix run . -- --tui --show`.
 
 - `Up`/`Down` (or `j`/`k`) move, `Space` toggles an extra on/off, `s` saves, `x` resets to defaults, `q` quits.
 - Press `a` to save, run `hms`, and close the TUI - no need to quit first.
-- The third tier, **Scripts**, runs last, after a successful Home Manager apply: install Docker Engine on Ubuntu or mount VAP drives (which offers a reset mode). Scripts show `(!)` when selected and `()` when unselected; all start unselected each launch. `s` does not save or run them. Scripts run interactively in the order listed, stopping on failure.
+- The third tier, **Scripts**, runs last, after a successful Home Manager apply: install Docker Engine on Ubuntu or mount VAP drives (which offers a reset mode). Scripts show `(!)` when selected and `( )` when unselected; all start unselected each launch. `s` does not save or run them. Scripts run interactively in the order listed, stopping on failure.
 - A concise **Info** section above the tools summarizes the workflow. Use arrows or `j`/`k` to scroll through it.
 - Saving writes `modules/state.json`; press `a` or run `hms` to apply it.
 - Non-interactive use: `python3 tui.py --show`, `--set options=editors,python`, `--set options=r --apply`, `--reset`.
