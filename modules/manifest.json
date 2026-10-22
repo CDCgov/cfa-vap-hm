@@ -1,0 +1,86 @@
+{
+  "groups": [
+    {
+      "id": "options",
+      "title": "Options",
+      "description": "Select what to enable.",
+      "default": [
+        "python",
+        "editors",
+        "ai-tools",
+        "dev",
+        "r",
+        "azure",
+        "containers"
+      ],
+      "options": [
+        {
+          "id": "editors",
+          "title": "Editors",
+          "description": "emacs, neovim",
+          "path": "editors.nix"
+        },
+        {
+          "id": "ai-tools",
+          "title": "AI coding tools",
+          "description": "codex, opencode",
+          "path": "ai-tools.nix"
+        },
+        {
+          "id": "python",
+          "title": "Python",
+          "description": "Python and uv python manager",
+          "path": "python.nix"
+        },
+        {
+          "id": "r",
+          "title": "R",
+          "description": "R with pak + languageserver and ~/.Rprofile",
+          "path": "R.nix"
+        },
+        {
+          "id": "azure",
+          "title": "Azure",
+          "description": "azure-cli, azcopy, blobfuse",
+          "path": "azure.nix"
+        },
+        {
+          "id": "containers",
+          "title": "Containers",
+          "description": "docker-compose, podman, docker cli",
+          "path": "containers.nix"
+        },
+        {
+          "id": "dev",
+          "title": "Dev toolchain",
+          "description": "gcc, gnumake, pkg-config, nodejs",
+          "path": "dev.nix"
+        },
+        {
+          "id": "rust",
+          "title": "Rust",
+          "description": "rustup-managed toolchain",
+          "path": "rust.nix"
+        },
+        {
+          "id": "julia",
+          "title": "Julia",
+          "description": "julia-bin",
+          "path": "julia.nix"
+        },
+        {
+          "id": "sql",
+          "title": "SQL tools",
+          "description": "dbeaver, psql (postgresql), duckdb",
+          "path": "sql.nix"
+        },
+        {
+          "id": "cli-tools",
+          "title": "Extra CLI tools",
+          "description": "lazygit, lazydocker, nushell",
+          "path": "cli-tools.nix"
+        }
+      ]
+    }
+  ]
+}

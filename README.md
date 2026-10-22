@@ -5,11 +5,11 @@ A usable CFA-tailored config for [Nix home-manager](https://github.com/nix-commu
 - You can run it at any point and undo it at any point.
 
 > [!TIP]
-> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix).  
+> To see what software are currently included, take a look at the `programs` and `pkgs` defined in [home.nix](./home.nix) (the core) and the optional modules under [modules/](./modules/).
 > Think something should be added, updated, removed, or modified? Let us know in a [PR](https://github.com/CDCgov/cfa-vap-hm/pulls).
 
 ## Project Goals
-To provide an automated, repeatable, and maintainable way to configure every CFA VAP user's development environment.  
+To provide an automated, repeatable, and maintainable way to configure every CFA VAP user's development environment.
 
  `cfa-vap-hm` improves on our previous solution, [CFA VAP Autoconfig](https://github.com/cdcent/cfa-vap), by being:
 
@@ -28,7 +28,7 @@ Nix and `home-manager` are declarative rather than imperative.
 ## Installation
 
 > [!TIP]
-> Uninstalling `home-manager` (and reverting anything you've done with it) is as simple as running `home-manager uninstall`.  
+> Uninstalling `home-manager` (and reverting anything you've done with it) is as simple as running `home-manager uninstall`.
 > - However, if you want to try it in a sandbox first, see: [prototyping with docker](#prototyping-with-docker).
 
 To install `cfa-vap-hm`, simply:
@@ -42,8 +42,8 @@ To install `cfa-vap-hm`, simply:
 
 ### Installing for non-`systemd` environments
 > [!NOTE]
-> You'll need systemd enabled for to use the determinate installer (recommended).  
-> If you don't have systemd, use upstream nix daemonless:  
+> You'll need systemd enabled for to use the determinate installer (recommended).
+> If you don't have systemd, use upstream nix daemonless:
 > 1. `sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon`
 > 1. `echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 > 1. Add to your shell profile: `PATH=$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH`
@@ -58,7 +58,7 @@ To install `cfa-vap-hm`, simply:
 
 > Make sure you have `docker` installed and enabled before running the following steps.
 
-Before committing to managing your environment with nix, you can test the changes with docker.  
+Before committing to managing your environment with nix, you can test the changes with docker.
 To do so, first clone this repository and set it as your working directory.
 
 From the repo root:
@@ -79,6 +79,50 @@ After you install `home-manager`, or while prototyping with docker:
 You can always repeat the low-risk [prototyping](#prototyping-with-docker) process before committing your own changes as an added layer of assurance.
 - Nix also has a concept called "generations" that lets you roll back to any previous config - it's like git but for your whole system.
 - See: https://nix-community.github.io/home-manager/#sec-usage-rollbacks
+
+### Toggling optional extras
+
+The environment is split into a small core ([home.nix](./home.nix)) plus optional extras under [modules/](./modules/) that you can switch on and off independently:
+
+- `modules/manifest.json` - declares each extra and its module file:
+    - `python` - uv python manager
+    - `editors` - emacs, neovim
+    - `ai-tools` - codex, opencode
+    - `dev` - gcc, gnumake, pkg-config, nodejs
+    - `r` - R with pak + languageserver
+    - `rust` - rustup + cargo, rustc, rustfmt, clippy (off by default)
+    - `julia` - julia-bin (off by default)
+    - `azure` - azure-cli, azcopy, blobfuse
+    - `containers` - docker-compose, podman, docker cli
+    - `sql` (dbeaver/psql/duckdb) - off by default
+    - `cli-tools` - lazygit, lazydocker, nushell (off by default)
+- `modules/state.json` - the default selection every clone starts with (tracked)
+- `modules/user-state.json` - your personal overrides (gitignored); activation creates it if missing, and it wins over `state.json` when present. Edit it by hand or use the TUI.
+- `modules/selection.nix` - reads `user-state.json` if present, else `state.json`, and imports the selected modules on the next switch
+
+The TUI is optional. On a fresh clone, edit the `options` list in
+`modules/state.json`, then run `nix run . -- switch --impure`. Activation creates
+a writable `modules/user-state.json` with those selections and a generated
+`possible_options` reference. After that, edit `user-state.json` and run the same
+command to apply changes. Only `options` enables modules; `possible_options` is
+reference metadata. Existing personal files are never overwritten by activation.
+
+Run the TUI to toggle interactively (`python tui.py` or once running at least once, zsh alias `hmt`):
+
+```sh
+hmt   # or: python3 ~/.config/home-manager/tui.py
+```
+
+Or launch through the flake: `nix run . -- --tui` (from the repo), or
+`nix run ~/.config/home-manager -- --tui` from anywhere.
+Arguments after `--tui` are forwarded, e.g. `nix run . -- --tui --show`.
+
+- `Up`/`Down` (or `j`/`k`) move, `Space` toggles an extra on/off, `s` saves, `x` resets to defaults, `q` quits.
+- Press `a` to save, run `hms`, and close the TUI - no need to quit first.
+- The third tier, **Scripts**, runs last, after a successful Home Manager apply: install Docker Engine on Ubuntu or mount VAP drives (which offers a reset mode). Scripts show `(!)` when selected and `( )` when unselected; all start unselected each launch. `s` does not save or run them. Scripts run interactively in the order listed, stopping on failure.
+- A concise **Info** section above the tools summarizes the workflow. Use arrows or `j`/`k` to scroll through it.
+- Saving writes `modules/user-state.json`; press `a` or run `hms` to apply it.
+- Non-interactive use: `python3 tui.py --show`, `--set options=editors,python`, `--set options=r --apply`, `--reset`.
 
 ### Submitting your own changes as PRs
 1. Open a new branch in your local `.config/home-manager` repository.
