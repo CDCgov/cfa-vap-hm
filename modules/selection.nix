@@ -5,8 +5,8 @@
 # - modules/state.json (tracked) holds the default selection every fresh
 #   clone starts with.
 # - modules/user-state.json (user-local, gitignored) optionally overrides
-#   the defaults per user; the TUI (tui.py, alias `hmt`)
-#   writes there. It takes precedence when present. Since the flake source
+#   the defaults per user; activation creates it if missing, and users can
+#   edit it by hand or through the TUI. It takes precedence when present. Since the flake source
 #   never contains gitignored files, it is read through $HOME - this flake
 #   evaluates impurely anyway (see flake.nix).
 # - Missing or invalid selections fall back to the group's default, so the
@@ -70,6 +70,25 @@ let
   # The manifest-relative paths of every module the user has selected.
   selectedPaths = lib.concatMap (group: map (pathOf group) (selectionOf group)) manifest.groups;
 
+  initialUserState = pkgs.writeText "home-manager-user-state.json" (
+    builtins.toJSON (
+      builtins.listToAttrs (
+        map (group: {
+          name = group.id;
+          value = selectionOf group;
+        }) manifest.groups
+      )
+      // {
+        possible_options = builtins.listToAttrs (
+          map (group: {
+            name = group.id;
+            value = map (option: option.id) group.options;
+          }) manifest.groups
+        );
+      }
+    )
+  );
+
   modulesWithStatus = lib.concatMap (
     group: map (option: option // { enabled = elem option.id (selectionOf group); }) group.options
   ) manifest.groups;
@@ -89,6 +108,18 @@ in
   # Paths are relative to this file (modules/); the module system merges the
   # imported modules with home.nix, so selection is purely additive.
   imports = map (relative: ./. + "/${relative}") selectedPaths;
+
+  # Keep this an ordinary writable file, rather than a home.file store symlink.
+  # The first switch uses state.json; subsequent switches use personal overrides.
+  home.activation.initializeUserState = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [[ ! -e ${lib.escapeShellArg userStateFile} ]]; then
+      run ${pkgs.coreutils}/bin/mkdir -p ${lib.escapeShellArg (builtins.dirOf userStateFile)}
+      run ${pkgs.bash}/bin/bash -c ${lib.escapeShellArg ''
+        set -o noclobber
+        ${pkgs.jq}/bin/jq . ${initialUserState} > ${lib.escapeShellArg userStateFile}
+      ''}
+    fi
+  '';
 
   home.activation.moduleSummary = lib.hm.dag.entryAfter [ "switchMessage" ] ''
     printf '\n── Module selection ──────────────────────\n\n'

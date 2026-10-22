@@ -312,6 +312,10 @@ class Config:
     def save(self) -> str:
         """Write the selection to user-state.json (takes over from state.json)."""
         payload = {group["id"]: self.state[group["id"]] for group in self.groups}
+        payload["possible_options"] = {
+            group["id"]: [option["id"] for option in group["options"]]
+            for group in self.groups
+        }
         path = self.repo / USER_STATE_REL
         tmp = path.with_name(path.name + ".tmp")
         tmp.write_text(json.dumps(payload, indent=2) + "\n")

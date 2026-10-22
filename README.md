@@ -97,8 +97,15 @@ The environment is split into a small core ([home.nix](./home.nix)) plus optiona
     - `sql` (dbeaver/psql/duckdb) - off by default
     - `cli-tools` - lazygit, lazydocker, nushell (off by default)
 - `modules/state.json` - the default selection every clone starts with (tracked)
-- `modules/user-state.json` - your personal overrides (gitignored); the TUI writes here, and it wins over `state.json` when present
+- `modules/user-state.json` - your personal overrides (gitignored); activation creates it if missing, and it wins over `state.json` when present. Edit it by hand or use the TUI.
 - `modules/selection.nix` - reads `user-state.json` if present, else `state.json`, and imports the selected modules on the next switch
+
+The TUI is optional. On a fresh clone, edit the `options` list in
+`modules/state.json`, then run `nix run . -- switch --impure`. Activation creates
+a writable `modules/user-state.json` with those selections and a generated
+`possible_options` reference. After that, edit `user-state.json` and run the same
+command to apply changes. Only `options` enables modules; `possible_options` is
+reference metadata. Existing personal files are never overwritten by activation.
 
 Run the TUI to toggle interactively (`python tui.py` or once running at least once, zsh alias `hmt`):
 
@@ -114,7 +121,7 @@ Arguments after `--tui` are forwarded, e.g. `nix run . -- --tui --show`.
 - Press `a` to save, run `hms`, and close the TUI - no need to quit first.
 - The third tier, **Scripts**, runs last, after a successful Home Manager apply: install Docker Engine on Ubuntu or mount VAP drives (which offers a reset mode). Scripts show `(!)` when selected and `( )` when unselected; all start unselected each launch. `s` does not save or run them. Scripts run interactively in the order listed, stopping on failure.
 - A concise **Info** section above the tools summarizes the workflow. Use arrows or `j`/`k` to scroll through it.
-- Saving writes `modules/state.json`; press `a` or run `hms` to apply it.
+- Saving writes `modules/user-state.json`; press `a` or run `hms` to apply it.
 - Non-interactive use: `python3 tui.py --show`, `--set options=editors,python`, `--set options=r --apply`, `--reset`.
 
 ### Submitting your own changes as PRs
