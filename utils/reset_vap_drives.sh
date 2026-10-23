@@ -47,7 +47,9 @@ log_info "Backup created at: $BACKUP"
 
 # Remove fstab entries, keeping only lines with UUID or starting with # CLOUD_IMG
 log_info "Removing fstab entries..."
-sudo grep "UUID\|^[[:space:]]*#[[:space:]]*CLOUD_IMG" "$FSTAB" | sudo tee "${FSTAB}.tmp" > /dev/null
+# A fresh WSL fstab may have no matching lines. awk accepts that empty result,
+# while pipefail still stops reset on read or write errors.
+sudo awk '/UUID|^[[:space:]]*#[[:space:]]*CLOUD_IMG/' "$FSTAB" | sudo tee "${FSTAB}.tmp" >/dev/null
 sudo mv "${FSTAB}.tmp" "$FSTAB"
 log_info "Network drive entries removed from fstab"
 
@@ -69,9 +71,9 @@ log_info "Removing symlinks..."
 for symlink in "${SYMLINK_POINTS[@]}"; do
     expanded_symlink=$(eval echo "$symlink")
     if [ -L "$expanded_symlink" ]; then
-        rm "$expanded_symlink" && \
-        log_info "Removed symlink: $expanded_symlink" \
-        || log_error "Failed to remove symlink: $expanded_symlink"
+        rm "$expanded_symlink" &&
+            log_info "Removed symlink: $expanded_symlink" ||
+            log_error "Failed to remove symlink: $expanded_symlink"
     fi
 done
 
