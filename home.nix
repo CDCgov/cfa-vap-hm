@@ -23,6 +23,10 @@
 
   # Programs and pkgs:
 
+  # This file holds the *core* environment. Optional extras (editors, dev
+  # toolchain, R, Azure, containers, ...) live in modules/ and are
+  # selected by modules/state.json - toggle them with `hmt`.
+
   # Programs are preferrable to "pkgs" if they exist due to configurability;
   # However, there are far fewer software available as "programs"
 
@@ -34,7 +38,6 @@
     home-manager.enable = true;
 
     bat.enable = true; # rich cat
-    firefox.enable = true;
     git = {
       enable = true;
       settings = {
@@ -43,11 +46,8 @@
       };
     };
     gh.enable = true; # github cli
-    lazygit.enable = true;
     ripgrep.enable = true;
-    nushell.enable = true;
     tmux.enable = true;
-    uv.enable = true; # uv python manager
 
     # fzf: fuzzy finder (Ctrl-R history, Ctrl-T files, Alt-C cd)
     fzf = {
@@ -79,12 +79,9 @@
         theme = "lambda";
       };
       shellAliases = {
-        bf = "azure-storage-fuse"; # nix's blobfuse is created as azure-storage-fuse
         cb = "xclip -sel clipboard"; # pipe to this to add the command to the clipboard
-        dll = "docker ps -aql | xargs -r docker logs"; # docker logs latest
         hms = "home-manager switch --flake ~/.config/home-manager/ --impure"; # switch from anywhere
-        runlike = "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike";
-        runlike_latest = "docker ps -l -q | xargs -r -I{} docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike {}";
+        hmt = "python3 $HOME/.config/home-manager/tui.py"; # toggle home-manager modules (TUI)
       };
       initContent = ''
         echo "Welcome to the CFA VAP. You are using zsh as managed by nix home-manager." | lolcat
@@ -101,9 +98,9 @@
     };
 
   };
-  # (.Rprofile and R packages managed in R.nix)
-  # most packages are installed here.
-  # think of these as things you could install with apt on ubuntu
+  # Optional extras are declared in modules/ (editors, dev toolchain, R,
+  # Azure, ...) and merged in by modules/selection.nix per modules/state.json.
+  # Think of the list below as things you could install with apt on ubuntu.
   home.packages = with pkgs; [
 
     # Basics
@@ -112,6 +109,7 @@
     dysk # a better df (disk management)
     eza # fancy ls alternative
     fd # file finder
+    figlet # ASCII-art banners (used by the `hmt` TUI title)
     git-filter-repo # remove sensitive data
     htop # legacy system resource manager
     jq # shell json parsing
@@ -121,32 +119,17 @@
     tree # filesystem visualization
     xclip
 
-    # GUI apps and IDEs
-    emacs
-    neovim-unwrapped
-
-    # Dev/languages
-    cargo
-    cargo-binstall # binary installs for rust
-    docker-compose
-    docker-client
-    gcc # includes gcc and g++
-    gnumake
-    pkg-config # discovers library compiler and linker flags
-    lazydocker
+    # Dev/languages (lint + repo tooling; the heavy toolchain is the `dev` extra)
     nixfmt
-    nodejs
-    podman
     pre-commit
-    python313 # note that uv is also installed in 'programs', above
+    python313 # note that uv is also installed in 'programs'; also runs `hmt`
     ruff # python formatter
     shellcheck # tool that checks and lints shell scripts
     shfmt # formats shell scripts; complements shellcheck
 
     # Native libraries and development headers (Ubuntu's lib*-dev equivalents).
     # Nix splits headers/pkg-config metadata into separate development outputs.
-    # This replicates:
-    # https://potential-adventure-637em36.pages.github.io/guides/vscode_for_r.html?h=languageserver#configure-vscode-for-r-development
+    # This replicates the VS Code for R development guide.
     curl
     (lib.getDev curl)
     openssl
@@ -157,11 +140,6 @@
     (lib.getDev fontconfig)
     cairo
     (lib.getDev cairo)
-
-    # Azure
-    azure-cli
-    azure-storage-azcopy
-    blobfuse
   ];
 
 }

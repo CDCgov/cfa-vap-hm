@@ -1,0 +1,26 @@
+{
+  "options": [
+    "python",
+    "editors",
+    "ai-tools",
+    "dev",
+    "r",
+    "azure",
+    "containers"
+  ],
+  "possible_options": {
+    "options": [
+      "editors",
+      "ai-tools",
+      "python",
+      "r",
+      "azure",
+      "containers",
+      "dev",
+      "rust",
+      "julia",
+      "sql",
+      "cli-tools"
+    ]
+  }
+}

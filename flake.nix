@@ -19,8 +19,25 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
-      # Let `nix run . --impure` launch this flake's Home Manager CLI.
-      packages.${system}.default = home-manager.packages.${system}.home-manager;
+      # Use --tui to select tools; otherwise forward to Home Manager.
+      packages.${system}.default = pkgs.writeShellApplication {
+        name = "cfa-vap-hm";
+        runtimeInputs = with pkgs; [
+          python3
+          figlet
+          lolcat
+        ];
+        text = ''
+          if [[ "''${1:-}" == "--tui" ]]; then
+            shift
+            if [[ -z "''${HM_DIR:-}" && -f "$PWD/modules/manifest.json" ]]; then
+              export HM_DIR="$PWD"
+            fi
+            exec python3 ${./tui.py} "$@"
+          fi
+          exec ${home-manager.packages.${system}.home-manager}/bin/home-manager "$@"
+        '';
+      };
 
       homeConfigurations =
         let
@@ -33,7 +50,10 @@
             inherit pkgs;
             modules = [
               ./home.nix
-              ./modules/R.nix
+              # selection.nix imports the optional modules selected in
+              # modules/state.json (manifest.json lists what may be
+              # selected; toggle with `hmt`)
+              ./modules/selection.nix
             ];
             extraSpecialArgs = {
               inherit user homedir release;
