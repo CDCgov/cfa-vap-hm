@@ -13,6 +13,20 @@
   nixpkgs.config = {
     allowUnfree = true;
   };
+
+  # nixpkgs-multiverse allows pinning packages to exact historical versions.
+  # Standalone packages added to `multiverse.pins` are installed into
+  # `home.packages` automatically (remove them from `home.packages` below to
+  # avoid installing two versions). Note: R is pinned in `modules/R.nix` so
+  # `rWrapper` and `rPackages` come from the same revision.
+  multiverse = {
+    enable = true;
+    config.allowUnfree = true;
+    pins = {
+      # Example: ripgrep = "13.0.0";
+    };
+  };
+
   # Username, homedirectory, and release are handled in flake.nix
   home.username = user;
   home.homeDirectory = homedir;

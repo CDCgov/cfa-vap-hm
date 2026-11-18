@@ -9,10 +9,18 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    multiverse = {
+      url = "github:fzakaria/nixpkgs-multiverse";
+    };
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }:
+    {
+      nixpkgs,
+      home-manager,
+      multiverse,
+      ...
+    }:
     let
       # Explicit target platform; builtins.currentSystem is unavailable in pure evaluation.
       system = "x86_64-linux";
@@ -32,6 +40,7 @@
           ${user} = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
+              multiverse.homeManagerModules.default
               ./home.nix
               ./modules/R.nix
             ];
